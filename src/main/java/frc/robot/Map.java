@@ -30,7 +30,7 @@ public static Joystick driver = new Joystick(0);
     public static int rotateBR = 8;
     public static int rotateBL = 9;
 
-    public static double kp = .63;
+    public static double kp = .62;
     public static double ki = .0001;
     public static double kd = 0.;
 

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Vision.Limelight;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,16 +34,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    Map.swerve.telemetry();
-    SmartDashboard.putNumber("yaw", Swerve.gyro.getYaw());
-    double rawDistanceFL = Map.frontLeft.driveMotor.getSelectedSensorPosition();
-    SmartDashboard.putNumber("rawDistanceFL", rawDistanceFL);
-    double rawDistanceFR = Map.frontLeft.driveMotor.getSelectedSensorPosition();
-    SmartDashboard.putNumber("rawDistanceFR", rawDistanceFR);
-    double rawDistanceBL = Map.frontLeft.driveMotor.getSelectedSensorPosition();
-    SmartDashboard.putNumber("rawDistanceBL", rawDistanceBL);
-    double rawDistanceBR = Map.frontLeft.driveMotor.getSelectedSensorPosition();
-    SmartDashboard.putNumber("rawDistanceBR", rawDistanceBR);
+
+    // Map.swerve.telemetry();
+    // SmartDashboard.putNumber("yaw", Swerve.gyro.getYaw());
+    // double rawDistanceFL = Map.frontLeft.driveMotor.getSelectedSensorPosition();
+    // SmartDashboard.putNumber("rawDistanceFL", rawDistanceFL);
+    // double rawDistanceFR = Map.frontLeft.driveMotor.getSelectedSensorPosition();
+    // SmartDashboard.putNumber("rawDistanceFR", rawDistanceFR);
+    // double rawDistanceBL = Map.frontLeft.driveMotor.getSelectedSensorPosition();
+    // SmartDashboard.putNumber("rawDistanceBL", rawDistanceBL);
+    // double rawDistanceBR = Map.frontLeft.driveMotor.getSelectedSensorPosition();
+    // SmartDashboard.putNumber("rawDistanceBR", rawDistanceBR);
+
+    // SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
     
   }
 
@@ -65,6 +69,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+        SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
     //Map.swerve.autoInit();
     Map.swerve.drive(Map.driver.getRawAxis(0), Map.driver.getRawAxis(1), Map.driver.getRawAxis(4));
     // Map.swerve.telemetry();
