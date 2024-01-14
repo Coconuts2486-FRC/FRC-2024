@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   double startTime;
+  
 
   @Override
   public void robotInit() {
@@ -69,9 +70,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+          limitSwitch.limitTest(Map.driver.getRawAxis(3),Map.driver.getRawAxis(2));
+    SmartDashboard.putNumber("tagTarget",Limelight.tagTarget(Map.driver.getRawButton(6),Map.driver.getRawAxis(4)));
         SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
     //Map.swerve.autoInit();
-    Map.swerve.drive(Map.driver.getRawAxis(0), Map.driver.getRawAxis(1), Map.driver.getRawAxis(4));
+    Map.swerve.drive(Map.driver.getRawAxis(0), Map.driver.getRawAxis(1),Limelight.tagTarget(Map.driver.getRawButton(6),Map.driver.getRawAxis(4)));
     // Map.swerve.telemetry();
     Map.swerve.realignToField(1);
     Map.odometry.calculatePosition();
@@ -80,6 +83,7 @@ public class Robot extends TimedRobot {
       Map.frontRight.driveMotor.setSelectedSensorPosition(0);
       Map.backLeft.driveMotor.setSelectedSensorPosition(0);
       Map.backRight.driveMotor.setSelectedSensorPosition(0);
+
     }
     SmartDashboard.putNumber("posX", Map.odometry.calculatePosition()[0]);
     SmartDashboard.putNumber("posY", Map.odometry.calculatePosition()[1]);

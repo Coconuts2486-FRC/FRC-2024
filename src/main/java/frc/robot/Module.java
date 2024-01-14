@@ -67,10 +67,11 @@ public class Module {
             speed *= -1;
         }
         double optimizedAngle = angleController.calculate(currentAngle, setpoint);
-
-        driveMotor.set(ControlMode.PercentOutput, speed);
         directionMotor.set(ControlMode.PercentOutput, optimizedAngle);
-    }
+       
+        driveMotor.set(ControlMode.PercentOutput, speed);
+        }
+    
 
     public double getModuleSpeed() {
 

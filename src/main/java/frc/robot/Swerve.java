@@ -23,10 +23,10 @@ public class Swerve {
 
     private double speedMultiplier = 1;
 
-    public static double frOffset = (3 * pi / 90);
-    public static double flOffset = (7 * pi / 90);
-    public static double brOffset = (11.9 * pi / 30);
-    public static double blOffset = (9 * pi / 90);
+    public static double flOffset = (3 * pi / 90);
+    public static double frOffset = (7 * pi / 90);
+    public static double blOffset = (11.9 * pi / 30);
+    public static double brOffset = (9 * pi / 90);
 
     private double x0 = 0.0;
     private double y0 = 0.0;
@@ -42,7 +42,7 @@ public class Swerve {
     }
 
     public void init() {
-        gyro.setYaw(0);
+        gyro.setYaw(90);
         backRight.init();
         backLeft.init();
         frontRight.init();
@@ -94,10 +94,20 @@ public class Swerve {
         double c = y0 - z * (W / r);
         double d = y0 + z * (W / r);
 
-        double backRightSpeed = Math.sqrt((a * a) + (d * d));
-        double backLeftSpeed = Math.sqrt((a * a) + (c * c));
-        double frontRightSpeed = Math.sqrt((b * b) + (d * d));
-        double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
+        double a0 = -x0 - z * (L / r);
+        double b0 = -x0 + z * (L / r);
+        double c0 = -y0 - z * (W / r);
+        double d0 = -y0 + z * (W / r);
+
+        // double backRightSpeed = Math.sqrt((a * a) + (d * d));
+        // double backLeftSpeed = Math.sqrt((a * a) + (c * c));
+        // double frontRightSpeed = Math.sqrt((b * b) + (d * d));
+        // double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
+
+         double backRightSpeed = Math.sqrt((a * a) + (c * c));
+        double backLeftSpeed = Math.sqrt((a * a) + (d * d));
+        double frontRightSpeed = Math.sqrt((b * b) + (c * c));
+        double frontLeftSpeed = Math.sqrt((b * b) + (d * d));
 
         double maxBackSpeed = Math.max(backLeftSpeed, backRightSpeed);
         double maxFrontSpeed = Math.max(frontLeftSpeed, frontRightSpeed);
@@ -110,10 +120,15 @@ public class Swerve {
             frontLeftSpeed = frontLeftSpeed / maxSpeed;
         }
 
-        double backRightAngle = Math.atan2(a, d);
-        double backLeftAngle = Math.atan2(a, c);
-        double frontRightAngle = Math.atan2(b, d);
-        double frontLeftAngle = Math.atan2(b, c);
+        // double backRightAngle = Math.atan2(a, d);
+        // double backLeftAngle = Math.atan2(a, c);
+        // double frontRightAngle = Math.atan2(b, d);
+        // double frontLeftAngle = Math.atan2(b, c);
+        double backRightAngle = Math.atan2(a0, c0);
+        double backLeftAngle = Math.atan2(a, d);
+        double frontRightAngle = Math.atan2(b, c);
+        double frontLeftAngle = Math.atan2(b0, d0);
+
 
         backRight.drive(backRightSpeed, (backRightAngle + brOffset));
         backLeft.drive(backLeftSpeed, (backLeftAngle + blOffset));
@@ -123,7 +138,7 @@ public class Swerve {
 
     public void realignToField(int button) {
         if (driver.getRawButton(button)) {
-            gyro.setYaw(0);
+            gyro.setYaw(90);
         }
     }
 
