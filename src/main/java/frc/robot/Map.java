@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Map {
-public static Joystick driver = new Joystick(0);
+  public static Joystick driver = new Joystick(0);
 
   public static int encoderFL = 10;
   public static int encoderFR = 11;
