@@ -1,14 +1,17 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
-
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Map {
-public static Joystick driver = new Joystick(0);
+public static XboxController driver = new XboxController(0);
+public static Joystick coDriver = new Joystick(1);
 
     public static int encoderFL = 10;
     public static int encoderFR = 11;
@@ -44,6 +47,11 @@ public static Joystick driver = new Joystick(0);
     public static Odometry odometry = new Odometry(backRight, backLeft, frontRight, frontLeft, swerve);
 
       public static void encoderPos(){
-
       }
+      //inisilazing launcher motors
+        public static TalonSRX leftLauncher = new TalonSRX(14);
+        public static TalonSRX rightLauncher = new TalonSRX(15);
+        public static TalonFX launcherPivot = new TalonFX(16);
+      
+
 }
