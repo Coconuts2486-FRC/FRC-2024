@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-       Sensor.sensorTest(Map.driver.getRawAxis(3),Map.driver.getRawAxis(2));
+       DIOSensor.sensorTest(Map.driver.getRawAxis(3),Map.driver.getRawAxis(2));
         
     SmartDashboard.putNumber("tagTarget",Limelight.tagTarget(Map.driver.getRawButton(6),Map.driver.getRawAxis(4)));
         SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
