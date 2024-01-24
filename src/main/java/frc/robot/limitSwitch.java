@@ -11,6 +11,7 @@ public class limitSwitch {
     public static DigitalInput limitSwitch = new DigitalInput(0);
     
     public static TalonFX switchTest = new TalonFX(14);
+    //hi
 
     public static void limitTest(double speed, double negSpeed) {
         switchTest.setNeutralMode(NeutralMode.Brake);
