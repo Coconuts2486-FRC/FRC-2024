@@ -70,6 +70,7 @@ public class Module {
         directionMotor.set(ControlMode.PercentOutput, optimizedAngle);
        
         driveMotor.set(ControlMode.PercentOutput, speed);
+        SmartDashboard.putNumber("OptimizedAngle",optimizedAngle);
         }
     
 
@@ -130,6 +131,8 @@ public class Module {
         directionMotor.set(ControlMode.PercentOutput, optimizedAngle);
         // directionMotor.set(ControlMode.Position,radiansToTicks(2*pi));
     }
+
+    
 
     public double encoderPos() {
         return encoder.getAbsolutePosition();
