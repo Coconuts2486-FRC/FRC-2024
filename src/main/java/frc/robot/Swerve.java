@@ -104,7 +104,7 @@ public class Swerve {
         // double frontRightSpeed = Math.sqrt((b * b) + (d * d));
         // double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
 
-         double backRightSpeed = Math.sqrt((a0 * a0) + (c0 * c0));
+        double backRightSpeed = Math.sqrt((a0 * a0) + (c0 * c0));
         double backLeftSpeed = Math.sqrt((a * a) + (d * d));
         double frontRightSpeed = Math.sqrt((b * b) + (c * c));
         double frontLeftSpeed = Math.sqrt((b0 * b0) + (d0 * d0));
@@ -128,7 +128,6 @@ public class Swerve {
         double backLeftAngle = Math.atan2(a, d);
         double frontRightAngle = Math.atan2(b, c);
         double frontLeftAngle = Math.atan2(b0, d0);
-
 
         backRight.drive(backRightSpeed, (backRightAngle + brOffset));
         backLeft.drive(backLeftSpeed, (backLeftAngle + blOffset));
