@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Map.odometry.init();
     Map.swerve.init();
-    Sensor.switchTest.setNeutralMode(NeutralMode.Brake);
+  
   }
 
   @Override
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
       Map.backLeft.driveMotor.setSelectedSensorPosition(0);
       Map.backRight.driveMotor.setSelectedSensorPosition(0);
     
-
+//oops
     }
     SmartDashboard.putNumber("posX", Map.odometry.calculatePosition()[0]);
     SmartDashboard.putNumber("posY", Map.odometry.calculatePosition()[1]);
