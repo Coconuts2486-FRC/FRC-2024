@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Map.odometry.init();
     Map.swerve.init();
-    Sensor.switchTest.setNeutralMode(NeutralMode.Brake);
+  
   }
 
   @Override

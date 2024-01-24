@@ -9,9 +9,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DIOSensor {
-    public static DigitalInput limitSwitch = new DigitalInput(0);
-    public static DigitalInput lightSensor = new DigitalInput(1);
-    
+
     public static TalonFX switchTest = new TalonFX(14);
     //hi help
 
