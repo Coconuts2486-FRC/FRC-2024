@@ -104,10 +104,10 @@ public class Swerve {
         // double frontRightSpeed = Math.sqrt((b * b) + (d * d));
         // double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
 
-         double backRightSpeed = Math.sqrt((a * a) + (c * c));
+         double backRightSpeed = Math.sqrt((a0 * a0) + (c0 * c0));
         double backLeftSpeed = Math.sqrt((a * a) + (d * d));
         double frontRightSpeed = Math.sqrt((b * b) + (c * c));
-        double frontLeftSpeed = Math.sqrt((b * b) + (d * d));
+        double frontLeftSpeed = Math.sqrt((b0 * b0) + (d0 * d0));
 
         double maxBackSpeed = Math.max(backLeftSpeed, backRightSpeed);
         double maxFrontSpeed = Math.max(frontLeftSpeed, frontRightSpeed);

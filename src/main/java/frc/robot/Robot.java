@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -66,11 +68,13 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Map.odometry.init();
     Map.swerve.init();
+    Sensor.switchTest.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
   public void teleopPeriodic() {
-          limitSwitch.limitTest(Map.driver.getRawAxis(3),Map.driver.getRawAxis(2));
+       Sensor.sensorTest(Map.driver.getRawAxis(3),Map.driver.getRawAxis(2));
+        
     SmartDashboard.putNumber("tagTarget",Limelight.tagTarget(Map.driver.getRawButton(6),Map.driver.getRawAxis(4)));
         SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
     //Map.swerve.autoInit();
@@ -83,6 +87,7 @@ public class Robot extends TimedRobot {
       Map.frontRight.driveMotor.setSelectedSensorPosition(0);
       Map.backLeft.driveMotor.setSelectedSensorPosition(0);
       Map.backRight.driveMotor.setSelectedSensorPosition(0);
+    
 
     }
     SmartDashboard.putNumber("posX", Map.odometry.calculatePosition()[0]);
