@@ -13,6 +13,7 @@ public class Sensor {
     public static DigitalInput lightSensor = new DigitalInput(1);
     
     public static TalonFX switchTest = new TalonFX(14);
+    //hi
 
     public static void sensorTest(double speed, double negSpeed) {
 
