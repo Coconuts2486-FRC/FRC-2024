@@ -73,20 +73,21 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-  
+    Map.swerve.realignToField(1);
+    
     SmartDashboard.putNumber("tagTarget", Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(4)));
     SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
     // Map.swerve.autoInit();
     if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == true){
-    Map.swerve.drive(Map.coDriver.getRawAxis(0), Map.coDriver.getRawAxis(1),
-        Limelight.tagTarget(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(4)));
+    Map.swerve.drive(Map.coDriver.getRawAxis(4), Map.coDriver.getRawAxis(5),
+        Limelight.tagTarget(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(0)));
     } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == false){
 
-         Map.swerve.drive(Map.driver.getRawAxis(0), Map.driver.getRawAxis(1),
-        Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(4)));
+         Map.swerve.drive(Map.driver.getRawAxis(4), Map.driver.getRawAxis(5),
+        Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(0)));
     }
     // Map.swerve.telemetry();
-    Map.swerve.realignToField(1);
+
     Map.odometry.calculatePosition();
     if (Map.driver.getRawButton(2)) {
       Map.frontLeft.driveMotor.setSelectedSensorPosition(0);
@@ -94,7 +95,7 @@ public class Robot extends TimedRobot {
       Map.backLeft.driveMotor.setSelectedSensorPosition(0);
       Map.backRight.driveMotor.setSelectedSensorPosition(0);
 
-      // oops
+      
     }
     SmartDashboard.putNumber("posX", Map.odometry.calculatePosition()[0]);
     SmartDashboard.putNumber("posY", Map.odometry.calculatePosition()[1]);
