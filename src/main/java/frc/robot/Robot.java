@@ -101,7 +101,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("posXFeet", Map.odometry.calculatePosition()[0] / 42000000);
     SmartDashboard.putNumber("posYFeet", Map.odometry.calculatePosition()[1] / 42000000);
 
-  }
+    //Intake
+   
+    }
+
 
   @Override
   public void disabledInit() {

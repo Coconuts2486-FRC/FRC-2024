@@ -2,21 +2,31 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-//! This is an intake
+//*This is an intake
 public class Intake {
+    static boolean extend = false;
       public static void intakExtension(boolean outIn){
         if(outIn){
-            if(){
+            if(Map.intakeExtendStop.DIO()){
                 Map.movementIntake.set(ControlMode.PercentOutput, 0.8);
             }else{
                 Map.movementIntake.set(ControlMode.PercentOutput, 0);
             }
         }else{
-            if(){
+            if(Map.intakeCloseStop.DIO()){
                 Map.movementIntake.set(ControlMode.PercentOutput, -0.8);   
             }else{
                 Map.movementIntake.set(ControlMode.PercentOutput, 0);
             }
         }
+      }
+      public static void buttonExtend(boolean button){
+        if(button){
+            extend= !extend;
+        }
+        if(Map.intakeStop.DIO()){
+            extend= false;
+        }
+        intakExtension(extend);
       }
 }
