@@ -57,6 +57,7 @@ public class Map {
     public static TalonSRX rightLauncher = new TalonSRX(15);
     public static TalonSRX leftLauncher = new TalonSRX(16);
     public static TalonFX launcherPivot = new TalonFX(17);
+    public static TalonFX movementIntake = new TalonFX (18);
 
   
     // Sensor
