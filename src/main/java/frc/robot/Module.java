@@ -14,13 +14,15 @@ public class Module {
     public TalonFX driveMotor;
     private CANCoder encoder;
     private PIDController angleController;
+    private PIDController driveController;
     private double pi = Math.PI;
 
-    public Module(int directionMotor, int driveMotor, int encoder, PIDController controller) {
+    public Module(int directionMotor, int driveMotor, int encoder, PIDController rController, PIDController dController) {
         this.directionMotor = new TalonFX(directionMotor);
         this.driveMotor = new TalonFX(driveMotor);
         this.encoder = new CANCoder(encoder);
-        this.angleController = controller;
+        this.angleController = rController;
+        this.driveController = dController;
     }
 
     public void init() {

@@ -35,14 +35,18 @@ public class Map {
   public static int rotateBL = 8;
   public static int rotateBR = 9;
 
-  public static double kp = .62;
-  public static double ki = .0001;
-  public static double kd = 0.;
+  public static double rkp = .62;
+  public static double rki = .00015;
+  public static double rkd = 0.;
 
-  public static Module frontRight = new Module(rotateFR, driveFR, encoderFR, new PIDController(kp, ki, kd));
-  public static Module frontLeft = new Module(rotateFL, driveFL, encoderFL, new PIDController(kp, ki, kd));
-  public static Module backRight = new Module(rotateBR, driveBR, encoderBR, new PIDController(kp, ki, kd));
-  public static Module backLeft = new Module(rotateBL, driveBL, encoderBL, new PIDController(kp, ki, kd));
+  public static double dkp = .62;
+  public static double dki = .00015;
+  public static double dkd = 0.;
+
+  public static Module frontRight = new Module(rotateFR, driveFR, encoderFR, new PIDController(rkp, rki, rkd));
+  public static Module frontLeft = new Module(rotateFL, driveFL, encoderFL, new PIDController(rkp, rki, rkd));
+  public static Module backRight = new Module(rotateBR, driveBR, encoderBR, new PIDController(rkp, rki, rkd));
+  public static Module backLeft = new Module(rotateBL, driveBL, encoderBL, new PIDController(rkp, rki, rkd));
 
   public static Swerve swerve = new Swerve(backRight, backLeft, frontRight, frontLeft);
 

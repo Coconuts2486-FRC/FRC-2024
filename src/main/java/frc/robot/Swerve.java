@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Swerve {
-    private Module backRight;
-    private Module backLeft;
-    private Module frontRight;
-    private Module frontLeft;
+    private static Module backRight;
+    private static Module backLeft;
+    private static Module frontRight;
+    private static Module frontLeft;
     private static double pi = Math.PI;
 
     public static PigeonIMU gyro = new PigeonIMU(14);
@@ -42,14 +42,14 @@ public class Swerve {
     }
 
     public void init() {
-        gyro.setYaw(90);
+        gyro.setYaw(0);
         backRight.init();
         backLeft.init();
         frontRight.init();
         frontLeft.init();
     }
 
-    public void reinit(boolean reinit) {
+    public static void reinit(boolean reinit) {
         if (reinit) {
             gyro.setYaw(0);
             backRight.init();
