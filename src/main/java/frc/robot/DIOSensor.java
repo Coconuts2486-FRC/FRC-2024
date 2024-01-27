@@ -8,18 +8,19 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-private DigitalInput DIO;
-
 public class DIOSensor {
-    public DIOSensor (int port, String type){
+    private static DigitalInput DIO;
+
+    public DIOSensor(int port, String type) {
         this.DIO = new DigitalInput(port);
     }
-    public static void DIO(double speed, double negSpeed) {
 
-        if (limitSwitch.get()) {
-            switchTest.set(ControlMode.PercentOutput, 0);
-        } else if(lightSensor.get()) {
-            switchTest.set(ControlMode.PercentOutput, 0);
-        }else{ switchTest.set(ControlMode.PercentOutput, speed - negSpeed);}
+    public static boolean DIO() {
+
+        if (DIO.get()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
