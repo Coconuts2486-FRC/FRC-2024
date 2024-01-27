@@ -11,7 +11,6 @@ public class Launcher {
             Map.rightLauncher.set(ControlMode.PercentOutput, 0);
             Map.leftLauncher.set(ControlMode.PercentOutput, 0);
         }
-       
     }
     public static void aim(boolean leftTrigger,int pivotPosistion){
         if(leftTrigger){
@@ -19,7 +18,5 @@ public class Launcher {
             Map.launcherPivot.set(ControlMode.Position, pivotPosistion);
             //code:)
         }
-      
-     
     }
 }
