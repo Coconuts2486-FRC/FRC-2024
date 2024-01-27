@@ -68,23 +68,23 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Map.odometry.init();
     Map.swerve.init();
-    Map.test.setNeutralMode(NeutralMode.Brake);
 
   }
 
   @Override
   public void teleopPeriodic() {
-    Misc.pov();
-    if (DIOSensor.DIO()) {
-      Map.test.set(ControlMode.PercentOutput, 0);
-    } else {
-      Map.test.set(ControlMode.PercentOutput, Map.driver.getRawAxis(3));
-    }
+  
     SmartDashboard.putNumber("tagTarget", Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(4)));
     SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
     // Map.swerve.autoInit();
-    Map.swerve.drive(Map.driver.getRawAxis(0), Map.driver.getRawAxis(1),
+    if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == true){
+    Map.swerve.drive(Map.coDriver.getRawAxis(0), Map.coDriver.getRawAxis(1),
+        Limelight.tagTarget(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(4)));
+    } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == false){
+
+         Map.swerve.drive(Map.driver.getRawAxis(0), Map.driver.getRawAxis(1),
         Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(4)));
+    }
     // Map.swerve.telemetry();
     Map.swerve.realignToField(1);
     Map.odometry.calculatePosition();

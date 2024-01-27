@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Map {
-  public static XboxController driver = new XboxController(Misc.a);
-  public static Joystick coDriver = new Joystick(Misc.b);
+  public static XboxController driver = new XboxController(0);
+  public static Joystick coDriver = new Joystick(1);
 
   public static int encoderFL = 10;
   public static int encoderFR = 11;
@@ -48,7 +48,7 @@ public class Map {
 
   public static Odometry odometry = new Odometry(backRight, backLeft, frontRight, frontLeft, swerve);
  
-  public static TalonFX test = new TalonFX(14);
+
     // Shooter
     public static TalonSRX rightLauncher = new TalonSRX(15);
     public static TalonSRX leftLauncher = new TalonSRX(16);

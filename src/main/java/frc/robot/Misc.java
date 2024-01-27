@@ -3,10 +3,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Misc {
-    public static int a = 0;
-    public static int b = 1;
-    public static void pov(){
+    public static boolean switched = false;
+
+    public static boolean pov(int pov, boolean button) {
         SmartDashboard.putNumber("POV", Map.driver.getPOV());
-        if
+        if (pov == 0) {
+            if (button) {
+                switched = !switched;
+            }
+        }
+        return switched;
     }
 }
