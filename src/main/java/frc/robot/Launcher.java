@@ -17,6 +17,7 @@ public class Launcher {
         if(leftTrigger){
             powerUp(leftTrigger);
             Map.launcherPivot.set(ControlMode.Position, pivotPosistion);
+            //code:)
         }
       
      
