@@ -9,16 +9,18 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DIOSensor {
+    private static DigitalInput DIO;
 
-    public static TalonFX switchTest = new TalonFX(14);
-    //hi help
+    public DIOSensor(int port, String type) {
+        this.DIO = new DigitalInput(port);
+    }
 
-    public static void sensorTest(double speed, double negSpeed) {
+    public static boolean DIO() {
 
-        if (limitSwitch.get()) {
-            switchTest.set(ControlMode.PercentOutput, 0);
-        } else if(lightSensor.get()) {
-            switchTest.set(ControlMode.PercentOutput, 0);
-        }else{ switchTest.set(ControlMode.PercentOutput, speed - negSpeed);}
+        if (DIO.get()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

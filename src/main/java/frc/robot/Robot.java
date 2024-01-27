@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -29,7 +30,6 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   double startTime;
-  
 
   @Override
   public void robotInit() {
@@ -50,50 +50,56 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("rawDistanceBR", rawDistanceBR);
 
     // SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
-    
+
   }
 
   @Override
   public void autonomousInit() {
-    //startTime = Auto.getStartTime();
+    // startTime = Auto.getStartTime();
   }
 
   @Override
-  public void autonomousPeriodic() {  
-  // Auto.runAuto(startTime);
-  //Auto.runAutoDrive(7, (0));
+  public void autonomousPeriodic() {
+    // Auto.runAuto(startTime);
+    // Auto.runAutoDrive(7, (0));
   }
 
   @Override
   public void teleopInit() {
     Map.odometry.init();
     Map.swerve.init();
-  
+    Map.test.setNeutralMode(NeutralMode.Brake);
+
   }
 
   @Override
   public void teleopPeriodic() {
-       DIOSensor.sensorTest(Map.driver.getRawAxis(3),Map.driver.getRawAxis(2));
-        
-    SmartDashboard.putNumber("tagTarget",Limelight.tagTarget(Map.driver.getRawButton(6),Map.driver.getRawAxis(4)));
-        SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
-    //Map.swerve.autoInit();
-    Map.swerve.drive(Map.driver.getRawAxis(0), Map.driver.getRawAxis(1),Limelight.tagTarget(Map.driver.getRawButton(6),Map.driver.getRawAxis(4)));
+    Misc.pov();
+    if (DIOSensor.DIO()) {
+      Map.test.set(ControlMode.PercentOutput, 0);
+    } else {
+      Map.test.set(ControlMode.PercentOutput, Map.driver.getRawAxis(3));
+    }
+    SmartDashboard.putNumber("tagTarget", Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(4)));
+    SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
+    // Map.swerve.autoInit();
+    Map.swerve.drive(Map.driver.getRawAxis(0), Map.driver.getRawAxis(1),
+        Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(4)));
     // Map.swerve.telemetry();
     Map.swerve.realignToField(1);
     Map.odometry.calculatePosition();
-    if (Map.driver.getRawButton(2)){
+    if (Map.driver.getRawButton(2)) {
       Map.frontLeft.driveMotor.setSelectedSensorPosition(0);
       Map.frontRight.driveMotor.setSelectedSensorPosition(0);
       Map.backLeft.driveMotor.setSelectedSensorPosition(0);
       Map.backRight.driveMotor.setSelectedSensorPosition(0);
-    
-//oops
+
+      // oops
     }
     SmartDashboard.putNumber("posX", Map.odometry.calculatePosition()[0]);
     SmartDashboard.putNumber("posY", Map.odometry.calculatePosition()[1]);
-    SmartDashboard.putNumber("posXFeet", Map.odometry.calculatePosition()[0]/42000000);
-    SmartDashboard.putNumber("posYFeet", Map.odometry.calculatePosition()[1]/42000000);
+    SmartDashboard.putNumber("posXFeet", Map.odometry.calculatePosition()[0] / 42000000);
+    SmartDashboard.putNumber("posYFeet", Map.odometry.calculatePosition()[1] / 42000000);
 
   }
 
