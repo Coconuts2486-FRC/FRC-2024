@@ -139,5 +139,5 @@ public class Module {
     public double encoderPos() {
         return encoder.getAbsolutePosition();
     }
-    
+   
 }
