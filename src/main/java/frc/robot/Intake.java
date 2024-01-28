@@ -35,11 +35,21 @@ public class Intake {
    public static void intakeSpin(boolean buttonOne){
     if(buttonOne){
         Map.intakeRight.set(ControlMode.PercentOutput, 0.8);
-        Map.intakeLeft.set(ControlMode.PercentOutput, 0.8);
+        Map.intakeLeft.set(ControlMode.PercentOutput, -0.8);
     }else{
         Map.intakeRight.set(ControlMode.PercentOutput, 0);
         Map.intakeLeft.set(ControlMode.PercentOutput, 0);
         }
-   }  
+    }  
+
+   public static void ampOutake(boolean outakeAmp){
+    if(outakeAmp){
+        Map.intakeRight.set(ControlMode.PercentOutput, -0.8);
+        Map.intakeLeft.set(ControlMode.PercentOutput, 0.8);
+    }else{
+        Map.intakeRight.set(ControlMode.PercentOutput, 0);
+        Map.intakeLeft.set(ControlMode.PercentOutput, 0);
+    }
+   }
     
 } 
