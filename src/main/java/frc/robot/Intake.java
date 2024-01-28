@@ -20,6 +20,7 @@ public class Intake {
             }
         }
       }
+      //bottom function makes it so when a button is pressed it activates using the top function
       public static void buttonExtend(boolean button){
         if(button){
             extend= !extend;
@@ -28,5 +29,17 @@ public class Intake {
             extend= false;
         }
         intakExtension(extend);
-      }
-}
+        intakeSpin(extend);           
+    }
+
+   public static void intakeSpin(boolean buttonOne){
+    if(buttonOne){
+        Map.intakeRight.set(ControlMode.PercentOutput, 0.8);
+        Map.intakeLeft.set(ControlMode.PercentOutput, 0.8);
+    }else{
+        Map.intakeRight.set(ControlMode.PercentOutput, 0);
+        Map.intakeLeft.set(ControlMode.PercentOutput, 0);
+        }
+   }  
+    
+} 

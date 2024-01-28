@@ -60,7 +60,8 @@ public class Map {
 
     //Intake
     public static TalonFX movementIntake = new TalonFX (18);
-    public static boolean buttonToggle = false;
+   public static TalonFX intakeLeft = new TalonFX (19);
+   public static TalonFX intakeRight = new TalonFX (20);
 
   
     // Sensor
