@@ -20,7 +20,7 @@ public class Intake {
             }
         }
       }
-      //bottom function makes it so when a button is pressed it activates using the top function
+//bottom function makes it so when a button is pressed it activates using the top function
       public static void buttonExtend(boolean button){
         if(button){
             extend= !extend;
@@ -31,7 +31,7 @@ public class Intake {
         intakExtension(extend);
         intakeSpin(extend);           
     }
-
+//bottom function is what is used to spin up the wheels for intaking in notes
    public static void intakeSpin(boolean buttonOne){
     if(buttonOne){
         Map.intakeRight.set(ControlMode.PercentOutput, 0.8);
@@ -41,7 +41,7 @@ public class Intake {
         Map.intakeLeft.set(ControlMode.PercentOutput, 0);
         }
     }  
-
+//bottom function is what is used to score on the amp
    public static void ampOutake(boolean outakeAmp){
     if(outakeAmp){
         Map.intakeRight.set(ControlMode.PercentOutput, -0.8);

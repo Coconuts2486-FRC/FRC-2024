@@ -60,8 +60,8 @@ public class Map {
 
     //Intake
     public static TalonFX movementIntake = new TalonFX (18);
-   public static TalonFX intakeLeft = new TalonFX (19);
-   public static TalonFX intakeRight = new TalonFX (20);
+   public static TalonSRX intakeLeft = new TalonSRX(19);
+   public static TalonSRX intakeRight = new TalonSRX (20);
 
   
     // Sensor
