@@ -70,8 +70,8 @@ public class Module {
         }
         double optimizedAngle = angleController.calculate(currentAngle, setpoint);
         directionMotor.set(ControlMode.PercentOutput, optimizedAngle);
-       
-        driveMotor.set(ControlMode.PercentOutput, speed);
+        double optimizedSpeed = driveController.calculate(speed);
+        driveMotor.set(ControlMode.PercentOutput, optimizedSpeed);
         SmartDashboard.putNumber("OptimizedAngle",optimizedAngle);
         }
     
