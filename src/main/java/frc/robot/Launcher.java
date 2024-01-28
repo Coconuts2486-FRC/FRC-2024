@@ -15,8 +15,14 @@ public class Launcher {
     public static void aim(boolean leftTrigger,int pivotPosistion){
         if(leftTrigger){
             powerUp(leftTrigger);
-            Map.launcherPivot.set(ControlMode.Position, pivotPosistion);
-            //code:)
+            if(Map.pivotTop.DIO()){
+            }else{
+                if(Map.pivotBottom.DIO()){
+                }else{
+                    Map.launcherPivot.set(ControlMode.Position, pivotPosistion);
+                }
+            }
         }
     }
 }
+//Code :)

@@ -69,5 +69,7 @@ public class Map {
     public static DIOSensor intakeStop = new DIOSensor(1, "lightSensor");
     public static DIOSensor intakeExtendStop = new DIOSensor(2, "limitSwitch");
     public static DIOSensor intakeCloseStop = new DIOSensor(3, "limitSwitch");
+    public static DIOSensor pivotTop = new DIOSensor(4, "limitSwitch");
+    public static DIOSensor pivotBottom = new DIOSensor(5, "limitSwitch");
 
 }
