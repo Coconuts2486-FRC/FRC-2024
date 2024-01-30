@@ -1,11 +1,11 @@
 package frc.robot.Vision;
 //raspberrypi
 
-//Tagx
-//Tagz
+//TagX
+//TagZ
 //TagId
-//Ringz
-//Ringx
+//RingZ
+//RingX
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
@@ -14,28 +14,32 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class RaspberryPi {
     public static NetworkTable table = NetworkTableInstance.getDefault().getTable("raspberrypi");
     public static PIDController PIDCO = new PIDController(0.1, 0, 0);
-
+//function
     public static double getTagX() {
-        return table.getEntry("Tagx").getDouble(0.0);
+//what info we want from function
+//This one gives us the X axis
+        return table.getEntry("TagX").getDouble(0.0);
     }
 
     public static double getTagZ() {
-        return table.getEntry("Tagz").getDouble(0.0);
+//Z axis
+        return table.getEntry("TagZ").getDouble(0.0);
     }
 
-    // Number is temporary
+//!Number is temporary
+//Gives us tag number so we can filter our tags we don't want
     public static Number getTagId() {
         return table.getEntry("TagId").getNumber(0);
     }
-
+//Gives us Z axis for the game piece
     public static double getRingz() {
-        return table.getEntry("Ringz").getDouble(0.0);
+        return table.getEntry("RingZ").getDouble(0.0);
     }
-
+//X axis for game piece
     public static double getRingx() {
-        return table.getEntry("Ringx").getDouble(0.0);
+        return table.getEntry("RingX").getDouble(0.0);
     }
-
+//??
     public static double getTarget(boolean button, double axis) {
         if (button == true){
         return PIDCO.calculate(getTagX());
