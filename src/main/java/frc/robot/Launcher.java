@@ -16,13 +16,11 @@ public class Launcher {
         if(leftTrigger){
             powerUp(leftTrigger);
             if(Map.pivotTop.DIO()){
-            }else{
-                if(Map.pivotBottom.DIO()){
+            }else if(Map.pivotBottom.DIO()){
                 }else{
                     Map.launcherPivot.set(ControlMode.Position, pivotPosistion);
                 }
             }
         }
     }
-}
-//Code :)
+//!Code :)

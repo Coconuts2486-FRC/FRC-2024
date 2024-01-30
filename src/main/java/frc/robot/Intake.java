@@ -12,20 +12,17 @@ public class Intake {
             }else{
                 Map.movementIntake.set(ControlMode.PercentOutput, 0);
             }
-        }else{
-            if(Map.intakeCloseStop.DIO()){
+        }else if(Map.intakeCloseStop.DIO()){
                 Map.movementIntake.set(ControlMode.PercentOutput, -0.8);   
             }else{
                 Map.movementIntake.set(ControlMode.PercentOutput, 0);
             }
         }
-      }
 //bottom function makes it so when a button is pressed it activates using the top function
       public static void buttonExtend(boolean button){
         if(button){
             extend= !extend;
-        }
-        if(Map.intakeStop.DIO()){
+        }else if(Map.intakeStop.DIO()){
             extend= false;
         }
         intakExtension(extend);
@@ -50,6 +47,5 @@ public class Intake {
         Map.intakeRight.set(ControlMode.PercentOutput, 0);
         Map.intakeLeft.set(ControlMode.PercentOutput, 0);
     }
-   }
-    
+   } 
 } 
