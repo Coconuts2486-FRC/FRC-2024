@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Vision.Limelight;
+import frc.robot.Vision.RaspberryPi;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,8 +33,10 @@ public class Robot extends TimedRobot {
    */
   double startTime;
 
+
   @Override
   public void robotInit() {
+
   }
 
   @Override
@@ -73,6 +77,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+   
+    
     Map.swerve.realignToField(1);
     
     SmartDashboard.putNumber("tagTarget", Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(4)));
@@ -82,11 +88,11 @@ public class Robot extends TimedRobot {
     if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == true){
    
       Map.swerve.drive(Map.coDriver.getRawAxis(4), Map.coDriver.getRawAxis(5),
-        Limelight.tagTarget(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001)));
+        RaspberryPi.getTarget(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001)));
     } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == false){
 
          Map.swerve.drive(Map.driver.getRawAxis(4), Map.driver.getRawAxis(5),
-        Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001)));
+        RaspberryPi.getTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001)));
     }
     // Map.swerve.telemetry();
 

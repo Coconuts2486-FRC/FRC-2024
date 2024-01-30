@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight {
+  
     public static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     public static PIDController limelightPID = new PIDController(.01,0,0);
     public static double getY() {
