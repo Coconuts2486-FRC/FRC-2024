@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Vision.Limelight;
 import frc.robot.Vision.RaspberryPi;
@@ -32,15 +33,18 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   double startTime;
-
+  public static SendableChooser red = new SendableChooser<>();
 
   @Override
   public void robotInit() {
-
+    Misc.isRed();
   }
 
   @Override
   public void robotPeriodic() {
+    Misc.putColor();
+
+
 
     // Map.swerve.telemetry();
     // SmartDashboard.putNumber("yaw", Swerve.gyro.getYaw());
@@ -66,6 +70,8 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     // Auto.runAuto(startTime);
     // Auto.runAutoDrive(7, (0));
+    SmartDashboard.putNumber("ringZ", RaspberryPi.gamePieceZ());
+
   }
 
   @Override
@@ -88,11 +94,11 @@ public class Robot extends TimedRobot {
     if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == true){
    
       Map.swerve.drive(Map.coDriver.getRawAxis(4), Map.coDriver.getRawAxis(5),
-        RaspberryPi.getTarget(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001)));
+        RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
     } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == false){
 
          Map.swerve.drive(Map.driver.getRawAxis(4), Map.driver.getRawAxis(5),
-        RaspberryPi.getTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001)));
+        RaspberryPi.targetAprilTag(Map.driver.getRawButton(6), Map.driver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
     }
     // Map.swerve.telemetry();
 
