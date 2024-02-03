@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Map {
@@ -72,5 +73,8 @@ public class Map {
     public static DIOSensor pivotTop = new DIOSensor(4, "limitSwitch");
     public static DIOSensor pivotBottom = new DIOSensor(5, "limitSwitch");
     public static DIOSensor strangeLimitSwitchTest = new DIOSensor(6, "limitSwitch");
+
+    //Misc
+      public static SendableChooser red = new SendableChooser<>();
 
 }
