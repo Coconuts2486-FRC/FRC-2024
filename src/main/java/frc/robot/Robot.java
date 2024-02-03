@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
 
     // SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
 
+    SmartDashboard.getBoolean("strangeLimitSwitchTest", Map.strangeLimitSwitchTest.DIO());
   }
 
   @Override
