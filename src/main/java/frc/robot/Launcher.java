@@ -18,9 +18,13 @@ public class Launcher {
             if(Map.pivotTop.DIO()){
             }else if(Map.pivotBottom.DIO()){
                 }else{
-                    Map.launcherPivot.set(ControlMode.Position, pivotPosistion);
+                      Map.launcherPivot.set(ControlMode.Position, pivotPosistion);
                 }
             }
         }
+    public static void finalShoot(boolean rightTrigger){
+      Intake.intakeSpin(rightTrigger);  
+    }
+    
     }
 //!Code :)
