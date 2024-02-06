@@ -86,21 +86,37 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
    
     
-    Map.swerve.realignToField(1);
+    Map.swerve.realignToField(Map.driver.getRawButton(1));
     
     SmartDashboard.putNumber("tagTarget", Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(4)));
     SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
     // Map.swerve.autoInit();
+    
+    
     // Drive for driver and codriver
+    
     if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == true){
-   
+      if (Map.coDriver.getRawAxis(2)>.2 ){
+         Map.swerve.drive(0,RaspberryPi.driveToGamePiece(),RaspberryPi.targetGamePiece());
+
+      }
+      else{
       Map.swerve.drive(Map.coDriver.getRawAxis(4), Map.coDriver.getRawAxis(5),
         RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
-    } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == false){
-
+      }
+    
+    
+    
+      } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == false){
+         if (Map.driver.getRawAxis(2)>.2 ){
+           Map.swerve.drive(0,RaspberryPi.driveToGamePiece(),RaspberryPi.targetGamePiece());
+         }
          Map.swerve.drive(Map.driver.getRawAxis(4), Map.driver.getRawAxis(5),
         RaspberryPi.targetAprilTag(Map.driver.getRawButton(6), Map.driver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
     }
+
+
+
     // Map.swerve.telemetry();
 
     Map.odometry.calculatePosition();

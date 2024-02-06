@@ -16,7 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RaspberryPi {
 
     public static NetworkTable table = NetworkTableInstance.getDefault().getTable("vision");
-    public static PIDController PIDCO = new PIDController(0.1, 0, 0);
+    public static PIDController targetPid = new PIDController(0.1, 0, 0);
+    public static PIDController driveToPid = new PIDController(1, 0.001, 0);
 
     // For April Tag 4
     public static double getTagX4() {
@@ -56,16 +57,27 @@ public class RaspberryPi {
     public static double targetAprilTag(boolean button, double axis, boolean red) {
         if (red) {
             if (button) {
-                return PIDCO.calculate(getTagX4());
+                return targetPid.calculate(getTagX4());
             } else {
                 return axis;
             }
         } else {
             if (button) {
-                return PIDCO.calculate(getTagX7());
+                return targetPid.calculate(getTagX7());
             } else {
                 return axis;
             }
         }
+    }
+
+    public static double targetGamePiece() {
+
+        return targetPid.calculate(gamePieceX());
+    }
+
+    public static double driveToGamePiece() {
+
+        return driveToPid.calculate(gamePieceZ());
+
     }
 }
