@@ -7,6 +7,8 @@ package frc.robot.Vision;
 //Ringz
 //Ringx
 
+//blue is 7, red is 4
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTable;

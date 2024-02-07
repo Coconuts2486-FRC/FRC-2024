@@ -10,7 +10,7 @@ import frc.robot.Vision.RaspberryPi;
 public class AutoMethod {
     public static PIDController straightYPid = new PIDController(1, 0.02, 0);
     public static PIDController rotatePid = new PIDController(.03, 0, 0);
-     public static double autoYaw;
+
     
     public static void autoDriveY(double distance){
         Swerve.reZeroPosition();
@@ -26,7 +26,7 @@ public class AutoMethod {
     }
 
     public static void targetApriltag(boolean red){
-        
+            
             Map.swerve.drive(0, 0, RaspberryPi.targetAprilTag(true, 0, red));    
        
            
@@ -44,13 +44,4 @@ public class AutoMethod {
         Map.swerve.realignToField(true);
     }
 
-    public static void compileAuto(boolean red){
-        int a = 0;
-        if (a == 0){
-            Map.swerve.realignToField(true);
-            a = a++;
-        }
-        autoYaw = Swerve.gyro.getYaw();
-
-    }
 }

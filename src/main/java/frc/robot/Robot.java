@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Misc.isRed();
+    Launcher.shootMotorInit();
   }
 
   @Override

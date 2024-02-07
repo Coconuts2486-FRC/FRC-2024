@@ -1,20 +1,29 @@
-// package frc.robot.Auto;
+package frc.robot.Auto;
 
-// import edu.wpi.first.math.controller.PIDController;
-// import frc.robot.Map;
+import edu.wpi.first.math.controller.PIDController;
+import frc.robot.Map;
+import frc.robot.Swerve;
+import frc.robot.Vision.RaspberryPi;
 
-// public class AutoPath {
-//     public static void driveOutPickUpShoot(){
-//         PIDController autoPID = new PIDController(0, 0, 0);
-//         double x = Map.odometry.calculatePosition()[0];
-//         double y = Map.odometry.calculatePosition()[1];
-//         double targetX=0;
-//         double targetY=10;
-//         double difX = targetX-x;
-//         double difY = targetY-y;
-//         Map.swerve.drive(autoPID.calculate(x,targetX), autoPID.calculate(y,targetY), 0);
-//         if (Math.abs(difX)<1000 && Math.abs(difY)<1000) {
+public class AutoPaths {
+    public static double autoYaw;
 
-//         }
-//     }
-// }
+    // Change names later
+    public static void autoOne(boolean red) {
+        int a = 0;
+        if (a == 0) {
+            Map.swerve.realignToField(true);
+            autoYaw = Swerve.gyro.getYaw();
+            a = a++;
+        }
+        if (a==2){
+            if (RaspberryPi.gamePieceZ()<=4||RaspberryPi.gamePieceZ()>=60){
+            AutoMethod.autoDriveY(2000);
+             a = a++;
+            } else if (RaspberryPi.gamePieceZ()>4&&RaspberryPi.gamePieceZ()<60){
+                a = a++;
+            }
+        }
+
+    }
+}

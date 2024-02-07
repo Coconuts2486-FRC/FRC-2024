@@ -66,13 +66,13 @@ public class Map {
 
   
     // Sensor
-    public static DIOSensor limit1 = new DIOSensor(0,"limitSwitch");
-    public static DIOSensor intakeStop = new DIOSensor(1, "lightSensor");
-    public static DIOSensor intakeExtendStop = new DIOSensor(2, "limitSwitch");
-    public static DIOSensor intakeCloseStop = new DIOSensor(3, "limitSwitch");
-    public static DIOSensor pivotTop = new DIOSensor(4, "limitSwitch");
-    public static DIOSensor pivotBottom = new DIOSensor(5, "limitSwitch");
-    public static DIOSensor strangeLimitSwitchTest = new DIOSensor(6, "limitSwitch");
+    public static DIOSensor limit1 = new DIOSensor(0,"Normal");
+    public static DIOSensor gamepieceStop = new DIOSensor(1, "Normal");
+    public static DIOSensor intakeExtendStop = new DIOSensor(2, "Normal");
+    public static DIOSensor intakeCloseStop = new DIOSensor(3, "Normal");
+    public static DIOSensor pivotTop = new DIOSensor(4, "Normal");
+    public static DIOSensor pivotBottom = new DIOSensor(5, "Normal");
+    public static DIOSensor strangeLimitSwitchTest = new DIOSensor(6, "Strange");
 
     //Misc
       public static SendableChooser red = new SendableChooser<>();
