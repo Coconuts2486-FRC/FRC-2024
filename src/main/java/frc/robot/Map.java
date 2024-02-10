@@ -12,6 +12,44 @@ import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/*  Conroller bindings:
+ *    ===Driver===
+ *  Right stick x & y: strafe
+ *  Left stick x: rotate
+ *  Left stick y:
+ *  Left stick button:
+ *  Right stick button:
+ *  A: Re-Zero
+ *  B:
+ *  X:
+ *  Y:
+ *  Right Bumper: intake out + intake + target
+ *  Left Bumper: intake in
+ *  Right trigger:
+ *  Left Trigger: outtake
+ *  POV:
+ *  Back:
+ *  Start:
+ * 
+ *    ===CoDriver==
+ *  Right stick x 
+ *  Right stick y
+ *  Left stick x: 
+ *  Left stick y: manual elevator control
+ *  Left stick button:
+ *  Right stick button:
+ *  A: Elevator position 0
+ *  B: Elevator position amp score
+ *  X: Elevator manual mode on
+ *  Y: Elevator climb
+ *  Right Bumper: shoot
+ *  Left Bumper: Aim/spin up
+ *  Right trigger: manual aim
+ *  Left Trigger: manual aim
+ *  POV + Start: Swap controllers
+ *  Back:
+ */
+
 public class Map {
   public static XboxController driver = new XboxController(0);
   public static Joystick coDriver = new Joystick(1);
@@ -69,14 +107,11 @@ public class Map {
     public static TalonSRX intakeRight = new TalonSRX (20);
 
     // Sensor
-    public static DIOSensor limit1 = new DIOSensor(0,"Normal");
-    public static DIOSensor gamepieceStop = new DIOSensor(1, "Normal");
-    public static DIOSensor pivotTop = new DIOSensor(4, "Normal");
-    public static DIOSensor pivotBottom = new DIOSensor(5, "Normal");
-    public static DIOSensor strangeLimitSwitchTest = new DIOSensor(6, "Strange");
-    public static DIOSensor elevatorTop = new DIOSensor(7, "Strange");
-    public static DIOSensor elevatorBottom = new DIOSensor(8, "Strange");
-
+    public static DIOSensor elevatorBottom = new DIOSensor(0,"Normal");
+    public static DIOSensor intakeStop = new DIOSensor(2, "Normal");
+    public static DIOSensor pivotBottom = new DIOSensor(3, "Strange");
+    public static DIOSensor pivotTop = new DIOSensor(4, "Strange");
+    public static DIOSensor elevatorTop = new DIOSensor(1, "Normal");
     //Misc
     public static SendableChooser red = new SendableChooser<>();
 

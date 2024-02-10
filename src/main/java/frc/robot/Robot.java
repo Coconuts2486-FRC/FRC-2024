@@ -39,6 +39,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     Misc.isRed();
     Launcher.shootMotorInit();
+    Misc.switched = false;
+
   }
 
   @Override
@@ -60,7 +62,7 @@ public class Robot extends TimedRobot {
 
     // SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
 
-    SmartDashboard.putBoolean("strangeLimitSwitchTest", Map.strangeLimitSwitchTest.DIO());
+
   }
 
   @Override
@@ -87,16 +89,15 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
    
     
-    Map.swerve.realignToField(Map.driver.getRawButton(1));
+
     
-    SmartDashboard.putNumber("tagTarget", Limelight.tagTarget(Map.driver.getRawButton(6), Map.driver.getRawAxis(4)));
-    SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
     // Map.swerve.autoInit();
     
     
-    // Drive for driver and codriver
+    // driver code
     
-    if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == true){
+    if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == true){
+          Map.swerve.realignToField(Map.coDriver.getRawButton(1));
       if (Map.coDriver.getRawAxis(2)>.2 ){
          Map.swerve.drive(0,RaspberryPi.driveToGamePiece(),RaspberryPi.targetGamePiece());
 
@@ -106,37 +107,24 @@ public class Robot extends TimedRobot {
         RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
       }
     
+    //coDriver code
     
-    
-      } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(4)) == false){
-         if (Map.driver.getRawAxis(2)>.2 ){
+      } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == false){
+             Map.swerve.realignToField(Map.driver.getRawButton(1));
+        if (Map.driver.getRawAxis(2)>.2 ){
            Map.swerve.drive(0,RaspberryPi.driveToGamePiece(),RaspberryPi.targetGamePiece());
-         }
+
+
+         } else{
          Map.swerve.drive(Map.driver.getRawAxis(4), Map.driver.getRawAxis(5),
         RaspberryPi.targetAprilTag(Map.driver.getRawButton(6), Map.driver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
     }
 
+  }
 
 
-    // Map.swerve.telemetry();
-
-    Map.odometry.calculatePosition();
-    if (Map.driver.getRawButton(2)) {
-      Map.frontLeft.driveMotor.setSelectedSensorPosition(0);
-      Map.frontRight.driveMotor.setSelectedSensorPosition(0);
-      Map.backLeft.driveMotor.setSelectedSensorPosition(0);
-      Map.backRight.driveMotor.setSelectedSensorPosition(0);
-
-      
-    }
-    SmartDashboard.putNumber("posX", Map.odometry.calculatePosition()[0]);
-    SmartDashboard.putNumber("posY", Map.odometry.calculatePosition()[1]);
-    SmartDashboard.putNumber("posXFeet", Map.odometry.calculatePosition()[0] / 42000000);
-    SmartDashboard.putNumber("posYFeet", Map.odometry.calculatePosition()[1] / 42000000);
-
-    //Intake
-   
-    }
+    
+  }
 
 
   @Override
@@ -152,10 +140,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+
   }
 
   @Override
   public void testPeriodic() {
+   
   }
 
   @Override

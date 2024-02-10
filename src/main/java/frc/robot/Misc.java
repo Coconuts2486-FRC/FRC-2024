@@ -21,6 +21,7 @@ public class Misc {
             SmartDashboard.putString("Color", "Blue");
         }
     }
+
     public static boolean pov(int pov, boolean button) {
         SmartDashboard.putNumber("POV", Map.driver.getPOV());
         if (pov == 0) {

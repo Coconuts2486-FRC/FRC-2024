@@ -4,54 +4,82 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 //*This is an intake
 public class Intake {
-    static boolean extend = false;
+    public static void init() {
+        Map.intakeRight.setInverted(true);
 
-    public static void intakExtension(boolean outIn) {
-        if (outIn) {
-            if (Map.intakeExtendStop.DIO()) {
-                Map.movementIntake.set(ControlMode.PercentOutput, 0.8);
-                
-            } else {
-                Map.movementIntake.set(ControlMode.PercentOutput, 0);
+    }
+
+    public static boolean intakExtension(boolean button) {
+        boolean extend = false;
+        // chang this.
+        // only extends at 45 so it can't go past frame perimiter.
+        if (Map.launcherPivot.getSelectedSensorPosition() == 45) {
+            // toggle switch for extension
+            if (button) {
+                extend = !extend;
             }
-        } else if (Map.intakeCloseStop.DIO()) {
-            Map.movementIntake.set(ControlMode.PercentOutput, -0.8);
         } else {
-            Map.movementIntake.set(ControlMode.PercentOutput, 0);
+            extend = false;
         }
+
+        if (extend == true) {
+            // extension
+            // stops if current is to high
+            // change supply current
+            if (Map.movementIntake.getSupplyCurrent() > 5) {
+                Map.movementIntake.set(ControlMode.PercentOutput, 0);
+            } // change this to out position
+            else {
+                Map.movementIntake.set(ControlMode.Position, 30);
+            }
+        } else if (extend == false) {
+            if (Map.movementIntake.getSupplyCurrent() > 5) {
+                Map.movementIntake.set(ControlMode.PercentOutput, 0);
+            } // change this to out position
+            else {
+                Map.movementIntake.set(ControlMode.Position, 0);
+            }
+        }
+        return extend;
     }
 
     // bottom function makes it so when a button is pressed it activates using the
     // top function
-    public static void buttonExtend(boolean button) {
-        if (button) {
-            extend = !extend;
-        } else if (Map.gamepieceStop.DIO()) {
-            extend = false;
-        }
-        intakExtension(extend);
-        intakeSpin(extend);
-    }
 
     // bottom function is what is used to spin up the wheels for intaking in notes
-    public static void intakeSpin(boolean buttonOne) {
-        if (buttonOne) {
-            Map.intakeRight.set(ControlMode.PercentOutput, 0.8);
-            Map.intakeLeft.set(ControlMode.PercentOutput, -0.8);
+    public static void intakeSpin(double axis, boolean extended) {
+
+        if (axis>.13) {
+            Map.intakeRight.set(ControlMode.PercentOutput, axis);
+            Map.intakeLeft.set(ControlMode.PercentOutput, axis);
+        } else if (extended) {
+            Map.intakeRight.set(ControlMode.PercentOutput, .5);
+            Map.intakeLeft.set(ControlMode.PercentOutput, .5);
         } else {
-            Map.intakeRight.set(ControlMode.PercentOutput, 0);
-            Map.intakeLeft.set(ControlMode.PercentOutput, 0);
+            Map.intakeRight.set(ControlMode.PercentOutput, .0);
+            Map.intakeLeft.set(ControlMode.PercentOutput, .0);
         }
     }
 
     // bottom function is what is used to score on the amp
-    public static void ampOutake(boolean outakeAmp) {
-        if (outakeAmp) {
-            Map.intakeRight.set(ControlMode.PercentOutput, -0.8);
-            Map.intakeLeft.set(ControlMode.PercentOutput, 0.8);
+    public static void score(boolean button) {
+        // change this
+        if (Map.rightElevator.getSelectedSensorPosition() > 1000) {
+            if (button) {
+                Map.intakeRight.set(ControlMode.PercentOutput, -.5);
+                Map.intakeLeft.set(ControlMode.PercentOutput, -.5);
+            } else {
+                Map.intakeRight.set(ControlMode.PercentOutput, 0);
+                Map.intakeLeft.set(ControlMode.PercentOutput, 0);
+            }
         } else {
-            Map.intakeRight.set(ControlMode.PercentOutput, 0);
-            Map.intakeLeft.set(ControlMode.PercentOutput, 0);
+            if (button) {
+                Map.intakeRight.set(ControlMode.PercentOutput, 1);
+                Map.intakeLeft.set(ControlMode.PercentOutput, 1);
+            } else {
+                Map.intakeRight.set(ControlMode.PercentOutput, 0);
+                Map.intakeLeft.set(ControlMode.PercentOutput, 0);
+            }
         }
     }
 }

@@ -13,14 +13,6 @@ public class Launcher {
         Map.rightLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         Map.leftLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
-        Map.rightLauncher.config_kF(0, 0.048);
-        Map.leftLauncher.config_kF(0, 0.048);
-        Map.rightLauncher.config_kP(0, 0.4);
-        Map.leftLauncher.config_kP(0, 0.4);
-        Map.rightLauncher.config_kI(0, 0.001);
-        Map.leftLauncher.config_kI(0, 0.001);
-        Map.rightLauncher.config_IntegralZone(0, 300);
-        Map.leftLauncher.config_IntegralZone(0, 300);
     }
 
     public static void powerUp(double buttonPress) {
@@ -74,6 +66,7 @@ public class Launcher {
     
             }
                 // change number later
+                //checks if it is ready
                 Map.launcherPivot.set(ControlMode.Position, calculatedAngle);
                 if (Map.launcherPivot.getSelectedSensorPosition()==calculatedAngle){
                     return true;
@@ -83,19 +76,20 @@ public class Launcher {
                 }
             }
             else {
+                //goes to 45
+                // change to calculated 45 degrees
+                 Map.launcherPivot.set(ControlMode.Position, 45);
                 return false;
             }
         }
     
 
-    public static void manualShoot(boolean rightTrigger) {
-        Intake.intakeSpin(rightTrigger);
-    }
+    
 
     // shooting for auto
     public static boolean autoShoot(boolean red) {
         boolean gamePiecePresent;
-        if (Map.gamepieceStop.DIO()) {
+        if (Map.intakeStop.DIO()) {
             gamePiecePresent = true;
         } else {
             gamePiecePresent = false;

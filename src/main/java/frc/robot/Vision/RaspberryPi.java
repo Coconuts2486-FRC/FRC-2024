@@ -30,6 +30,23 @@ public class RaspberryPi {
         return table.getEntry("speaker_tag4_robot_z").getDouble(0.0);
     }
 
+      public static double getTagZ5() {
+        return table.getEntry("speaker_tag5_robot_z").getDouble(0.0);
+    }
+
+    public static double getTagX5() {
+        return table.getEntry("speaker_tag5_robot_x").getDouble(0.0);
+    }
+
+    public static double getTagZ6 (){
+        return table.getEntry("speaker_tag6_robot_z").getDouble(0.0);
+    }
+
+    public static double getTagX6() {
+        return table.getEntry("speaker_tag6_robot_x").getDouble(0.0);
+    }
+
+
     // For April Tag 7
     public static double getTagX7() {
         return table.getEntry("speaker_tag7_robot_x").getDouble(0.0);

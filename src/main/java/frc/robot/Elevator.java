@@ -8,17 +8,11 @@ import frc.robot.Vision.RaspberryPi;
 public class Elevator {
     public static void elevatorInit() {
 
-        Map.rightElevator.config_kF(0, 0.048);
-        Map.leftElevator.config_kF(0, 0.048);
-        Map.rightElevator.config_kP(0, 0.4);
-        Map.leftElevator.config_kP(0, 0.4);
-        Map.rightElevator.config_kI(0, 0.001);
-        Map.leftElevator.config_kI(0, 0.001);
-        Map.rightElevator.config_IntegralZone(0, 300);
-        Map.leftElevator.config_IntegralZone(0, 300);
-
+     
         Map.rightElevator.setNeutralMode(NeutralMode.Brake);
         Map.leftElevator.setNeutralMode(NeutralMode.Brake);
+         Map.rightElevator.setSelectedSensorPosition(0);
+        Map.leftElevator.setSelectedSensorPosition(0);
 
         Map.rightElevator.setInverted(true);
     }
@@ -30,10 +24,10 @@ public class Elevator {
         boolean toggle3 = false;
         boolean toggle4 = false;
         double pos1 = 0;
-        double pos2 = 27;
-        double pos3 = 42;
+        double pos2 = 500;
+        double pos3 = 1000;
         // change this
-        int upperLimit = 1;
+        int upperLimit = 1000;
         if (button1) {
             toggle1 = true;
             toggle2 = false;
@@ -70,14 +64,14 @@ public class Elevator {
                     toggle3 = true;
                     toggle4 = false;
                     if (toggle4) {
-                        //change number for supply current
-                        if (Map.rightElevator.getSupplyCurrent() > 10 || Map.leftElevator.getSupplyCurrent() > 10) {
+         
+                        if (Map.elevatorBottom.DIO() && Map.leftElevator.getSelectedSensorVelocity()<0) {
                             Map.rightElevator.set(ControlMode.PercentOutput, 0);
                             Map.leftElevator.set(ControlMode.PercentOutput, 0);
 
                         } else {
-                            Map.rightElevator.set(ControlMode.PercentOutput, axis/2);
-                            Map.leftElevator.set(ControlMode.PercentOutput, axis/2);
+                            Map.rightElevator.set(ControlMode.PercentOutput, axis);
+                            Map.leftElevator.set(ControlMode.PercentOutput, axis);
 
                         }
                     }
