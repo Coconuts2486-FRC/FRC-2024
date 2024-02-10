@@ -135,8 +135,8 @@ public class Swerve {
         frontLeft.drive(frontLeftSpeed, (frontLeftAngle + flOffset));
     }
 
-    public void realignToField(int button) {
-        if (driver.getRawButton(button)) {
+    public void realignToField(boolean button) {
+        if (button) {
             gyro.setYaw(90);
         }
     }
@@ -162,7 +162,7 @@ public class Swerve {
             y = (1 / (1 - directionDeadband)) * (y + -Math.signum(x) * directionDeadband);
         }
         drive(x, y, z + twistAdjustment);
-        realignToField(realign);
+        realignToField(Map.driver.getRawButton(realign));
         reinit(driver.getRawButton(reinit));
     }
 
@@ -251,5 +251,12 @@ public class Swerve {
         backLeft.drive(backLeftSpeed, (backLeftAngle + blOffset));
         frontRight.drive(frontRightSpeed, (frontRightAngle + frOffset));
         frontLeft.drive(frontLeftSpeed, (frontLeftAngle + flOffset));
+    }
+    public static void reZeroPosition(){
+        Map.frontLeft.driveMotor.setSelectedSensorPosition(0);
+        Map.frontRight.driveMotor.setSelectedSensorPosition(0);
+        Map.backLeft.driveMotor.setSelectedSensorPosition(0);
+        Map.backRight.driveMotor.setSelectedSensorPosition(0);
+
     }
 }

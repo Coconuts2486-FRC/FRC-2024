@@ -10,6 +10,7 @@ public class Intake {
         if (outIn) {
             if (Map.intakeExtendStop.DIO()) {
                 Map.movementIntake.set(ControlMode.PercentOutput, 0.8);
+                
             } else {
                 Map.movementIntake.set(ControlMode.PercentOutput, 0);
             }
@@ -25,7 +26,7 @@ public class Intake {
     public static void buttonExtend(boolean button) {
         if (button) {
             extend = !extend;
-        } else if (Map.intakeStop.DIO()) {
+        } else if (Map.gamepieceStop.DIO()) {
             extend = false;
         }
         intakExtension(extend);

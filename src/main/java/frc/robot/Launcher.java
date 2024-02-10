@@ -1,13 +1,15 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Vision.RaspberryPi;
 
 public class Launcher {
     static boolean launcherReady = false;
-    static PIDController pivotLauncher = new PIDController(.5, 0.001, 0);
+
     public static void powerUp(double buttonPress) {
         if (buttonPress >= .15) {
             Map.rightLauncher.set(ControlMode.PercentOutput, 1);
@@ -28,19 +30,90 @@ public class Launcher {
         SmartDashboard.putBoolean("Launcher Ready", launcherReady);
     }
 
-    public static void aim(int leftTrigger, int pivotPosistion) {
-        if (leftTrigger >= .15) {
-            powerUp(leftTrigger);
-            if (Map.pivotTop.DIO()) {
-            } else if (Map.pivotBottom.DIO()) {
-            } else {
-                Map.launcherPivot.set(ControlMode.Position, pivotPosistion);
-            }
-        }
+    public static double calculateAngle(double distance) {
+        // insert regression alg. Distance converted to Position.
+        double angle = 0;
+        return angle;
     }
 
-    public static void finalShoot(boolean rightTrigger) {
+    public static boolean aim(double leftTrigger, boolean red) {
+        double calculatedAngle;
+        // change this
+        int upperLimit = 1;
+        if (leftTrigger >= .15) {
+            powerUp(leftTrigger);
+            if (red) {
+                calculatedAngle = Math.round(calculateAngle(RaspberryPi.getTagX4()));
+                
+            } else {
+                calculatedAngle = Math.round(calculateAngle(RaspberryPi.getTagX7()));
+            }
+            if (calculatedAngle > upperLimit) {
+                    calculatedAngle = upperLimit;
+            }
+            if (calculatedAngle < 0) {
+                    calculatedAngle = 0;
+            }
+            if (Map.pivotTop.DIO()) {
+                Map.launcherPivot.setSelectedSensorPosition(upperLimit);
+            }  if (Map.pivotBottom.DIO()) {
+                Map.launcherPivot.setSelectedSensorPosition(0);
+    
+            }
+                // change number later
+                Map.launcherPivot.set(ControlMode.Position, calculatedAngle);
+                if (Map.launcherPivot.getSelectedSensorPosition()==calculatedAngle){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+    
+
+    public static void manualShoot(boolean rightTrigger) {
         Intake.intakeSpin(rightTrigger);
     }
+
+    // shooting for auto
+    public static boolean autoShoot(boolean red) {
+        boolean gamePiecePresent;
+        if (Map.gamepieceStop.DIO()) {
+            gamePiecePresent = true;
+        } else {
+            gamePiecePresent = false;
+        }
+
+        boolean spunUp = false;
+        boolean alligned = false;
+        boolean aimed = aim(.5, red);
+        boolean ready = false;
+        boolean shot = false;
+        // change velocity to a higher number
+        if (Map.rightLauncher.getSelectedSensorVelocity() > 8 && Map.leftLauncher.getSelectedSensorVelocity() > 8) {
+            spunUp = true;
+        } else {
+            spunUp = false;
+        }
+        if (red) {
+            if (RaspberryPi.getTagX4() < 3 && RaspberryPi.getTagX4() > 0) {
+                alligned = true;
+            } else
+                alligned = false;
+        } else {
+            if (RaspberryPi.getTagX7() < 3 && RaspberryPi.getTagX7() > 0) {
+                alligned = true;
+            } else
+                alligned = false;
+        }
+        if(spunUp&&aimed&&alligned)
+        if (ready == true) {
+
+        }
+        return shot;
+    }
 }
-// !Code :)

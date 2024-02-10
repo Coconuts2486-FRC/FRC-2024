@@ -59,22 +59,25 @@ public class Map {
     public static TalonSRX leftLauncher = new TalonSRX(16);
     public static TalonFX launcherPivot = new TalonFX(17);
 
-    //Intake
-    public static TalonFX movementIntake = new TalonFX (18);
-   public static TalonSRX intakeLeft = new TalonSRX(19);
-   public static TalonSRX intakeRight = new TalonSRX (20);
+    // Elevator
+    public static TalonFX leftElevator = new TalonFX(21);
+    public static TalonFX rightElevator = new TalonFX(22);
 
-  
+    // Intake
+    public static TalonFX movementIntake = new TalonFX (18);
+    public static TalonSRX intakeLeft = new TalonSRX(19);
+    public static TalonSRX intakeRight = new TalonSRX (20);
+
     // Sensor
-    public static DIOSensor limit1 = new DIOSensor(0,"limitSwitch");
-    public static DIOSensor intakeStop = new DIOSensor(1, "lightSensor");
-    public static DIOSensor intakeExtendStop = new DIOSensor(2, "limitSwitch");
-    public static DIOSensor intakeCloseStop = new DIOSensor(3, "limitSwitch");
-    public static DIOSensor pivotTop = new DIOSensor(4, "limitSwitch");
-    public static DIOSensor pivotBottom = new DIOSensor(5, "limitSwitch");
-    public static DIOSensor strangeLimitSwitchTest = new DIOSensor(6, "limitSwitch");
+    public static DIOSensor limit1 = new DIOSensor(0,"Normal");
+    public static DIOSensor gamepieceStop = new DIOSensor(1, "Normal");
+    public static DIOSensor pivotTop = new DIOSensor(4, "Normal");
+    public static DIOSensor pivotBottom = new DIOSensor(5, "Normal");
+    public static DIOSensor strangeLimitSwitchTest = new DIOSensor(6, "Strange");
+    public static DIOSensor elevatorTop = new DIOSensor(7, "Strange");
+    public static DIOSensor elevatorBottom = new DIOSensor(8, "Strange");
 
     //Misc
-      public static SendableChooser red = new SendableChooser<>();
+    public static SendableChooser red = new SendableChooser<>();
 
 }
