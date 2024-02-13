@@ -30,4 +30,4 @@ See also the list of [contributors](https://github.com/Coconuts2486-FRC/FRC-2024
 
 ## License
 
-This project is licensed under the MIT License - see the [WPLib-License.md](WPLib-License.md) file for details
+This project is licensed under the WPLib License - see the [WPLib-License.md](WPLib-License.md) file for details
