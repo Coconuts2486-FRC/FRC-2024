@@ -26,8 +26,6 @@ To run the code, use the WPILib command palette in Visual Studio Code.
 
 ## Authors
 
-* **Your Name** - *Initial work* - [YourName](https://github.com/yourname)
-
 See also the list of [contributors](https://github.com/Coconuts2486-FRC/FRC-2024/graphs/contributors) who participated in this project.
 
 ## License
