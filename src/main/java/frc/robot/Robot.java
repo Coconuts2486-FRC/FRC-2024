@@ -7,7 +7,6 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -27,6 +26,7 @@ import frc.robot.Vision.RaspberryPi;
  * project.
  */
 public class Robot extends TimedRobot {
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -41,15 +41,11 @@ public class Robot extends TimedRobot {
     Launcher.shootMotorInit();
     Misc.switched = false;
     Elevator.init();
-
   }
 
   @Override
   public void robotPeriodic() {
     Misc.putColor();
-
-
-
     // Map.swerve.telemetry();
     // SmartDashboard.putNumber("yaw", Swerve.gyro.getYaw());
     // double rawDistanceFL = Map.frontLeft.driveMotor.getSelectedSensorPosition();
@@ -63,7 +59,6 @@ public class Robot extends TimedRobot {
 
     // SmartDashboard.putNumber("aprilTagDistance", Limelight.testTagDistance());
 
-
   }
 
   @Override
@@ -76,86 +71,95 @@ public class Robot extends TimedRobot {
     // Auto.runAuto(startTime);
     // Auto.runAutoDrive(7, (0));
     SmartDashboard.putNumber("ringZ", RaspberryPi.gamePieceZ());
-     SmartDashboard.putNumber("ringX", RaspberryPi.gamePieceX());
-
+    SmartDashboard.putNumber("ringX", RaspberryPi.gamePieceX());
   }
 
   @Override
   public void teleopInit() {
     Map.odometry.init();
     Map.swerve.init();
-
   }
 
   @Override
   public void teleopPeriodic() {
-   
-    
-
-    
     // Map.swerve.autoInit();
-    
-    
+
     // CoDriver code
-    
-    if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == true){
-          Map.swerve.realignToField(Map.coDriver.getRawButton(1));
-      if (Map.coDriver.getRawAxis(2)>.2 ){
-         Map.swerve.drive(0,RaspberryPi.driveToGamePiece(),RaspberryPi.targetGamePiece());
 
+    if (
+      Misc.pov(Map.coDriver.getPOV(), Map.coDriver.getRawButtonPressed(8)) ==
+      true
+    ) {
+      Map.swerve.realignToField(Map.coDriver.getRawButton(1));
+      if (Map.coDriver.getRawAxis(2) > .2) {
+        Map.swerve.drive(
+          0,
+          RaspberryPi.driveToGamePiece(),
+          RaspberryPi.targetGamePiece()
+        );
+      } else {
+        Map.swerve.drive(
+          Map.coDriver.getRawAxis(4),
+          Map.coDriver.getRawAxis(5),
+          RaspberryPi.targetAprilTag(
+            Map.coDriver.getRawButton(6),
+            Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5) * -.001),
+            Misc.getSelectedColor()
+          )
+        );
       }
-      else{
-      Map.swerve.drive(Map.coDriver.getRawAxis(4), Map.coDriver.getRawAxis(5),
-        RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
+      //Driver code
+
+    } else if (
+      Misc.pov(Map.coDriver.getPOV(), Map.coDriver.getRawButtonPressed(8)) ==
+      false
+    ) {
+      Map.swerve.realignToField(Map.driver.getRawButton(1));
+      if (Map.driver.getRawAxis(2) > .2) {
+        Map.swerve.drive(
+          0,
+          RaspberryPi.driveToGamePiece(),
+          RaspberryPi.targetGamePiece()
+        );
+      } else {
+        Map.swerve.drive(
+          Map.driver.getRawAxis(4),
+          Map.driver.getRawAxis(5),
+          RaspberryPi.targetAprilTag(
+            Map.driver.getRawButton(6),
+            Map.driver.getRawAxis(0) + (Map.driver.getRawAxis(5) * -.001),
+            Misc.getSelectedColor()
+          )
+        );
       }
-    
-    //Driver code
-    
-      } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == false){
-             Map.swerve.realignToField(Map.driver.getRawButton(1));
-        if (Map.driver.getRawAxis(2)>.2 ){
-           Map.swerve.drive(0,RaspberryPi.driveToGamePiece(),RaspberryPi.targetGamePiece());
-
-
-         } else{
-         Map.swerve.drive(Map.driver.getRawAxis(4), Map.driver.getRawAxis(5),
-        RaspberryPi.targetAprilTag(Map.driver.getRawButton(6), Map.driver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
+      Elevator.run(
+        Map.coDriver.getRawButtonPressed(1),
+        Map.coDriver.getRawButtonPressed(2),
+        Map.coDriver.getRawButtonPressed(3),
+        Map.coDriver.getRawButtonPressed(4),
+        Map.coDriver.getRawAxis(2)
+      );
     }
-    Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2), Map.coDriver.getRawButtonPressed(3), Map.coDriver.getRawButtonPressed(4), Map.coDriver.getRawAxis(2) );
-
   }
-
-
-    
-  }
-
 
   @Override
-  public void disabledInit() {
-  }
+  public void disabledInit() {}
 
   @Override
   public void disabledPeriodic() {
     Map.swerve.disabled();
     Map.swerve.disabledPos();
-
   }
 
   @Override
-  public void testInit() {
-
-  }
+  public void testInit() {}
 
   @Override
-  public void testPeriodic() {
-   
-  }
+  public void testPeriodic() {}
 
   @Override
-  public void simulationInit() {
-  }
+  public void simulationInit() {}
 
   @Override
-  public void simulationPeriodic() {
-  }
+  public void simulationPeriodic() {}
 }
