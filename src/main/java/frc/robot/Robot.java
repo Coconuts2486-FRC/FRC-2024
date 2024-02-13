@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
     Misc.isRed();
     Launcher.shootMotorInit();
     Misc.switched = false;
+    Elevator.init();
 
   }
 
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot {
     // Auto.runAuto(startTime);
     // Auto.runAutoDrive(7, (0));
     SmartDashboard.putNumber("ringZ", RaspberryPi.gamePieceZ());
+     SmartDashboard.putNumber("ringX", RaspberryPi.gamePieceX());
 
   }
 
@@ -94,7 +96,7 @@ public class Robot extends TimedRobot {
     // Map.swerve.autoInit();
     
     
-    // driver code
+    // CoDriver code
     
     if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == true){
           Map.swerve.realignToField(Map.coDriver.getRawButton(1));
@@ -107,7 +109,7 @@ public class Robot extends TimedRobot {
         RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(6), Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
       }
     
-    //coDriver code
+    //Driver code
     
       } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == false){
              Map.swerve.realignToField(Map.driver.getRawButton(1));
@@ -119,6 +121,7 @@ public class Robot extends TimedRobot {
          Map.swerve.drive(Map.driver.getRawAxis(4), Map.driver.getRawAxis(5),
         RaspberryPi.targetAprilTag(Map.driver.getRawButton(6), Map.driver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
     }
+    Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2), Map.coDriver.getRawButtonPressed(3), Map.coDriver.getRawButtonPressed(4), Map.coDriver.getRawAxis(2) );
 
   }
 

@@ -108,8 +108,8 @@ public class Map {
 
     // Sensor
     public static DIOSensor elevatorBottom = new DIOSensor(0,"Normal");
-    public static DIOSensor intakeStop = new DIOSensor(2, "Normal");
-    public static DIOSensor pivotBottom = new DIOSensor(3, "Strange");
+    public static DIOSensor lightStop = new DIOSensor(2, "Normal-Light");
+    public static DIOSensor intakeStop = new DIOSensor(3, "Normal");
     public static DIOSensor pivotTop = new DIOSensor(4, "Strange");
     public static DIOSensor elevatorTop = new DIOSensor(1, "Normal");
     //Misc

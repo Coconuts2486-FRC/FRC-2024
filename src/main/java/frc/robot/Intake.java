@@ -6,6 +6,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 public class Intake {
     public static void init() {
         Map.intakeRight.setInverted(true);
+        Map.movementIntake.setSelectedSensorPosition(0);
+
+    }
+    public static void run(boolean button){
+        
 
     }
 

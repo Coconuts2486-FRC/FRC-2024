@@ -9,7 +9,7 @@ import frc.robot.Vision.RaspberryPi;
 
 public class Launcher {
     static boolean launcherReady = false;
-
+    public static PIDController pivotLauncher = new PIDController(0.5, 0.001, 0);
     public static void shootMotorInit() {
         Map.rightLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         Map.leftLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
@@ -38,16 +38,22 @@ public class Launcher {
 
     public static double calculateAngle(double distance) {
         // insert regression alg. Distance converted to Position.
-        double angle = 0;
-        return angle;
+        //reg alg
+       double calculation = distance * 123-distance*123; 
+        
+        double conversion = 2651;
+        calculation = (calculation*conversion);
+        return calculation;
     }
 
-    public static boolean aim(double leftTrigger, boolean red) {
+    public static boolean run(double leftTrigger, boolean red) {
+        //45 degrees. change this
         double calculatedAngle;
         // change this
         int upperLimit = 1;
         if (leftTrigger >= .15) {
             powerUp(leftTrigger);
+            
             if (red) {
                 calculatedAngle = Math.round(calculateAngle(RaspberryPi.getTagX4()));
                 
@@ -62,27 +68,27 @@ public class Launcher {
             }
             if (Map.pivotTop.DIO()) {
                 Map.launcherPivot.setSelectedSensorPosition(upperLimit);
-            }  if (Map.pivotBottom.DIO()) {
-                Map.launcherPivot.setSelectedSensorPosition(0);
+            }  
     
+            }
+            else{
+                //45 degrees. change this
+                calculatedAngle = 45;
             }
                 // change number later
                 //checks if it is ready
-                Map.launcherPivot.set(ControlMode.Position, calculatedAngle);
-                if (Map.launcherPivot.getSelectedSensorPosition()==calculatedAngle){
+
+                Map.launcherPivot.set(ControlMode.PercentOutput, pivotLauncher.calculate(Map.launcherPivot.getSelectedSensorPosition(),calculatedAngle));
+                if (Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition())-Math.abs(calculatedAngle))<800){
                     return true;
                 }
                 else {
                     return false;
                 }
             }
-            else {
-                //goes to 45
-                // change to calculated 45 degrees
-                 Map.launcherPivot.set(ControlMode.Position, 45);
-                return false;
-            }
-        }
+  
+            
+        
     
 
     
@@ -90,7 +96,7 @@ public class Launcher {
     // shooting for auto
     public static boolean autoShoot(boolean red) {
         boolean gamePiecePresent;
-        if (Map.intakeStop.DIO()) {
+        if (Map.lightStop.DIO()) {
             gamePiecePresent = true;
         } else {
             gamePiecePresent = false;
@@ -98,7 +104,7 @@ public class Launcher {
 
         boolean spunUp = false;
         boolean alligned = false;
-        boolean aimed = aim(.5, red);
+        boolean aimed = run(.5, red);
         boolean ready = false;
         boolean shot = false;
         // change velocity to a higher number
