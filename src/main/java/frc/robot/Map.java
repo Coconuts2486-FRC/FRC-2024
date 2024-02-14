@@ -3,8 +3,6 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
-
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,11 +29,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *  POV:
  *  Back:
  *  Start:
- * 
+ *
  *    ===CoDriver==
- *  Right stick x 
+ *  Right stick x
  *  Right stick y
- *  Left stick x: 
+ *  Left stick x:
  *  Left stick y: manual elevator control
  *  Left stick button:
  *  Right stick button:
@@ -51,7 +49,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *  Back:
  */
 
+/**
+ * This class represents the map of the robot.
+ * It provides the controller bindings and the motor and sensor ports.
+ */
 public class Map {
+
   public static XboxController driver = new XboxController(0);
   public static Joystick coDriver = new Joystick(1);
 
@@ -83,29 +86,63 @@ public class Map {
   public static double dki = .000;
   public static double dkd = 0.0001;
 
-  public static Module frontRight = new Module(rotateFR, driveFR, encoderFR, new PIDController(rkp, rki, rkd),new PIDController(dkp, dki, dkd));
-  public static Module frontLeft = new Module(rotateFL, driveFL, encoderFL, new PIDController(rkp, rki, rkd),new PIDController(dkp, dki, dkd));
-  public static Module backRight = new Module(rotateBR, driveBR, encoderBR, new PIDController(rkp, rki, rkd),new PIDController(dkp, dki, dkd));
-  public static Module backLeft = new Module(rotateBL, driveBL, encoderBL, new PIDController(rkp, rki, rkd),new PIDController(dkp, dki, dkd));
+  public static Module frontRight = new Module(
+    rotateFR,
+    driveFR,
+    encoderFR,
+    new PIDController(rkp, rki, rkd),
+    new PIDController(dkp, dki, dkd)
+  );
+  public static Module frontLeft = new Module(
+    rotateFL,
+    driveFL,
+    encoderFL,
+    new PIDController(rkp, rki, rkd),
+    new PIDController(dkp, dki, dkd)
+  );
+  public static Module backRight = new Module(
+    rotateBR,
+    driveBR,
+    encoderBR,
+    new PIDController(rkp, rki, rkd),
+    new PIDController(dkp, dki, dkd)
+  );
+  public static Module backLeft = new Module(
+    rotateBL,
+    driveBL,
+    encoderBL,
+    new PIDController(rkp, rki, rkd),
+    new PIDController(dkp, dki, dkd)
+  );
 
-  public static Swerve swerve = new Swerve(backRight, backLeft, frontRight, frontLeft);
+  public static Swerve swerve = new Swerve(
+    backRight,
+    backLeft,
+    frontRight,
+    frontLeft
+  );
 
-  public static Odometry odometry = new Odometry(backRight, backLeft, frontRight, frontLeft, swerve);
- 
+  public static Odometry odometry = new Odometry(
+    backRight,
+    backLeft,
+    frontRight,
+    frontLeft,
+    swerve
+  );
 
-    // Shooter
-    public static TalonSRX rightLauncher = new TalonSRX(15);
-    public static TalonSRX leftLauncher = new TalonSRX(16);
-    public static TalonFX launcherPivot = new TalonFX(17);
+  // Shooter
+  public static TalonSRX rightLauncher = new TalonSRX(15);
+  public static TalonSRX leftLauncher = new TalonSRX(16);
+  public static TalonFX launcherPivot = new TalonFX(17);
 
-    // Elevator
-    public static TalonFX leftElevator = new TalonFX(21);
-    public static TalonFX rightElevator = new TalonFX(22);
+  // Elevator
+  public static TalonFX leftElevator = new TalonFX(21);
+  public static TalonFX rightElevator = new TalonFX(22);
 
-    // Intake
-    public static TalonFX movementIntake = new TalonFX (18);
-    public static TalonSRX intakeLeft = new TalonSRX(19);
-    public static TalonSRX intakeRight = new TalonSRX (20);
+  // Intake
+  public static TalonFX movementIntake = new TalonFX(18);
+  public static TalonSRX intakeLeft = new TalonSRX(19);
+  public static TalonSRX intakeRight = new TalonSRX(20);
 
     // Sensor
     public static DigitalInput elevatorBottom = new DigitalInput(0);

@@ -6,9 +6,15 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import edu.wpi.first.math.controller.PIDController;
 
-//*This is an intake
+/**
+ * This class represents an intake mechanism for a robot.
+ */
 public class Intake {
         public static PIDController intakePID = new PIDController(.00008,0.00,0.000001);
+
+    /**
+     * Initializes the intake mechanism.
+     */
     public static void init() {
         Map.movementIntake.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
         Map.intakeRight.setInverted(true);
@@ -16,12 +22,19 @@ public class Intake {
         Map.movementIntake.setNeutralMode(NeutralMode.Brake);
 
     }
-    public static void run(boolean button,boolean scoreButton){
-        intakExtension(button);
-        intakeSpin();
-        score(scoreButton);
+      /**
+     * Runs the intake mechanism based on a button input.
+     * 
+     * @param button The button input to control the intake mechanism.
+     */
 
-    }
+        public static void run(boolean button,boolean scoreButton){
+            intakExtension(button);
+            intakeSpin();
+            score(scoreButton);
+        }
+
+    
 
     public static boolean intakExtension(boolean button) {
         boolean extend = false;
@@ -68,10 +81,15 @@ public class Intake {
         return extend;
     }
 
-    // bottom function makes it so when a button is pressed it activates using the
-    // top function
 
-    // bottom function is what is used to spin up the wheels for intaking in notes
+    /**
+     * Spins the intake wheels based on an axis input and the extension state of the intake mechanism.
+     * 
+     * @param axis     The axis input to control the speed of the intake wheels.
+     * @param extended The state of the intake mechanism (extended or retracted).
+     */
+
+
     public static void intakeSpin() {
 
     
@@ -122,7 +140,17 @@ public class Intake {
 
 
 
-    // bottom function is what is used to score on the amp
+    
+
+    
+
+
+
+    /**
+     * Scores the intake mechanism based on a button input.
+     * 
+     * @param button The button input to control the scoring of the intake mechanism.
+     */
     public static void score(boolean button) {
         // change this
         if (Map.rightElevator.getSelectedSensorPosition() < -54000) {

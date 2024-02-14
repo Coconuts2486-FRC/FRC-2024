@@ -1,3 +1,7 @@
+/**
+ * The Elevator class controls the elevator mechanism of the robot.
+ * It provides methods to initialize and run the elevator.
+ */
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -10,8 +14,18 @@ import frc.robot.Vision.RaspberryPi;
 
 public class Elevator {
 
-    public static PIDController elevatorPID = new PIDController(.00009, 0.00, 0.000001);
+    /**
+     * The PIDController used for elevator position control.
+     */
+    public static PIDController elevatorPID = new PIDController(
+        .00008,
+        0.00,
+        0.000001
+    );
 
+    /**
+     * Initializes the elevator by setting the neutral mode, sensor positions, and inversion.
+     */
     public static void init() {
         Map.leftElevator.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         Map.rightElevator.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
@@ -49,6 +63,15 @@ public class Elevator {
         }
     }
 
+    /**
+     * Runs the elevator based on the button inputs and axis value.
+     * 
+     * @param button1 The state of button 1.
+     * @param button2 The state of button 2.
+     * @param button3 The state of button 3.
+     * @param button4 The state of button 4.
+     * @param axis The value of the elevator axis.
+     */
     public static void run(boolean button1, boolean button2, boolean button3, boolean button4, double axis) {
         // change these
 
@@ -65,8 +88,8 @@ public class Elevator {
         }
 
         // change this
-        Map.rightElevator.follow(Map.leftElevator);
-        int upperLimit = -30000;
+         Map.rightElevator.follow(Map.leftElevator);
+        int upperLimit = -84000;
         if (button1) {
             toggle1 = true;
             toggle2 = false;
