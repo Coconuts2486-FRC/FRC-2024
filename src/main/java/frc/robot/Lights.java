@@ -43,7 +43,7 @@ public static void CANdleRunRainbow(){
 
 
 public static void runCANdle(){
-    if (Map.intakeStop.DIO()){
+    if (Map.intakeStop.get()){
         candle.setLEDs(106, 13, 173);
     } else {
          candle.setLEDs(255, 165, 0);

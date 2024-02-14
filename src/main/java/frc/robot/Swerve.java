@@ -137,7 +137,7 @@ public class Swerve {
 
     public void realignToField(boolean button) {
         if (button) {
-            gyro.setYaw(90);
+            gyro.setYaw(0);
         }
     }
 

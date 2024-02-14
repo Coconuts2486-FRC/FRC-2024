@@ -6,6 +6,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -107,11 +108,15 @@ public class Map {
     public static TalonSRX intakeRight = new TalonSRX (20);
 
     // Sensor
-    public static DIOSensor elevatorBottom = new DIOSensor(0,"Normal");
-    public static DIOSensor lightStop = new DIOSensor(2, "Normal-Light");
-    public static DIOSensor intakeStop = new DIOSensor(3, "Normal");
-    public static DIOSensor pivotTop = new DIOSensor(4, "Strange");
-    public static DIOSensor elevatorTop = new DIOSensor(1, "Normal");
+    public static DigitalInput elevatorBottom = new DigitalInput(0);
+    public static DigitalInput elevatorTop = new DigitalInput(1);
+    public static DigitalInput lightStop = new DigitalInput(2);
+    public static DigitalInput intakeStop = new DigitalInput(3);
+    public static DigitalInput pivotTop = new DigitalInput(4);
+   // public static DIOSensor lightStop = new DIOSensor(2, "Normal-Light");
+    // public static DIOSensor intakeStop = new DIOSensor(3, "Normal");
+    // public static DIOSensor pivotTop = new DIOSensor(4, "Strange");
+    //public static DIOSensor elevatorTop = new DIOSensor(1, "Normal");
     //Misc
     public static SendableChooser red = new SendableChooser<>();
 

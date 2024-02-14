@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -10,9 +11,10 @@ import frc.robot.Vision.RaspberryPi;
 public class Launcher {
     static boolean launcherReady = false;
     public static PIDController pivotLauncher = new PIDController(0.5, 0.001, 0);
-    public static void shootMotorInit() {
+    public static void init() {
         Map.rightLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         Map.leftLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        Map.launcherPivot.setNeutralMode(NeutralMode.Brake);
 
     }
 
@@ -41,7 +43,7 @@ public class Launcher {
         //reg alg
        double calculation = distance * 123-distance*123; 
         
-        double conversion = 2651;
+        double conversion = 1327;
         calculation = (calculation*conversion);
         return calculation;
     }
@@ -53,7 +55,7 @@ public class Launcher {
         int upperLimit = 1;
         if (leftTrigger >= .15) {
             powerUp(leftTrigger);
-            
+
             if (red) {
                 calculatedAngle = Math.round(calculateAngle(RaspberryPi.getTagX4()));
                 
@@ -66,14 +68,14 @@ public class Launcher {
             if (calculatedAngle < 0) {
                     calculatedAngle = 0;
             }
-            if (Map.pivotTop.DIO()) {
+            if (Map.pivotTop.get()==false) {
                 Map.launcherPivot.setSelectedSensorPosition(upperLimit);
             }  
     
             }
             else{
                 //45 degrees. change this
-                calculatedAngle = 45;
+                calculatedAngle = -21000;
             }
                 // change number later
                 //checks if it is ready
@@ -96,7 +98,7 @@ public class Launcher {
     // shooting for auto
     public static boolean autoShoot(boolean red) {
         boolean gamePiecePresent;
-        if (Map.lightStop.DIO()) {
+        if (Map.lightStop.get()) {
             gamePiecePresent = true;
         } else {
             gamePiecePresent = false;
