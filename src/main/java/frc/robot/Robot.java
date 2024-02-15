@@ -33,15 +33,14 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   double startTime;
-  boolean toggleDown = true;
-  boolean toggleUp = false;
+
   public static SendableChooser red = new SendableChooser<>();
 
   @Override
   public void robotInit() {
     Launcher.init();
+    Intake.init();
     Misc.isRed();
-    Launcher.init();
     Misc.switched = false;
     Elevator.init();
 
@@ -56,6 +55,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("LIGHTSTOP",  Map.lightStop.get());
      SmartDashboard.putBoolean("DIOFORPIVOT",    Map.pivotTop.get());
     SmartDashboard.putBoolean("DIOFORINTAKE",    Map.intakeStop.get());
+       SmartDashboard.putNumber("intakeValues",Map.movementIntake.getSelectedSensorPosition());
 
 
     // Map.swerve.telemetry();
@@ -90,6 +90,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Map.odometry.init();
     Map.swerve.init();
+    Launcher.init();
+    Intake.init();
 
   }
 
@@ -111,6 +113,9 @@ public class Robot extends TimedRobot {
          Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
       }
         Elevator.test(Map.driver.getRawButtonPressed(1),Map.driver.getRawAxis(5));
+          Intake.test(Map.coDriver.getRawButtonPressed(5),Map.driver.getRawButtonPressed(5));
+         //   Launcher.test(Map.driver.getRawButton(6), Misc.getSelectedColor());
+           // Intake.intakeSpin();
        // Elevator.run(Map.driver.getRawButtonPressed(1), Map.driver.getRawButtonPressed(2), Map.driver.getRawButtonPressed(3), Map.driver.getRawButtonPressed(4), Map.driver.getRawAxis(2) );
     //Driver code
     
@@ -131,7 +136,13 @@ public class Robot extends TimedRobot {
 
     //.Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2), Map.coDriver.getRawButtonPressed(3), Map.coDriver.getRawButtonPressed(4), Map.coDriver.getRawAxis(1));
     Elevator.test(Map.coDriver.getRawButtonPressed(1),Map.coDriver.getRawAxis(5));
-   
+    SmartDashboard.putNumber("intake", Map.movementIntake.getSelectedSensorPosition());
+
+    Intake.test(Map.coDriver.getRawButton(6),Map.coDriver.getRawButtonPressed(5));
+    SmartDashboard.putNumber("launcher", Map.launcherPivot.getSelectedSensorPosition());
+
+    Launcher.test(Map.coDriver.getRawButton(7),Map.coDriver.getRawButton(3), Misc.getSelectedColor());
+    //Intake.intakeSpin();
 
 
   }
@@ -141,12 +152,16 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+   
+  }
 
   @Override
   public void disabledPeriodic() {
     Map.swerve.disabled();
     Map.swerve.disabledPos();
+     Launcher.disable(Map.coDriver.getRawButton(2));
+     Intake.disable(Map.coDriver.getRawButton(2));
   }
 
   @Override

@@ -12,8 +12,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Vision.RaspberryPi;
 
-public class Elevator {
-
+    public class Elevator {
+    private static boolean toggleUp = false;
     /**
      * The PIDController used for elevator position control.
      */
@@ -38,27 +38,26 @@ public class Elevator {
     }
 
     public static void test(boolean button1, double axis) {
-     
-        boolean toggleUp = false;
+
         if (button1){
             toggleUp = !toggleUp;
         }
 
-        Map.leftElevator.follow(Map.rightElevator);
+
         if (toggleUp == true) {
             Map.rightElevator.set(ControlMode.PercentOutput,
-                    elevatorPID.calculate(Map.rightElevator.getSelectedSensorPosition(), -84000));
+                    elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -84000));
             if (Map.elevatorTop.get()) {
-                Map.rightElevator.setSelectedSensorPosition(-84000);
+                Map.leftElevator.setSelectedSensorPosition(-84000);
             }
         }
 
         if (toggleUp == false) {
             Map.rightElevator.set(ControlMode.PercentOutput,
-                    elevatorPID.calculate(Map.rightElevator.getSelectedSensorPosition(), 0));
+                    elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), 0));
 
             if (Map.elevatorBottom.get()) {
-                Map.rightElevator.setSelectedSensorPosition(0);
+                Map.leftElevator.setSelectedSensorPosition(0);
             }
         }
     }

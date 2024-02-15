@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -141,7 +142,7 @@ public class Map {
 
   // Intake
   public static TalonFX movementIntake = new TalonFX(18);
-  public static TalonSRX intakeLeft = new TalonSRX(19);
+  public static VictorSPX intakeLeft = new VictorSPX(19);
   public static TalonSRX intakeRight = new TalonSRX(20);
 
     // Sensor

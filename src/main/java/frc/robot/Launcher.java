@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,19 +15,27 @@ import frc.robot.Vision.RaspberryPi;
 public class Launcher {
 
   static boolean launcherReady = false;
-  public static PIDController pivotLauncher = new PIDController(0.5, 0.001, 0);
-
+  public static PIDController launcherPID = new PIDController(.00003,0.00,0.000001);
+     public static boolean toggleTarget = false;
   /**
    * Initializes the launcher by setting the selected feedback sensor.
    */
 
    public static void init() {
+    Map.launcherPivot.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
     Map.rightLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     Map.leftLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-    Map.launcherPivot.setNeutralMode(NeutralMode.Brake);
+    Map.launcherPivot.setSelectedSensorPosition(0);
+    Map.launcherPivot.setNeutralMode(NeutralMode.Coast);
 
 }
-
+public static void disable(boolean button){
+    if (button){      Map.launcherPivot.setNeutralMode(NeutralMode.Coast);}
+    
+    else{
+            Map.launcherPivot.setNeutralMode(NeutralMode.Brake);
+    }
+}
   /**
    * Powers up the launcher based on the button press.
    *
@@ -65,7 +74,41 @@ public class Launcher {
 
     double conversion = 2651;
     calculation = (calculation * conversion);
+
+    if (calculation<0){
+        calculation = 0;
+    }
     return calculation;
+  }
+ 
+    public static void test(boolean button1,boolean button2, boolean red) {
+       
+        double calculation;
+   
+     
+
+        if (red){
+            calculation = calculateAngle(RaspberryPi.getTagZ4());
+        }else if (red==false){
+            calculation = calculateAngle(RaspberryPi.getTagZ7());
+        }
+        if (button1) {
+            Map.launcherPivot.set(ControlMode.PercentOutput,launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -30000));
+            if (Map.pivotTop.get()==false) {
+                Map.launcherPivot.setSelectedSensorPosition(0);
+            }
+        }
+
+       else if (button2) {
+            Map.launcherPivot.set(ControlMode.PercentOutput, launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -21900));
+
+            if (Map.pivotTop.get()== false) {
+                Map.launcherPivot.setSelectedSensorPosition(0);
+            }
+        }else{
+                        Map.launcherPivot.set(ControlMode.PercentOutput,0);
+        }
+
   }
 
      /**
@@ -108,7 +151,7 @@ public class Launcher {
                 // change number later
                 //checks if it is ready
 
-                Map.launcherPivot.set(ControlMode.PercentOutput, pivotLauncher.calculate(Map.launcherPivot.getSelectedSensorPosition(),calculatedAngle));
+                Map.launcherPivot.set(ControlMode.PercentOutput, launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(),calculatedAngle));
                 if (Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition())-Math.abs(calculatedAngle))<800){
                     return true;
                 }
