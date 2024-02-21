@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * This class represents an intake mechanism for a robot.
  */
 public class Intake {
-    public static PIDController intakePID = new PIDController(.00003, 0.00, 0.000001);
+    public static PIDController intakePID = new PIDController(.00007, 0.000003, 0.00000);
     private static boolean toggleOut = false;
     private static boolean toggleScore = false;
     private static int trippleToggle = 1;
@@ -23,10 +23,19 @@ public class Intake {
         toggleOut = false;
         toggleScore = false;
         Map.movementIntake.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+       
         Map.intakeRight.setInverted(true);
+
         Map.movementIntake.setSelectedSensorPosition(0);
         Map.movementIntake.setNeutralMode(NeutralMode.Brake);
         trippleToggle = 1;
+        Map.movementIntake.config_kP(0, 0.62);
+        Map.movementIntake.config_kI(0, 0.00001);
+        Map.movementIntake.config_kD(0, 0);
+         Map.rightLauncher.config_kP(0,1);
+        Map.leftLauncher.config_kP(0,1);
+        Map.rightLauncher.config_kI(0,.1);
+        Map.leftLauncher.config_kI(0,.1);
     }
 
     public static void disable(boolean button) {
@@ -120,22 +129,22 @@ public class Intake {
         }
     }
 
-    public static void test(boolean toggle1, boolean toggle2) {
-    SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 21900) );
+    public static void test(boolean toggle1, boolean toggle2,boolean button3) {
+    SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 31900) );
         if (toggle2) {
             toggleScore = !toggleScore;
         }
         if (toggle1) {
             toggleOut = !toggleOut;
-            if (Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 21900) > 1000) {
+            if (Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 29900) > 1000) {
                 toggleOut = false;
             }
         }
 
-        if (toggle1 == true && Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 21900) < 1000 && Map.lightStop.get()==false) {
+        if (toggle1 == true && Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 29900) < 1000 && Map.lightStop.get()==false) {
             trippleToggle = 2;
 
-        } else if (toggle1 == false || Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 21900) > 1000 || Map.lightStop.get()==true) {
+        } else if (toggle1 == false || Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 29900) > 1000 || Map.lightStop.get()==true) {
             if (toggleScore == true) {
                 trippleToggle = 3;
 
@@ -145,16 +154,50 @@ public class Intake {
             Map.movementIntake.set(ControlMode.PercentOutput, 0);
         }
         if (trippleToggle == 2) {
-            Map.movementIntake.set(ControlMode.PercentOutput,
-                    intakePID.calculate(Map.movementIntake.getSelectedSensorPosition(), 80000));
+            Map.movementIntake.set(ControlMode.PercentOutput,intakePID.calculate(Map.movementIntake.getSelectedSensorPosition(),99000));
+                    Map.intakeLeft.set(ControlMode.PercentOutput, .3);
+                    Map.intakeRight.set(ControlMode.PercentOutput, -.3);
         }
 
        else if (trippleToggle == 3) {
-            Map.movementIntake.set(ControlMode.PercentOutput,
+             Map.movementIntake.set(ControlMode.PercentOutput,
                     intakePID.calculate(Map.movementIntake.getSelectedSensorPosition(), 37000));
+            
+              
+          //  Map.movementIntake.set(ControlMode.Position, 34500);
+                
+                       if(button3)  {
+                        if(Map.leftElevator.getSelectedSensorPosition()<-20000){
+                        Map.intakeLeft.set(ControlMode.PercentOutput, -1);
+                    Map.intakeRight.set(ControlMode.PercentOutput, 1);
+                }else{
+                        Map.intakeLeft.set(ControlMode.PercentOutput, 1);
+                    Map.intakeRight.set(ControlMode.PercentOutput, -1);
+                }
+                       }else{
+                            Map.intakeLeft.set(ControlMode.PercentOutput, .0);
+                    Map.intakeRight.set(ControlMode.PercentOutput, .0);
+                       }
         } else if (trippleToggle == 1) {
+
             Map.movementIntake.set(ControlMode.PercentOutput,
                     intakePID.calculate(Map.movementIntake.getSelectedSensorPosition(), 0));
+            //  Map.movementIntake.set(ControlMode.Position, 0);
+
+                      if(button3)  {
+
+   if(Map.leftElevator.getSelectedSensorPosition()<-20000){
+                        Map.intakeLeft.set(ControlMode.PercentOutput, -1);
+                    Map.intakeRight.set(ControlMode.PercentOutput, 1);
+                }else{
+                        Map.intakeLeft.set(ControlMode.PercentOutput, 1);
+                    Map.intakeRight.set(ControlMode.PercentOutput, -1);
+                }
+                  
+                       }else{
+                            Map.intakeLeft.set(ControlMode.PercentOutput, .0);
+                    Map.intakeRight.set(ControlMode.PercentOutput, .0);
+                       }
 
             if (Map.intakeStop.get()) {
                 Map.movementIntake.setSelectedSensorPosition(0);

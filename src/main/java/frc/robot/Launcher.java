@@ -15,7 +15,7 @@ import frc.robot.Vision.RaspberryPi;
 public class Launcher {
 
   static boolean launcherReady = false;
-  public static PIDController launcherPID = new PIDController(.00003,0.00,0.000001);
+  public static PIDController launcherPID = new PIDController(.00005,0.00,0.000001);
      public static boolean toggleTarget = false;
   /**
    * Initializes the launcher by setting the selected feedback sensor.
@@ -26,7 +26,7 @@ public class Launcher {
     Map.rightLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     Map.leftLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     Map.launcherPivot.setSelectedSensorPosition(0);
-    Map.launcherPivot.setNeutralMode(NeutralMode.Coast);
+    Map.launcherPivot.setNeutralMode(NeutralMode.Brake);
 
 }
 public static void disable(boolean button){
@@ -93,15 +93,18 @@ public static void disable(boolean button){
             calculation = calculateAngle(RaspberryPi.getTagZ7());
         }
         if (button1) {
-            Map.launcherPivot.set(ControlMode.PercentOutput,launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -30000));
+            Map.launcherPivot.set(ControlMode.PercentOutput,launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), 0));
             if (Map.pivotTop.get()==false) {
                 Map.launcherPivot.setSelectedSensorPosition(0);
             }
         }
 
        else if (button2) {
-            Map.launcherPivot.set(ControlMode.PercentOutput, launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -21900));
-
+        if(Map.leftElevator.getSelectedSensorPosition()<-20000){
+          Map.launcherPivot.set(ControlMode.PercentOutput, launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -36900));
+        }else{
+           Map.launcherPivot.set(ControlMode.PercentOutput, launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -29900));
+        }
             if (Map.pivotTop.get()== false) {
                 Map.launcherPivot.setSelectedSensorPosition(0);
             }

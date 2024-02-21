@@ -12,19 +12,19 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Vision.RaspberryPi;
 
-    public class Elevator {
-    private static boolean toggleUp = false;
+public class Elevator {
+    public static boolean toggleUp = false;
     /**
      * The PIDController used for elevator position control.
      */
     public static PIDController elevatorPID = new PIDController(
-        .00008,
-        0.00,
-        0.000001
-    );
+            .0001,
+            0.000001,
+            0.00000);
 
     /**
-     * Initializes the elevator by setting the neutral mode, sensor positions, and inversion.
+     * Initializes the elevator by setting the neutral mode, sensor positions, and
+     * inversion.
      */
     public static void init() {
         Map.leftElevator.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
@@ -35,27 +35,49 @@ import frc.robot.Vision.RaspberryPi;
         Map.leftElevator.setSelectedSensorPosition(0, 0, 0);
 
         Map.rightElevator.setInverted(true);
+        toggleUp = false;
+
     }
-
+    public static void disable(boolean button){
+        if (button){      Map.leftElevator.setNeutralMode(NeutralMode.Coast);
+             Map.rightElevator.setNeutralMode(NeutralMode.Coast);
+        }
+        
+        else{
+                Map.leftElevator.setNeutralMode(NeutralMode.Brake);
+                Map.rightElevator.setNeutralMode(NeutralMode.Brake);
+        }
+    }
     public static void test(boolean button1, double axis) {
+        SmartDashboard.putNumber("EVelocity", Map.leftElevator.getSelectedSensorVelocity());
 
-        if (button1){
+        if (button1) {
             toggleUp = !toggleUp;
         }
 
-
         if (toggleUp == true) {
+
+           
+
             Map.rightElevator.set(ControlMode.PercentOutput,
                     elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -84000));
+
+            Map.leftElevator.follow(Map.rightElevator);
+
             if (Map.elevatorTop.get()) {
                 Map.leftElevator.setSelectedSensorPosition(-84000);
             }
+
+            
         }
 
         if (toggleUp == false) {
+
             Map.rightElevator.set(ControlMode.PercentOutput,
                     elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), 0));
+            Map.leftElevator.follow(Map.rightElevator);
 
+            Map.launcherPivot.set(ControlMode.PercentOutput, 0);
             if (Map.elevatorBottom.get()) {
                 Map.leftElevator.setSelectedSensorPosition(0);
             }
@@ -69,7 +91,7 @@ import frc.robot.Vision.RaspberryPi;
      * @param button2 The state of button 2.
      * @param button3 The state of button 3.
      * @param button4 The state of button 4.
-     * @param axis The value of the elevator axis.
+     * @param axis    The value of the elevator axis.
      */
     public static void run(boolean button1, boolean button2, boolean button3, boolean button4, double axis) {
         // change these
@@ -87,7 +109,7 @@ import frc.robot.Vision.RaspberryPi;
         }
 
         // change this
-         Map.rightElevator.follow(Map.leftElevator);
+        Map.rightElevator.follow(Map.leftElevator);
         int upperLimit = -84000;
         if (button1) {
             toggle1 = true;
