@@ -4,6 +4,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Map;
+import frc.robot.Swerve;
 
 /**
  * The RaspberryPi class provides methods to interact with vision data from a Raspberry Pi.
@@ -16,7 +18,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *blue is 7, red is 4
  */
 public class RaspberryPi {
+  public static boolean targetGamePieceToggle = false;
+     public static double startYaw;
 
+
+  public static void init(){
+     targetGamePieceToggle = false;
+  }
   /**
    * The network table used for vision data.
    */
@@ -27,12 +35,12 @@ public class RaspberryPi {
   /**
    * The PID controller used for targeting a specific value.
    */
-  public static PIDController targetPid = new PIDController(0.008, 0, 0);
+  public static PIDController targetPid = new PIDController(0.02, 0, 0);
 
   /**
    * The PID controller used for driving to a specific value.
    */
-  public static PIDController driveToPid = new PIDController(1, 0.001, 0);
+  public static PIDController driveToPid = new PIDController(.08, 0.001, 0);
 
   /**
    * Retrieves the X coordinate of April Tag 4 relative to the robot.
@@ -112,16 +120,27 @@ public class RaspberryPi {
    * @return The X coordinate of the game piece.
    */
   public static double gamePieceX() {
-    return table.getEntry("gamepiece_robot_x").getDouble(0.0);
+     
+    if ( table.getEntry("gamepiece_robot_x").getDouble(0.0) == -999){
+      return 0;
+    }else{
+       return table.getEntry("gamepiece_robot_x").getDouble(0.0);
+    }
   }
+
 
   /**
    * Retrieves the Z coordinate of the game piece relative to the robot.
    *
    * @return The Z coordinate of the game piece.
    */
-  public static double gamePieceZ() {
-    return table.getEntry("gamepiece_robot_z").getDouble(0.0);
+  public static double gamePieceY() {
+   
+    if ( table.getEntry("gamepiece_robot_z").getDouble(0.0) == -999){
+      return 0;
+    }else{
+       return table.getEntry("gamepiece_robot_z").getDouble(0.0);
+    }
   }
 
   /**
@@ -157,13 +176,21 @@ public class RaspberryPi {
   ) {
     if (red) {
       if (button) {
+        if (getTagX4()==-999){
+          return axis;
+        }else{
         return -targetPid.calculate(getTagX4());
+        }
       } else {
         return axis;
       }
     } else {
       if (button) {
-        return -targetPid.calculate(getTagX7());
+        if (getTagX7() == -999){
+          return axis;
+        }else{
+        return targetPid.calculate(getTagX7());
+        }
       } else {
         return axis;
       }
@@ -175,8 +202,23 @@ public class RaspberryPi {
    *
    * @return The target value for the game piece.
    */
-  public static double targetGamePiece() {
-    return targetPid.calculate(gamePieceX());
+  public static void targetGamePiece(boolean toggleButton, boolean button, boolean toggleRelease) {
+
+    if (toggleButton){ 
+ 
+      startYaw = Swerve.gyro.getYaw();
+    }
+    if (Map.lightStop.get()|| toggleRelease){
+      
+            Swerve.gyro.setYaw(startYaw);
+    }
+    if (button){
+      Map.swerve.drive(0,0,-targetPid.calculate(gamePieceX()));
+      if(Math.abs(gamePieceX())<3){
+        Swerve.gyro.setYaw(0);
+          Map.swerve.drive(0,-driveToPid.calculate(gamePieceY()),-targetPid.calculate(gamePieceX()));
+      }
+    }
   }
 
   /**
@@ -185,6 +227,10 @@ public class RaspberryPi {
    * @return The drive-to value for the game piece.
    */
   public static double driveToGamePiece() {
-    return driveToPid.calculate(gamePieceZ());
+    if (Map.lightStop.get()){
+      return 0;
+    }else{
+    return -driveToPid.calculate(gamePieceY());
+    }
   }
 }

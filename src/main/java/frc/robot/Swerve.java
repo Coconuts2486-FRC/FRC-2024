@@ -176,8 +176,8 @@ public class Swerve {
    */
   public void run(double x, double y, double z, boolean track) {
     double twistAdjustment = 0;
-    double twistDeadband = 0.175;
-    double directionDeadband = 0.15;
+    double twistDeadband = 0.275;
+    double directionDeadband = 0.2;
 
     if (Math.abs(z) < twistDeadband || track) {
       z = 0.0;

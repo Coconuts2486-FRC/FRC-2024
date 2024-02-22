@@ -17,10 +17,10 @@ public class AutoPaths {
             a = a++;
         }
         if (a==2){
-            if (RaspberryPi.gamePieceZ()<=4||RaspberryPi.gamePieceZ()>=60){
+            if (RaspberryPi.gamePieceY()<=4||RaspberryPi.gamePieceY()>=60){
             AutoMethod.autoDriveY(2000);
              a = a++;
-            } else if (RaspberryPi.gamePieceZ()>4&&RaspberryPi.gamePieceZ()<60){
+            } else if (RaspberryPi.gamePieceY()>4&&RaspberryPi.gamePieceY()<60){
                 a = a++;
             }
         }

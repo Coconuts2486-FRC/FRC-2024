@@ -13,9 +13,11 @@ import frc.robot.Vision.RaspberryPi;
  * It provides methods to control the launcher.
  */
 public class Launcher {
-
+static boolean goTo45 = false;
   static boolean launcherReady = false;
-  public static PIDController launcherPID = new PIDController(.00005,0.00,0.000001);
+  public static PIDController launcherPID = new PIDController(.00008,0.00000,0.00000);
+    public static PIDController launcherPID2 = new PIDController(.000082,0.00000,0.00000);
+  
      public static boolean toggleTarget = false;
   /**
    * Initializes the launcher by setting the selected feedback sensor.
@@ -27,6 +29,13 @@ public class Launcher {
     Map.leftLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     Map.launcherPivot.setSelectedSensorPosition(0);
     Map.launcherPivot.setNeutralMode(NeutralMode.Brake);
+     Map.rightLauncher.setInverted(true);
+     goTo45 = false;
+     
+
+     Map.launcherPivot.config_kP(0, 0.0055);
+     Map.launcherPivot.config_kI(0, 0.0000);
+     Map.launcherPivot.config_kD(0, 0.000001);
 
 }
 public static void disable(boolean button){
@@ -81,35 +90,53 @@ public static void disable(boolean button){
     return calculation;
   }
  
-    public static void test(boolean button1,boolean button2, boolean red) {
+    public static void test(boolean button1,boolean button2, boolean button3, double axis, boolean red) {
        
         double calculation;
    
-     
-
+      if (button2){
+        goTo45 = !goTo45;
+      }
         if (red){
             calculation = calculateAngle(RaspberryPi.getTagZ4());
         }else if (red==false){
             calculation = calculateAngle(RaspberryPi.getTagZ7());
         }
         if (button1) {
-            Map.launcherPivot.set(ControlMode.PercentOutput,launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), 0));
-            if (Map.pivotTop.get()==false) {
-                Map.launcherPivot.setSelectedSensorPosition(0);
+          if (Map.pivotTop.get()==false){
+               Map.launcherPivot.setSelectedSensorPosition(0);
+             Map.launcherPivot.set(ControlMode.PercentOutput,-0);
+          }
+            else if (Map.pivotTop.get()==true) {
+                 Map.launcherPivot.set(ControlMode.PercentOutput,.5);
             }
         }
 
-       else if (button2) {
+
+  else if(button3) {
+              Map.launcherPivot.set(ControlMode.PercentOutput, axis*.3);
+              if(axis >- .022){
+                 Map.launcherPivot.set(ControlMode.PercentOutput, -.022);
+              }
+          }
+
+       else if (goTo45) {
         if(Map.leftElevator.getSelectedSensorPosition()<-20000){
-          Map.launcherPivot.set(ControlMode.PercentOutput, launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -36900));
+         Map.launcherPivot.set(ControlMode.PercentOutput, launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -36900));
+       
         }else{
-           Map.launcherPivot.set(ControlMode.PercentOutput, launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -29900));
+           Map.launcherPivot.set(ControlMode.PercentOutput, launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -23900));
+
         }
             if (Map.pivotTop.get()== false) {
                 Map.launcherPivot.setSelectedSensorPosition(0);
             }
-        }else{
-                        Map.launcherPivot.set(ControlMode.PercentOutput,0);
+    
+
+          } 
+        
+        else{
+            Map.launcherPivot.set(ControlMode.PercentOutput,0);
         }
 
   }
