@@ -179,8 +179,8 @@ public class Intake {
         if (trippleToggle == 2) {
             //Map.movementIntake.set(ControlMode.PercentOutput,intakePID.calculate(Map.movementIntake.getSelectedSensorPosition(),98000));
             Map.movementIntake.set(ControlMode.Position,98000);
-                    Map.intakeLeft.set(ControlMode.PercentOutput, .3);
-                    Map.intakeRight.set(ControlMode.PercentOutput, -.3);
+                    Map.intakeLeft.set(ControlMode.PercentOutput, .4);
+                    Map.intakeRight.set(ControlMode.PercentOutput, -.4);
         }
         //if tripple toggle is 3, go to general shooting position and enable the ability to shoot
        else if (trippleToggle == 3) {

@@ -19,7 +19,7 @@ import frc.robot.Swerve;
  */
 public class RaspberryPi {
   public static boolean targetGamePieceToggle = false;
-     public static double startYaw;
+     public static double saveYaw;
 
 
   public static void init(){
@@ -203,18 +203,15 @@ public class RaspberryPi {
    * @return The target value for the game piece.
    */
   public static void targetGamePiece(boolean toggleButton, boolean button, boolean toggleRelease) {
+    if(toggleButton){
+      saveYaw = 0-Swerve.gyro.getYaw();
+    }
 
-    if (toggleButton){ 
- 
-      startYaw = Swerve.gyro.getYaw();
-    }
-    if (Map.lightStop.get()|| toggleRelease){
-      
-            Swerve.gyro.setYaw(startYaw);
-    }
-    if (button){
+
+
+    if (button && Map.lightStop.get()== false){
       Map.swerve.drive(0,0,-targetPid.calculate(gamePieceX()));
-      if(Math.abs(gamePieceX())<3){
+      if(Math.abs(gamePieceX())<7){
         Swerve.gyro.setYaw(0);
           Map.swerve.drive(0,-driveToPid.calculate(gamePieceY()),-targetPid.calculate(gamePieceX()));
       }

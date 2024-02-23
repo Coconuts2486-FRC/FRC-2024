@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
    * for any
    * initialization code.
    */
+  public static double saveYaw;
   double startTime;
   static double teleopStart;
 public static double teleopTime;
@@ -150,28 +151,37 @@ SmartDashboard.putBoolean("launchReady", launchReady);
 
     // CoDriver code
     
-    if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == true){
-          Map.swerve.realignToField(Map.coDriver.getRawButton(1));
-      // if (Map.coDriver.getRawAxis(2)>.7 ){
-      //    Map.swerve.drive(0,RaspberryPi.driveToGamePiece(),RaspberryPi.targetGamePiece());
+    // if (  Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == true){
+    //       Map.swerve.realignToField(Map.coDriver.getRawButton(1));
+    //   // if (Map.coDriver.getRawAxis(2)>.7 ){
+    //   //    Map.swerve.drive(0,RaspberryPi.driveToGamePiece(),RaspberryPi.targetGamePiece());
 
-      // }
-      //else{
-      Map.swerve.drive(Map.coDriver.getRawAxis(4), Map.coDriver.getRawAxis(5),
-        RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(8),
-         -Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
-    //  }
-        Elevator.test(Map.driver.getRawButtonPressed(1),Map.driver.getRawAxis(5));
-          Intake.test(Map.coDriver.getRawButtonPressed(5),Map.driver.getRawButtonPressed(5),Map.driver.getRawButton(9));
+    //   // }
+    //   //else{
+    //   Map.swerve.drive(Map.coDriver.getRawAxis(4), Map.coDriver.getRawAxis(5),
+    //     RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(8),
+    //      -Map.coDriver.getRawAxis(0) + (Map.driver.getRawAxis(5)*-.001),Misc.getSelectedColor()));
+    // //  }
+    //     Elevator.test(Map.driver.getRawButtonPressed(1),Map.driver.getRawAxis(5));
+    //       Intake.test(Map.coDriver.getRawButtonPressed(5),Map.driver.getRawButtonPressed(5),Map.driver.getRawButton(9));
          //   Launcher.test(Map.driver.getRawButton(6), Misc.getSelectedColor());
            // Intake.intakeSpin();
        // Elevator.run(Map.driver.getRawButtonPressed(1), Map.driver.getRawButtonPressed(2), Map.driver.getRawButtonPressed(3), Map.driver.getRawButtonPressed(4), Map.driver.getRawAxis(2) );
     //Driver code
     
-      } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == false){
-             Map.swerve.realignToField(Map.driver.getRawButton(1));
-        if (Map.driver.getRawButton(5) ){
-      RaspberryPi.targetGamePiece(Map.driver.getRawButtonPressed(6),Map.driver.getRawButton(6),Map.driver.getRawButtonReleased(6));
+      // } else if (Misc.pov(Map.coDriver.getPOV(),Map.coDriver.getRawButtonPressed(8)) == false){
+
+        //  ^
+        //  | un comment for codrive code
+       // if (Map.)
+             Map.swerve.realignToField(Map.driver.getRawButton(4));
+
+
+             if(Map.driver.getRawButtonReleased(6)){
+                Swerve.gyro.setYaw(RaspberryPi.saveYaw);
+             } 
+        if (Map.driver.getRawButton(2) && Map.lightStop.get()== false ){
+      RaspberryPi.targetGamePiece(Map.driver.getRawButtonPressed(2),Map.driver.getRawButton(2),Map.driver.getRawButtonReleased(2));
          } else{
          Map.swerve.drive(driverX, driverY,
         RaspberryPi.targetAprilTag(Map.driver.getRawButton(8), -driverZ + (driverY*-.001),Misc.getSelectedColor()));
@@ -220,7 +230,7 @@ SmartDashboard.putBoolean("launchReady", launchReady);
 
 
     
-  }
+  //}
 
   @Override
   public void disabledInit() {
