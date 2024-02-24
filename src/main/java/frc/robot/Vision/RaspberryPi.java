@@ -20,6 +20,7 @@ import frc.robot.Swerve;
 public class RaspberryPi {
   public static boolean targetGamePieceToggle = false;
      public static double saveYaw;
+     private static int zeroTrippleToggle;
 
 
   public static void init(){
@@ -35,7 +36,7 @@ public class RaspberryPi {
   /**
    * The PID controller used for targeting a specific value.
    */
-  public static PIDController targetPid = new PIDController(0.02, 0, 0);
+  public static PIDController targetPid = new PIDController(0.015, 0, 0.0000001);
 
   /**
    * The PID controller used for driving to a specific value.
@@ -203,17 +204,11 @@ public class RaspberryPi {
    * @return The target value for the game piece.
    */
   public static void targetGamePiece(boolean toggleButton, boolean button, boolean toggleRelease) {
-    if(toggleButton){
-      saveYaw = 0-Swerve.gyro.getYaw();
-    }
-
-
-
     if (button && Map.lightStop.get()== false){
       Map.swerve.drive(0,0,-targetPid.calculate(gamePieceX()));
       if(Math.abs(gamePieceX())<7){
         Swerve.gyro.setYaw(0);
-          Map.swerve.drive(0,-driveToPid.calculate(gamePieceY()),-targetPid.calculate(gamePieceX()));
+          Map.swerve.drive(0,-driveToPid.calculate(gamePieceY()),/*-targetPid.calculate(gamePieceX())*/0);
       }
     }
   }

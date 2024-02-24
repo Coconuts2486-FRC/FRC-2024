@@ -55,6 +55,10 @@ public class Intake {
     }
 
     public static void disable(boolean button) {
+        toggleOut = false;
+        toggleScore = false;
+        trippleToggle = 1;
+
         if (button) {
             Map.movementIntake.setNeutralMode(NeutralMode.Coast);
         } else {
@@ -145,32 +149,38 @@ public class Intake {
         }
     }
 // This is the one im using.
-    public static void test(boolean toggle1, boolean toggle2,boolean button3) {
+    public static void test(boolean toggle1, boolean toggle2,boolean button3,boolean button4,boolean autoScoreTrue) {
         // put number to smart dashboard
     SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) );
       // toggle for scoring position
+    //   trippleToggle = 1;
+    //    toggleScore = false;
+    //    toggleOut = false;
+
         if (button3){
             shotClock = Timer.getFPGATimestamp();
         }
-
-    if (toggle2) {
+        if (autoScoreTrue){
+            toggleScore = true;
+        }
+   else if (toggle2) {
             toggleScore = !toggleScore;
         }
-        if (toggle1) {
+       if (toggle1) {
             toggleOut = !toggleOut;
             if (Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) > 1000) {
                 toggleOut = false;
             }
         }
             // if button, and correct position, and light sensor, set the tripple toggle to 2
-        if (toggle1 == true && /*Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) < 1000 && */Map.lightStop.get()==false) {
+        if (toggle1 == true && Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) < 1000 && Map.lightStop.get()==false) {
             trippleToggle = 2;
             // if any are false, set it to 3 or 1 depending on if toggle score is true or false
-        } else if (toggle1 == false ||/*  Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) > 1000 ||*/ Map.lightStop.get()==true) {
-            if (toggleScore == true) {
+        } else if (toggle1 == false ||  Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) > 1000 || Map.lightStop.get()==true) {
+            if (toggleScore == true && Map.launcherPivot.getSelectedSensorPosition()<-20000) {
                 trippleToggle = 3;
 
-            } else if (toggleScore == false) {
+            } else if (toggleScore == false || Map.launcherPivot.getSelectedSensorPosition()>-20000)  {
                 trippleToggle = 1;
             }
             Map.movementIntake.set(ControlMode.PercentOutput, 0);
@@ -182,6 +192,13 @@ public class Intake {
                     Map.intakeLeft.set(ControlMode.PercentOutput, .4);
                     Map.intakeRight.set(ControlMode.PercentOutput, -.4);
         }
+        else if (button4){
+            Map.movementIntake.set(ControlMode.PercentOutput, -.3);
+            if(Map.intakeStop.get()){
+                 Map.movementIntake.set(ControlMode.PercentOutput, 0);
+                 Map.movementIntake.setSelectedSensorPosition(0);
+            }
+        }
         //if tripple toggle is 3, go to general shooting position and enable the ability to shoot
        else if (trippleToggle == 3) {
 
@@ -192,18 +209,22 @@ public class Intake {
               
           //  Map.movementIntake.set(ControlMode.Position, 34500);
             // if the shoot button is pressed, check if the elevator is above 20000, and shoot out if it is, shoot if it isn't    
-                       if(Robot.teleopTime - shotClock < .3){
+                       if(button3 && Map.leftLauncher.getSelectedSensorVelocity()>21000&&Map.rightLauncher.getSelectedSensorVelocity()>21000){
                         
                          
                         Map.intakeLeft.set(ControlMode.PercentOutput, 1);
                     Map.intakeRight.set(ControlMode.PercentOutput, -1);
                
-                }else{
+                 }if(Map.leftLauncher.getSelectedSensorVelocity()<19500||Map.rightLauncher.getSelectedSensorVelocity()<19500){
+
                         Map.intakeLeft.set(ControlMode.PercentOutput, 0);
                     Map.intakeRight.set(ControlMode.PercentOutput, -0);
                 
 
-                       }
+                 }
+                 
+               
+    
                        // if toggle is 1, go to zero position
         } else if (trippleToggle == 1) {
 

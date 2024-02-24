@@ -16,6 +16,7 @@ public class Swerve {
   private static double pi = Math.PI;
 
   public static PigeonIMU gyro = new PigeonIMU(14);
+  public static PigeonIMU gyro2 = new PigeonIMU(30);
   private XboxController driver = new XboxController(0);
   private int realign = 0;
   private int reinit = 1;
@@ -48,6 +49,7 @@ public class Swerve {
 
   public void init() {
     gyro.setYaw(0);
+    gyro2.setYaw(0);
     backRight.init();
     backLeft.init();
     frontRight.init();
@@ -61,6 +63,7 @@ public class Swerve {
   public static void reinit(boolean reinit) {
     if (reinit) {
       gyro.setYaw(0);
+      gyro2.setYaw(0);
       backRight.init();
       backLeft.init();
       frontRight.init();
@@ -164,6 +167,7 @@ public class Swerve {
   public void realignToField(boolean button) {
     if (button) {
       gyro.setYaw(0);
+      gyro2.setYaw(0);
     }
   }
 

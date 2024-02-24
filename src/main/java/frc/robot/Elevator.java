@@ -39,6 +39,8 @@ public class Elevator {
 
     }
     public static void disable(boolean button){
+       
+       toggleUp = false;
         if (button){      Map.leftElevator.setNeutralMode(NeutralMode.Coast);
              Map.rightElevator.setNeutralMode(NeutralMode.Coast);
         }
@@ -50,7 +52,7 @@ public class Elevator {
     }
     public static void test(boolean button1, double axis) {
         SmartDashboard.putNumber("EVelocity", Map.leftElevator.getSelectedSensorVelocity());
-
+        toggleUp = false;
         if (button1) {
             toggleUp = !toggleUp;
         }

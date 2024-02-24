@@ -15,7 +15,7 @@ import frc.robot.Vision.RaspberryPi;
 public class Launcher {
 static boolean goTo45 = false;
   static boolean launcherReady = false;
-  public static PIDController launcherPID = new PIDController(.00008,0.00000,0.00000);
+  public static PIDController launcherPID = new PIDController(.000067,0.00000,0.00000);
     public static PIDController launcherPID2 = new PIDController(.000082,0.00000,0.00000);
   
      public static boolean toggleTarget = false;
@@ -39,11 +39,12 @@ static boolean goTo45 = false;
 
 }
 public static void disable(boolean button){
-    if (button){      Map.launcherPivot.setNeutralMode(NeutralMode.Coast);}
+      goTo45 = false;
+      if (button){      Map.launcherPivot.setNeutralMode(NeutralMode.Coast);}
     
-    else{
+      else{
             Map.launcherPivot.setNeutralMode(NeutralMode.Brake);
-    }
+      }
 }
   /**
    * Powers up the launcher based on the button press.
@@ -90,11 +91,13 @@ public static void disable(boolean button){
     return calculation;
   }
  
-    public static void test(boolean button1,boolean button2, boolean button3, double axis, boolean red) {
+    public static void test(boolean button1,boolean button2, boolean button3, double axis, boolean red,boolean autoTrue) {
        
         double calculation;
-   
-      if (button2){
+   if (autoTrue){
+    goTo45 = true;
+   }
+     else if (button2){
         goTo45 = !goTo45;
       }
         if (red){
@@ -140,6 +143,32 @@ public static void disable(boolean button){
         }
 
   }
+
+  public static void launch(boolean button){
+    if(button){
+      Map.leftLauncher.set(ControlMode.Velocity, 21000);
+      Map.rightLauncher.set(ControlMode.Velocity, 21000);
+      SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
+          SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
+    }else{
+       Map.leftLauncher.set(ControlMode.PercentOutput, .0);
+      Map.rightLauncher.set(ControlMode.PercentOutput, -.0);
+    }
+  }
+
+
+public static void launchAuto(boolean button){
+    if(button){
+      Map.leftLauncher.set(ControlMode.Velocity, 21000);
+      Map.rightLauncher.set(ControlMode.Velocity, 21000);
+      SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
+          SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
+    }else{
+       Map.leftLauncher.set(ControlMode.Velocity, 10000);
+      Map.rightLauncher.set(ControlMode.Velocity, 10000);
+    }
+  }
+
 
      /**
    * Runs the launcher based on the left trigger value and the color of the target.
