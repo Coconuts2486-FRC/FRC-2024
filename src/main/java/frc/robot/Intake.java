@@ -43,8 +43,8 @@ public class Intake {
         Map.rightLauncher.configOpenloopRamp(0.1);
         
         
-        Map.rightLauncher.config_kF(0, 0.15);
-        Map.leftLauncher.config_kF(0, 0.15);
+        Map.rightLauncher.config_kF(0, 0.13);
+        Map.leftLauncher.config_kF(0, 0.13);
         Map.rightLauncher.config_kP(0, 0.7);
         Map.leftLauncher.config_kP(0, 0.7);
         Map.rightLauncher.config_kI(0, 0.005);
@@ -149,7 +149,7 @@ public class Intake {
         }
     }
 // This is the one im using.
-    public static void test(boolean toggle1, boolean toggle2,boolean button3,boolean button4,boolean autoScoreTrue) {
+    public static void test(boolean toggle1, boolean toggle2,boolean button3,boolean button4,boolean autoScoreTrue,double intakeAxis, double outtakeAxis) {
         // put number to smart dashboard
     SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) );
       // toggle for scoring position
@@ -189,8 +189,8 @@ public class Intake {
         if (trippleToggle == 2) {
             //Map.movementIntake.set(ControlMode.PercentOutput,intakePID.calculate(Map.movementIntake.getSelectedSensorPosition(),98000));
             Map.movementIntake.set(ControlMode.Position,98000);
-                    Map.intakeLeft.set(ControlMode.PercentOutput, .4);
-                    Map.intakeRight.set(ControlMode.PercentOutput, -.4);
+                    Map.intakeLeft.set(ControlMode.PercentOutput, .39);
+                    Map.intakeRight.set(ControlMode.PercentOutput, -.39);
         }
         else if (button4){
             Map.movementIntake.set(ControlMode.PercentOutput, -.3);
@@ -217,8 +217,8 @@ public class Intake {
                
                  }if(Map.leftLauncher.getSelectedSensorVelocity()<19500||Map.rightLauncher.getSelectedSensorVelocity()<19500){
 
-                        Map.intakeLeft.set(ControlMode.PercentOutput, 0);
-                    Map.intakeRight.set(ControlMode.PercentOutput, -0);
+                        Map.intakeLeft.set(ControlMode.PercentOutput, (intakeAxis-outtakeAxis));
+                    Map.intakeRight.set(ControlMode.PercentOutput, (outtakeAxis-intakeAxis)*1.4);
                 
 
                  }
@@ -239,19 +239,21 @@ public class Intake {
                 Map.intakeRight.set(ControlMode.PercentOutput, 1);
                   
             
-             } else if(button3)  {
-
-   if(Map.leftElevator.getSelectedSensorPosition()<-20000){
-                        Map.intakeLeft.set(ControlMode.PercentOutput, -1);
-                    Map.intakeRight.set(ControlMode.PercentOutput, 1);
-                }else if (button3) {
+             } else   if(button3 && Map.leftLauncher.getSelectedSensorVelocity()>21000&&Map.rightLauncher.getSelectedSensorVelocity()>21000){
+                        
+                         
                         Map.intakeLeft.set(ControlMode.PercentOutput, 1);
                     Map.intakeRight.set(ControlMode.PercentOutput, -1);
-                }
-                  
-                       }else{
-                            Map.intakeLeft.set(ControlMode.PercentOutput, .0);
-                    Map.intakeRight.set(ControlMode.PercentOutput, .0);
+               
+                 }if(Map.leftLauncher.getSelectedSensorVelocity()<19500||Map.rightLauncher.getSelectedSensorVelocity()<19500){
+
+                        Map.intakeLeft.set(ControlMode.PercentOutput, (intakeAxis-outtakeAxis));
+                    Map.intakeRight.set(ControlMode.PercentOutput, (outtakeAxis-intakeAxis)*1.4);
+                
+
+                 }else{
+                            Map.intakeLeft.set(ControlMode.PercentOutput, (intakeAxis-outtakeAxis));
+                    Map.intakeRight.set(ControlMode.PercentOutput, (outtakeAxis-intakeAxis)*1.4);
                        }
 // re-zero intake if limit switch is pressed.
             if (Map.intakeStop.get()) {

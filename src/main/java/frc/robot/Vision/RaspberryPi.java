@@ -20,7 +20,7 @@ import frc.robot.Swerve;
 public class RaspberryPi {
   public static boolean targetGamePieceToggle = false;
      public static double saveYaw;
-     private static int zeroTrippleToggle;
+
 
 
   public static void init(){
@@ -36,12 +36,12 @@ public class RaspberryPi {
   /**
    * The PID controller used for targeting a specific value.
    */
-  public static PIDController targetPid = new PIDController(0.015, 0, 0.0000001);
+  public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
 
   /**
    * The PID controller used for driving to a specific value.
    */
-  public static PIDController driveToPid = new PIDController(.08, 0.001, 0);
+  public static PIDController driveToPid = new PIDController(.03, 0.001, 0);
 
   /**
    * Retrieves the X coordinate of April Tag 4 relative to the robot.
@@ -203,14 +203,26 @@ public class RaspberryPi {
    *
    * @return The target value for the game piece.
    */
-  public static void targetGamePiece(boolean toggleButton, boolean button, boolean toggleRelease) {
-    if (button && Map.lightStop.get()== false){
+  public static void targetGamePiece(boolean button, boolean released) {
+    if (button && Map.lightStop.get()== false&&Map.movementIntake.getSelectedSensorPosition()>90000){
       Map.swerve.drive(0,0,-targetPid.calculate(gamePieceX()));
       if(Math.abs(gamePieceX())<7){
         Swerve.gyro.setYaw(0);
-          Map.swerve.drive(0,-driveToPid.calculate(gamePieceY()),/*-targetPid.calculate(gamePieceX())*/0);
+          Map.swerve.drive(0,-driveToPid.calculate(gamePieceY()),-targetPid.calculate(gamePieceX()));
       }
     }
+    if (released){
+      
+      
+          
+        Swerve.gyro.setYaw(Swerve.gyro2.getYaw());
+        //Map.backLeft.autoInit(Swerve.blOffset);
+        // Map.backRight.autoInit(Swerve.brOffset);
+        //  Map.frontLeft.autoInit(Swerve.flOffset);
+        //   Map.frontRight.autoInit(Swerve.frOffset);
+        // Swerve.modInit();
+      } 
+    
   }
 
   /**

@@ -48,8 +48,8 @@ public class Swerve {
   }
 
   public void init() {
-    gyro.setYaw(0);
-    gyro2.setYaw(0);
+    gyro.setYaw(180);
+    gyro2.setYaw(180);
     backRight.init();
     backLeft.init();
     frontRight.init();
@@ -62,14 +62,23 @@ public class Swerve {
    */
   public static void reinit(boolean reinit) {
     if (reinit) {
-      gyro.setYaw(0);
-      gyro2.setYaw(0);
-      backRight.init();
+      gyro.setYaw(180);
+      gyro2.setYaw(180);
+      backLeft.autoInit(blOffset);
+    backRight.autoInit(brOffset);
+    frontLeft.autoInit(flOffset);
+    frontRight.autoInit(frOffset);
+      gyro.configFactoryDefault();
+    }
+
+
+  }
+
+  public static void modInit(){
+          backRight.init();
       backLeft.init();
       frontRight.init();
       frontLeft.init();
-      gyro.configFactoryDefault();
-    }
   }
 
   /**
@@ -166,8 +175,8 @@ public class Swerve {
    */
   public void realignToField(boolean button) {
     if (button) {
-      gyro.setYaw(0);
-      gyro2.setYaw(0);
+      gyro.setYaw(180);
+      gyro2.setYaw(180);
     }
   }
 

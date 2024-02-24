@@ -159,8 +159,8 @@ public static void disable(boolean button){
 
 public static void launchAuto(boolean button){
     if(button){
-      Map.leftLauncher.set(ControlMode.Velocity, 21000);
-      Map.rightLauncher.set(ControlMode.Velocity, 21000);
+      Map.leftLauncher.set(ControlMode.Velocity, 21500);
+      Map.rightLauncher.set(ControlMode.Velocity, 21500);
       SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
           SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
     }else{

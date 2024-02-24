@@ -22,7 +22,7 @@ public class AutoMethod {
     }
 
     public static void driveToGamepiece(){
-       RaspberryPi.targetGamePiece(true, true,true);
+       RaspberryPi.targetGamePiece(true,false);
     }
 
     public static void targetApriltag(boolean red){
