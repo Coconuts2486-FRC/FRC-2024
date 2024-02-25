@@ -44,6 +44,7 @@ public static double teleopTime;
   static double zeroTime;
   public static SendableChooser red = new SendableChooser<>();
    public static boolean launchReady;
+   public static PIDController  zeroPID= new PIDController(.01,0,0) ;
   @Override
   public void robotInit() {
  
@@ -60,7 +61,7 @@ public static double teleopTime;
   @Override
   public void robotPeriodic() {
 
-     SmartDashboard.putNumber("elevator",Map.launcherPivot.getSelectedSensorPosition());
+     SmartDashboard.putNumber("elevator",Map.leftElevator.getSelectedSensorPosition());
     Misc.putColor();
     SmartDashboard.putBoolean("DIOFORELEVATORB",    Map.elevatorBottom.get());
     SmartDashboard.putBoolean("DIOFORELEVATORT",    Map.elevatorTop.get());
@@ -88,16 +89,18 @@ public static double teleopTime;
   @Override
   public void autonomousInit() {
     AutoPaths.autoInit();
-    autoStart = Timer.getFPGATimestamp();
+    
     // startTime = Auto.getStartTime();
   }
 
   @Override
   public void autonomousPeriodic() {
+    SmartDashboard.putNumber("a", AutoPaths.a);
+    autoStart = Timer.getFPGATimestamp();
       double time = Timer.getFPGATimestamp()-autoStart;
         SmartDashboard.putNumber("timer", time);
 
-      AutoPaths.autoOne(Misc.getSelectedColor());
+      AutoPaths.autoOne(Misc.getSelectedColor(),autoStart);
    
   }
 
@@ -109,23 +112,32 @@ public static double teleopTime;
     Map.swerve.init();
     Elevator.init();
   //  Launcher.init();
-    Intake.init();
+   
     
 
   }
 
   @Override
   public void teleopPeriodic() {
-
+SmartDashboard.putNumber("GYRO2", 0-Swerve.gyro2.getYaw());
+SmartDashboard.putNumber("leftIntake", Map.intakeLeft.getSelectedSensorVelocity());
+SmartDashboard.putNumber("GYRO", 0-Swerve.gyro.getYaw());
      teleopTime = Timer.getFPGATimestamp();
-   
+    if(Map.driver.getRawButton(6)&& Map.lightStop.get()){
+    Map.backLeft.autoInit(Swerve.blOffset);
+       Map.backRight.autoInit(Swerve.brOffset);
+          Map.frontLeft.autoInit(Swerve.flOffset);
+             Map.frontRight.autoInit(Swerve.frOffset);
+     } if(Map.driver.getRawButtonReleased(6)){
+     Swerve.gyro.setYaw(Swerve.gyro2.getYaw() );
+     }
 
     driverZ = Map.driver.getRawAxis(0) ;
     if (Math.abs(driverZ)<.15){
       driverZ = 0;
     }
 
-
+    
      driverX = Map.driver.getRawAxis(4) ;
     if (Math.abs(driverX)<.15){
       driverX = 0;
@@ -135,7 +147,6 @@ public static double teleopTime;
     if (Math.abs(driverY)<.15){
       driverY = 0;
     }
-
 
     SmartDashboard.putNumber("X", driverX);
     
@@ -183,8 +194,8 @@ SmartDashboard.putBoolean("launchReady", launchReady);
              Map.swerve.reinit(Map.driver.getRawButton(4));
 
 
-        if (Map.driver.getRawButton(2) && Map.lightStop.get()== false ){
-      RaspberryPi.targetGamePiece(Map.driver.getRawButton(2), Map.driver.getAButtonReleased());
+        if (Map.driver.getRawButton(6) && Map.lightStop.get()== false ){
+      RaspberryPi.targetGamePiece(Map.driver.getRawButton(6), Map.driver.getAButtonReleased());
          } else{
          Map.swerve.drive(driverX, driverY,
         RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(5), -driverZ + (driverY*-.001),Misc.getSelectedColor()));
@@ -196,16 +207,16 @@ SmartDashboard.putBoolean("launchReady", launchReady);
   
 
     //.Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2), Map.coDriver.getRawButtonPressed(3), Map.coDriver.getRawButtonPressed(4), Map.coDriver.getRawAxis(1));
-    Elevator.test(Map.coDriver.getRawButtonPressed(1),Map.coDriver.getRawAxis(5));
+    Elevator.test(Map.coDriver.getRawButtonPressed(1),Map.coDriver.getRawAxis(5),Map.coDriver.getRawButtonPressed(2),Map.coDriver.getRawButtonPressed(3));
     SmartDashboard.putNumber("intake", Map.movementIntake.getSelectedSensorPosition());
-if (Map.driver.getRawButton(2)){
-   Intake.test(Map.driver.getRawButton(2),Map.coDriver.getRawButtonPressed(4),Map.coDriver.getRawButton(6),Map.coDriver.getRawButton(7),false,Map.driver.getRawAxis(3),Map.driver.getRawAxis(2));
+if (Map.driver.getRawButton(6)){
+   Intake.test(Map.driver.getRawButton(6),Map.coDriver.getRawButtonPressed(4),Map.coDriver.getRawButton(6),Map.driver.getRawButton(1),Map.coDriver.getRawButton(5),false,Map.driver.getRawAxis(3),Map.driver.getRawAxis(2),false,Misc.getSelectedColor());
 }else{
-   Intake.test(Map.driver.getRawButton(6),Map.coDriver.getRawButtonPressed(4),Map.coDriver.getRawButton(6),Map.coDriver.getRawButton(7),false,Map.driver.getRawAxis(3),Map.driver.getRawAxis(2));
+   Intake.test(Map.driver.getRawButton(2),Map.coDriver.getRawButtonPressed(4),Map.coDriver.getRawButton(6),Map.driver.getRawButton(1),Map.coDriver.getRawButton(5),false,Map.driver.getRawAxis(3),Map.driver.getRawAxis(2),false,Misc.getSelectedColor());
 }
    //Intake.test(Map.driver.getRawButton(6),Map.coDriver.getRawButtonPressed(4),Map.coDriver.getRawButton(6),Map.coDriver.getRawButton(7),false);
     SmartDashboard.putNumber("launcher", Map.launcherPivot.getSelectedSensorPosition());
-     Launcher.test(Map.coDriver.getRawButton(8),Map.coDriver.getRawButtonPressed(3), Map.coDriver.getRawButton(7),Map.coDriver.getRawAxis(5),Misc.getSelectedColor(),true);
+     Launcher.test(Map.driver.getRawButton(3),Map.coDriver.getRawButtonPressed(3), Map.driver.getRawButton(1), Map.coDriver.getRawButton(5),Map.coDriver.getRawAxis(5),Misc.getSelectedColor(),true,false);
 //  if (teleopTime-teleopStart<.4){
 //          Launcher.test(true, false, false, 0, Misc.getSelectedColor());
 //     // }else if (teleopTime-teleopStart >=.7&& teleopTime-teleopStart < 1.3){
@@ -242,10 +253,10 @@ if (Map.driver.getRawButton(2)){
   public void disabledPeriodic() {
     Map.swerve.disabled();
     Map.swerve.disabledPos();
-     Launcher.disable(Map.coDriver.getRawButton(2));
-     Intake.disable(Map.coDriver.getRawButton(2));
+     Launcher.disable(Map.coDriver.getRawButton(10));
+     Intake.disable(Map.coDriver.getRawButton(10));
          
-     Elevator.disable(Map.coDriver.getRawButton(2));
+     Elevator.disable(Map.coDriver.getRawButton(10));
   }
 
   @Override

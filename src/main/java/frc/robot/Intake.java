@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Vision.RaspberryPi;
 
 /**
  * This class represents an intake mechanism for a robot.
@@ -137,8 +138,8 @@ public class Intake {
     public static void intakeSpin() {
 
         if (Map.movementIntake.getSelectedSensorPosition() > 80000) {
-            Map.intakeRight.set(ControlMode.PercentOutput, .4);
-            Map.intakeLeft.set(ControlMode.PercentOutput, .4);
+            Map.intakeRight.set(ControlMode.PercentOutput, .32);
+            Map.intakeLeft.set(ControlMode.PercentOutput, .32);
             if (Map.lightStop.get()) {
                 Map.intakeRight.set(ControlMode.PercentOutput, 0);
                 Map.intakeLeft.set(ControlMode.PercentOutput, 0);
@@ -149,17 +150,35 @@ public class Intake {
         }
     }
 // This is the one im using.
-    public static void test(boolean toggle1, boolean toggle2,boolean button3,boolean button4,boolean autoScoreTrue,double intakeAxis, double outtakeAxis) {
+    public static void test(boolean toggle1, boolean toggle2,boolean button3,boolean button4,boolean targetButton,boolean autoScoreTrue,double intakeAxis, double outtakeAxis, boolean autoZero, boolean red) {
         // put number to smart dashboard
-    SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) );
+    SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 20900) );
       // toggle for scoring position
     //   trippleToggle = 1;
     //    toggleScore = false;
     //    toggleOut = false;
+        if (targetButton){
+            if (red){
+                 if(RaspberryPi.getTagZ4()>111&& RaspberryPi.getTagZ4() !=-999){
+                    toggleScore = true;
+            }else{
+                toggleScore = false;
+            }
+           
 
+            }else {
+                 if(RaspberryPi.getTagZ7()>111&& RaspberryPi.getTagZ7() !=-999){
+                    toggleScore = true;
+            } else{ toggleScore = false;
+            }
+
+            }
+
+        }
         if (button3){
             shotClock = Timer.getFPGATimestamp();
         }
+
         if (autoScoreTrue){
             toggleScore = true;
         }
@@ -168,19 +187,19 @@ public class Intake {
         }
        if (toggle1) {
             toggleOut = !toggleOut;
-            if (Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) > 1000) {
+            if (Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 22900) > 1000) {
                 toggleOut = false;
             }
         }
             // if button, and correct position, and light sensor, set the tripple toggle to 2
-        if (toggle1 == true && Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) < 1000 && Map.lightStop.get()==false) {
+        if (toggle1 == true && Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 22900) < 1000 && Map.lightStop.get()==false) {
             trippleToggle = 2;
             // if any are false, set it to 3 or 1 depending on if toggle score is true or false
-        } else if (toggle1 == false ||  Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 23900) > 1000 || Map.lightStop.get()==true) {
-            if (toggleScore == true && Map.launcherPivot.getSelectedSensorPosition()<-20000) {
+        } else if (toggle1 == false ||  Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 22900) > 1000 || Map.lightStop.get()==true) {
+            if (toggleScore == true && Map.launcherPivot.getSelectedSensorPosition()<-18000) {
                 trippleToggle = 3;
 
-            } else if (toggleScore == false || Map.launcherPivot.getSelectedSensorPosition()>-20000)  {
+            } else if (autoZero||toggleScore == false || Map.launcherPivot.getSelectedSensorPosition()>-18000 )  {
                 trippleToggle = 1;
             }
             Map.movementIntake.set(ControlMode.PercentOutput, 0);
@@ -209,13 +228,18 @@ public class Intake {
               
           //  Map.movementIntake.set(ControlMode.Position, 34500);
             // if the shoot button is pressed, check if the elevator is above 20000, and shoot out if it is, shoot if it isn't    
-                       if(button3 && Map.leftLauncher.getSelectedSensorVelocity()>21000&&Map.rightLauncher.getSelectedSensorVelocity()>21000){
+            if (Elevator.toggleScore && Map.leftElevator.getSelectedSensorPosition()<-80000)  {
+                    Map.intakeLeft.set(ControlMode.PercentOutput, -1);
+                    Map.intakeRight.set(ControlMode.PercentOutput, 1);
+            }  
+            
+            else if(button3 && Map.leftLauncher.getSelectedSensorVelocity()>20500){
                         
                          
                         Map.intakeLeft.set(ControlMode.PercentOutput, 1);
                     Map.intakeRight.set(ControlMode.PercentOutput, -1);
                
-                 }if(Map.leftLauncher.getSelectedSensorVelocity()<19500||Map.rightLauncher.getSelectedSensorVelocity()<19500){
+                 }else if(Map.leftLauncher.getSelectedSensorVelocity()<19500){
 
                         Map.intakeLeft.set(ControlMode.PercentOutput, (intakeAxis-outtakeAxis));
                     Map.intakeRight.set(ControlMode.PercentOutput, (outtakeAxis-intakeAxis)*1.4);
@@ -233,34 +257,47 @@ public class Intake {
             Map.movementIntake.set(ControlMode.Position, 0);
 
             //  if intake is in and elevator is up and not moving, it auto outtakes, otherwise, wait until button is pressed, and do the same as toggle 3                 
-            if (Map.leftElevator.getSelectedSensorPosition()<-82700 && Map.leftElevator.getSelectedSensorVelocity()<30){
-        
-                Map.intakeLeft.set(ControlMode.PercentOutput, -1);
-                Map.intakeRight.set(ControlMode.PercentOutput, 1);
-                  
+             if (Elevator.toggleScore && Map.leftElevator.getSelectedSensorPosition()<-80000)  {
+                    Map.intakeLeft.set(ControlMode.PercentOutput, -1);
+                    Map.intakeRight.set(ControlMode.PercentOutput, 1);
+              
             
-             } else   if(button3 && Map.leftLauncher.getSelectedSensorVelocity()>21000&&Map.rightLauncher.getSelectedSensorVelocity()>21000){
+             }else if(button3 && Map.leftLauncher.getSelectedSensorVelocity()>20500){
                         
                          
                         Map.intakeLeft.set(ControlMode.PercentOutput, 1);
                     Map.intakeRight.set(ControlMode.PercentOutput, -1);
                
-                 }if(Map.leftLauncher.getSelectedSensorVelocity()<19500||Map.rightLauncher.getSelectedSensorVelocity()<19500){
+               
+                    }else if(Map.leftLauncher.getSelectedSensorVelocity()<19500){
 
                         Map.intakeLeft.set(ControlMode.PercentOutput, (intakeAxis-outtakeAxis));
                     Map.intakeRight.set(ControlMode.PercentOutput, (outtakeAxis-intakeAxis)*1.4);
                 
 
-                 }else{
-                            Map.intakeLeft.set(ControlMode.PercentOutput, (intakeAxis-outtakeAxis));
-                    Map.intakeRight.set(ControlMode.PercentOutput, (outtakeAxis-intakeAxis)*1.4);
-                       }
+                 }
+                
+
+              
 // re-zero intake if limit switch is pressed.
             if (Map.intakeStop.get()) {
                 Map.movementIntake.setSelectedSensorPosition(0);
             }
         }
 
+    }
+
+
+    public static void autoSpin(boolean spin){
+        if(spin){
+                     Map.intakeLeft.set(ControlMode.PercentOutput, 1);
+                    Map.intakeRight.set(ControlMode.PercentOutput, -1);
+            
+        }else if(spin = false){
+                  Map.intakeLeft.set(ControlMode.PercentOutput, 0);
+                    Map.intakeRight.set(ControlMode.PercentOutput, 0);
+            
+        }
     }
     /**
      * Scores the intake mechanism based on a button input.

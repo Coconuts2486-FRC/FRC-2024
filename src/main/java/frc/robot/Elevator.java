@@ -14,6 +14,7 @@ import frc.robot.Vision.RaspberryPi;
 
 public class Elevator {
     public static boolean toggleUp = false;
+    public static boolean toggleScore = false;
     /**
      * The PIDController used for elevator position control.
      */
@@ -36,6 +37,7 @@ public class Elevator {
 
         Map.rightElevator.setInverted(true);
         toggleUp = false;
+        toggleScore = false;
 
     }
     public static void disable(boolean button){
@@ -50,38 +52,65 @@ public class Elevator {
                 Map.rightElevator.setNeutralMode(NeutralMode.Brake);
         }
     }
-    public static void test(boolean button1, double axis) {
+    public static void test(boolean button1, double axis, boolean button2, boolean button3) {
         SmartDashboard.putNumber("EVelocity", Map.leftElevator.getSelectedSensorVelocity());
-        toggleUp = false;
+       
         if (button1) {
             toggleUp = !toggleUp;
         }
+          if (button2) {
+            toggleScore = !toggleScore;
+        }
+
 
         if (toggleUp == true) {
 
            
 
-            Map.rightElevator.set(ControlMode.PercentOutput,
-                    elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -84000));
+            Map.rightElevator.set(ControlMode.PercentOutput,-.45);
+                   // elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -85000));
+                       
 
             Map.leftElevator.follow(Map.rightElevator);
 
             if (Map.elevatorTop.get()) {
-                Map.leftElevator.setSelectedSensorPosition(-84000);
+                Map.rightElevator.set(ControlMode.PercentOutput,0);
+              //  Map.leftElevator.setSelectedSensorPosition(-85000);
             }
 
             
+        } else if (toggleScore == true){
+             Map.rightElevator.set(ControlMode.PercentOutput,
+                    elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -85000));
+                    
+            Map.leftElevator.follow(Map.rightElevator);
+            if(Map.leftElevator.getSelectedSensorPosition()<-80000 ){
+                Map.intakeLeft.set(ControlMode.PercentOutput,-1);
+                    Map.intakeRight.set(ControlMode.PercentOutput,1);
+            }
+                    
+                       if (Map.elevatorTop.get()) {
+                Map.rightElevator.set(ControlMode.PercentOutput,0);
+                Map.leftElevator.follow(Map.rightElevator);
+              //  Map.leftElevator.setSelectedSensorPosition(-85000);
+            }
+        } else if (button3){
+             Map.rightElevator.set(ControlMode.PercentOutput,
+                    elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -39000));
+                    
+            Map.leftElevator.follow(Map.rightElevator);
         }
 
-        if (toggleUp == false) {
+       else if (toggleUp == false&&toggleScore== false && button3 == false) {
 
-            Map.rightElevator.set(ControlMode.PercentOutput,
-                    elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), 0));
+            Map.rightElevator.set(ControlMode.PercentOutput,.65);
+                  //  elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), 0));
             Map.leftElevator.follow(Map.rightElevator);
 
             Map.launcherPivot.set(ControlMode.PercentOutput, 0);
             if (Map.elevatorBottom.get()) {
                 Map.leftElevator.setSelectedSensorPosition(0);
+                       Map.rightElevator.set(ControlMode.PercentOutput,0);
             }
         }
     }
