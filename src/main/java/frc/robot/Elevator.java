@@ -54,7 +54,7 @@ public class Elevator {
         }
     }
     public static void test(boolean button1, double axis, boolean button2, boolean button3) {
-        SmartDashboard.putNumber("EVelocity", Map.leftElevator.getSelectedSensorVelocity());
+       // SmartDashboard.putNumber("EVelocity", Map.leftElevator.getSelectedSensorVelocity());
        
         if (button1) {
             toggleUp = !toggleUp;

@@ -159,7 +159,7 @@ public class Intake {
     //    toggleOut = false;
         if (targetButton){
             if (red){
-                 if(RaspberryPi.getTagZ4()>111&& RaspberryPi.getTagZ4() !=-999){
+                 if(RaspberryPi.getTagZ4()>50&& RaspberryPi.getTagZ4() !=-999){
                     toggleScore = true;
             }else{
                 toggleScore = false;
@@ -167,7 +167,7 @@ public class Intake {
            
 
             }else {
-                 if(RaspberryPi.getTagZ7()>111&& RaspberryPi.getTagZ7() !=-999){
+                 if(RaspberryPi.getTagZ7()>50&& RaspberryPi.getTagZ7() !=-999){
                     toggleScore = true;
             } else{ toggleScore = false;
             }

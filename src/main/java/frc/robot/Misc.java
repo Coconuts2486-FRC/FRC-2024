@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Auto.AutoPaths;
 
 /**
  * This class contains miscellaneous methods that are used throughout the robot
@@ -18,6 +19,28 @@ public class Misc {
     Map.red.addOption("Blue", false);
     SmartDashboard.putData("Alliance", Map.red);
   }
+
+
+  public static void selectAuto(){
+    Map.selectedAuto.setDefaultOption("Two note, straight from speaker", 1);
+    Map.selectedAuto.addOption("auto 2", 2);
+    SmartDashboard.putData("SelectAuto", Map.selectedAuto);
+
+  }
+
+
+ public static int getSelectedAuto() {
+    return (int) Map.selectedAuto.getSelected();
+  }
+
+  public static void runSelectedAuto(boolean red){
+    if (getSelectedAuto() == 1){
+      AutoPaths.twoPieceStraightFromSpeaker(red);
+    }else if(getSelectedAuto() == 2){
+      AutoPaths.auto2(red);
+    }
+  }
+
 
   /**
    * Returns the selected alliance color.

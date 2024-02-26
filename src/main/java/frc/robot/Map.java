@@ -159,5 +159,6 @@ public class Map {
     //public static DIOSensor elevatorTop = new DIOSensor(1, "Normal");
     //Misc
     public static SendableChooser red = new SendableChooser<>();
+        public static SendableChooser selectedAuto = new SendableChooser<>();
 
 }
