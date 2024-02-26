@@ -95,12 +95,12 @@ public static double teleopTime;
 
   @Override
   public void autonomousPeriodic() {
-    SmartDashboard.putNumber("a", AutoPaths.a);
-    autoStart = Timer.getFPGATimestamp();
-      double time = Timer.getFPGATimestamp()-autoStart;
-        SmartDashboard.putNumber("timer", time);
+   // Map.leftLauncher.set(ControlMode.Velocity, 21000)  ;
 
-      AutoPaths.autoOne(Misc.getSelectedColor(),autoStart);
+  
+   AutoPaths.auto2();
+
+   //  AutoPaths.autoOne(Misc.getSelectedColor(),autoStart);
    
   }
 
@@ -119,9 +119,7 @@ public static double teleopTime;
 
   @Override
   public void teleopPeriodic() {
-SmartDashboard.putNumber("GYRO2", 0-Swerve.gyro2.getYaw());
-SmartDashboard.putNumber("leftIntake", Map.intakeLeft.getSelectedSensorVelocity());
-SmartDashboard.putNumber("GYRO", 0-Swerve.gyro.getYaw());
+
      teleopTime = Timer.getFPGATimestamp();
     if(Map.driver.getRawButton(6)&& Map.lightStop.get()){
     Map.backLeft.autoInit(Swerve.blOffset);

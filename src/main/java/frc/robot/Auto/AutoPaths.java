@@ -19,17 +19,17 @@ public class AutoPaths {
     public static double startTime;
 
 
+
     // Change names later
     public static void autoInit(){
         startTime =  0;
         a = 0;
-        Map.leftLauncher.setSelectedSensorPosition(0);
-                Map.rightLauncher.setSelectedSensorPosition(0);
+       
         
     }
 
     public static void autoOne(boolean red, double start) {
-    
+       
         if (a == 0) {
             Intake.test(false,false, false, false,false,false,0,0,false,red);
             Launcher.test(false, false, false,false,0,red,false,true);
@@ -37,12 +37,12 @@ public class AutoPaths {
                        
          
             // autoYaw = Swerve.gyro.getYaw();
-            a = a+2;
+            //a = a+1;
         }
 
-         if (a==1){
+        else if (a==1){
                 
-                Launcher.launch(true);       
+           
                                   
          Launcher.test(false, false, false,false,0,red,false,true);
           Intake.test(false,false, true,false, false,false,0,0,true,red);
@@ -101,4 +101,21 @@ public class AutoPaths {
 
     }
 }
+
+// public static void auto2(){
+//     if (a == 0) {
+//             Intake.test(false,false, false, false,false,false,0,0,false,true);
+//             Launcher.test(false, false, false,false,0,true,false,true);
+//             Map.swerve.realignToField(true);
+                       
+         
+//             // autoYaw = Swerve.gyro.getYaw();
+//             //a = a+1;
+//         }
+
+//         else if (a==1){
+//             Launcher.launch(true);
+                
+// }
+// }
 }

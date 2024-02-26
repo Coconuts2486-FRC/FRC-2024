@@ -103,13 +103,14 @@ public class Elevator {
 
        else if (toggleUp == false&&toggleScore== false && button3 == false) {
 
-            Map.rightElevator.set(ControlMode.PercentOutput,.65);
-                  //  elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), 0));
+            Map.rightElevator.set(ControlMode.PercentOutput,
+                    elevatorPID.calculate(Map.rightElevator.getSelectedSensorPosition(), 0));
             Map.leftElevator.follow(Map.rightElevator);
 
             Map.launcherPivot.set(ControlMode.PercentOutput, 0);
             if (Map.elevatorBottom.get()) {
                 Map.leftElevator.setSelectedSensorPosition(0);
+                 Map.rightElevator.setSelectedSensorPosition(0);
                        Map.rightElevator.set(ControlMode.PercentOutput,0);
             }
         }

@@ -152,7 +152,7 @@ public class Intake {
 // This is the one im using.
     public static void test(boolean toggle1, boolean toggle2,boolean button3,boolean button4,boolean targetButton,boolean autoScoreTrue,double intakeAxis, double outtakeAxis, boolean autoZero, boolean red) {
         // put number to smart dashboard
-    SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 20900) );
+    SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 21900) );
       // toggle for scoring position
     //   trippleToggle = 1;
     //    toggleScore = false;
@@ -187,15 +187,15 @@ public class Intake {
         }
        if (toggle1) {
             toggleOut = !toggleOut;
-            if (Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 22900) > 1000) {
+            if (Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 21900) > 1000) {
                 toggleOut = false;
             }
         }
             // if button, and correct position, and light sensor, set the tripple toggle to 2
-        if (toggle1 == true && Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 22900) < 1000 && Map.lightStop.get()==false) {
+        if (toggle1 == true && Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 21900) < 1000 && Map.lightStop.get()==false) {
             trippleToggle = 2;
             // if any are false, set it to 3 or 1 depending on if toggle score is true or false
-        } else if (toggle1 == false ||  Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 22900) > 1000 || Map.lightStop.get()==true) {
+        } else if (toggle1 == false ||  Math.abs(Math.abs(Map.launcherPivot.getSelectedSensorPosition()) - 21900) > 1000 || Map.lightStop.get()==true) {
             if (toggleScore == true && Map.launcherPivot.getSelectedSensorPosition()<-18000) {
                 trippleToggle = 3;
 
