@@ -37,6 +37,7 @@ public class RaspberryPi {
    * The PID controller used for targeting a specific value.
    */
   public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
+    public static PIDController targetPid2 = new PIDController(0.007, 0, 0.000002);
 
   /**
    * The PID controller used for driving to a specific value.
@@ -179,7 +180,7 @@ public class RaspberryPi {
         if (getTagX4() == -999) {
           return axis;
         } else {
-          return -targetPid.calculate(getTagX4());
+          return -targetPid2.calculate(getTagX4());
         }
       } else {
         return axis;
@@ -189,7 +190,7 @@ public class RaspberryPi {
         if (getTagX7() == -999) {
           return axis;
         } else {
-          return -targetPid.calculate(getTagX7());
+          return -targetPid2.calculate(getTagX7());
         }
       } else {
         return axis;

@@ -125,20 +125,20 @@ else if(autoZeroTrue) {
 
       } else if (button4) {
         if (red) {
-          if (RaspberryPi.getTagZ4() < 112) {
+          if (RaspberryPi.getTagZ4() < 100) {
             Map.launcherPivot.set(ControlMode.PercentOutput,
                 launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -21900));
-          }else if (RaspberryPi.getTagZ4() > 112){
+          }else if (RaspberryPi.getTagZ4() > 100){
            Map.launcherPivot.set(ControlMode.PercentOutput,
-            launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -43900)); 
+            launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -23900)); 
           }
         } else {
-   if (RaspberryPi.getTagZ7() < 112) {
+   if (RaspberryPi.getTagZ7() < 90) {
             Map.launcherPivot.set(ControlMode.PercentOutput,
                 launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -21900));
-          }else if (RaspberryPi.getTagZ7() > 112){
+          }else if (RaspberryPi.getTagZ7() > 90){
            Map.launcherPivot.set(ControlMode.PercentOutput,
-            launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -43900)); 
+            launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -23900)); 
           }
 
         }

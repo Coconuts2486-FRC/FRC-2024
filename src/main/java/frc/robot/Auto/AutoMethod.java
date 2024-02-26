@@ -9,7 +9,7 @@ import frc.robot.Vision.RaspberryPi;
 
 public class AutoMethod {
     public static PIDController straightYPid = new PIDController(1, 0.02, 0);
-    public static PIDController rotatePid = new PIDController(.03, 0, 0);
+    public static PIDController rotatePid = new PIDController(0.007, 0, 0.000002);
 
     
     public static void autoDriveY(double distance){
@@ -33,15 +33,16 @@ public class AutoMethod {
         }
 
 
-    public static void autoRotate(double angle, double target, boolean red){
+    public static double autoRotate(double angle, double target, boolean red){
+       angle = angle - 180;
         if (red == true){
-            Map.swerve.drive(0, 0,  rotatePid.calculate(angle, target));
+           return rotatePid.calculate(angle, target);
         }
         else{
-            Map.swerve.drive(0, 0,  rotatePid.calculate(angle, -target+360));
+           return rotatePid.calculate(angle, -target+360);
             
         }
-        Map.swerve.realignToField(true);
+    
     }
 
 }

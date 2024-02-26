@@ -90,6 +90,9 @@ public static double teleopTime;
   public void autonomousInit() {
     AutoPaths.autoInit();
     
+   // Map.odometry.init();
+   // Map.swerve.init();
+    
     // startTime = Auto.getStartTime();
   }
 
@@ -98,9 +101,9 @@ public static double teleopTime;
    // Map.leftLauncher.set(ControlMode.Velocity, 21000)  ;
 
   
-   AutoPaths.auto2();
+//   AutoPaths.auto2();
 
-   //  AutoPaths.autoOne(Misc.getSelectedColor(),autoStart);
+     AutoPaths.autoOne(Misc.getSelectedColor());
    
   }
 

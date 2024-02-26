@@ -207,7 +207,7 @@ public class Intake {
         // if tripple toggle is 2, set intake to intake position and start intake
         if (trippleToggle == 2) {
             //Map.movementIntake.set(ControlMode.PercentOutput,intakePID.calculate(Map.movementIntake.getSelectedSensorPosition(),98000));
-            Map.movementIntake.set(ControlMode.Position,98000);
+            Map.movementIntake.set(ControlMode.Position,100000);
                     Map.intakeLeft.set(ControlMode.PercentOutput, .39);
                     Map.intakeRight.set(ControlMode.PercentOutput, -.39);
         }
