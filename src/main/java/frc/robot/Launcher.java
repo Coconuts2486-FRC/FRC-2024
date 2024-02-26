@@ -125,10 +125,10 @@ else if(autoZeroTrue) {
 
       } else if (button4) {
         if (red) {
-          if (RaspberryPi.getTagZ4() < 100) {
+          if (RaspberryPi.getTagZ4() < 90) {
             Map.launcherPivot.set(ControlMode.PercentOutput,
                 launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -21900));
-          }else if (RaspberryPi.getTagZ4() > 100){
+          }else if (RaspberryPi.getTagZ4() > 90){
            Map.launcherPivot.set(ControlMode.PercentOutput,
             launcherPID.calculate(Map.launcherPivot.getSelectedSensorPosition(), -23900)); 
           }

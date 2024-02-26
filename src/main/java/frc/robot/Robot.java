@@ -89,6 +89,8 @@ public static double teleopTime;
   @Override
   public void autonomousInit() {
     AutoPaths.autoInit();
+        Launcher.init();
+    Intake.init();
     
    // Map.odometry.init();
    // Map.swerve.init();

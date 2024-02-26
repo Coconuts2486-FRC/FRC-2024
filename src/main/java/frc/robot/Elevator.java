@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Vision.RaspberryPi;
 
@@ -87,7 +88,10 @@ public class Elevator {
             if(Map.leftElevator.getSelectedSensorPosition()<-80000 ){
                 Map.intakeLeft.set(ControlMode.PercentOutput,-1);
                     Map.intakeRight.set(ControlMode.PercentOutput,1);
+                    Timer.delay(.28);
+                    toggleScore = false;
             }
+            
                     
                        if (Map.elevatorTop.get()) {
                 Map.rightElevator.set(ControlMode.PercentOutput,0);

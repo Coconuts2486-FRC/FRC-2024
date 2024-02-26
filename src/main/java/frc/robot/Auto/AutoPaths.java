@@ -17,6 +17,7 @@ public class AutoPaths {
     public static int a = 0;
     public static double autoYaw;
     public static double startTime;
+    public static PIDController twistPid = new PIDController(.0007, 0, 0);
 
 
 
@@ -95,16 +96,17 @@ public class AutoPaths {
               }
               
          } 
-         //else if (a==6){
-        //                  Launcher.test(false, false, false,false,0,red,true,false);
-        //                    Intake.test(false, false, true,false, false, true,0,0,false,red);
-        //    Map.swerve.drive(0, 0, AutoMethod.autoRotate(Map.swerve.gyro.getYaw(), 90, red));
-        //     Timer.delay(1);
-        // }
+         else if (a==5){
+                         Launcher.test(false, false, false,false,0,red,true,false);
+                           Intake.test(false, false, true,false, false, true,0,0,false,red);
+           Map.swerve.drive(0, 0, twistPid.calculate(Map.swerve.gyro2.getYaw(),90));
+            Timer.delay(1);
+            a = a++;
+        }
         
-        else if(a==5)   {
+        else if(a==6)   {
                   Intake.test(false, false, false, false,false, true,0,0,false,red);
-             Launcher.test(false, false, false,false,0,red,false,true);
+             Launcher.test(false, false, false,false,0,red,true,false);
              Launcher.launch(false);
    
                   Map.swerve.drive(0, 0, 0);
