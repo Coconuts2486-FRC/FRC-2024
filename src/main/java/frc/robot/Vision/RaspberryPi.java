@@ -42,7 +42,7 @@ public class RaspberryPi {
   /**
    * The PID controller used for driving to a specific value.
    */
-  public static PIDController driveToPid = new PIDController(.03, 0.001, 0);
+  public static PIDController driveToPid = new PIDController(.03, 0.00, 0);
 
   /**
    * Retrieves the X coordinate of April Tag 4 relative to the robot.

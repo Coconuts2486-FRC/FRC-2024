@@ -54,6 +54,7 @@ public class Swerve {
     backLeft.init();
     frontRight.init();
     frontLeft.init();
+    
   }
 
   /**
@@ -96,10 +97,10 @@ public class Swerve {
    * @return the robot angle in radians
    */
   public double getRobotAngle() {
-    double[] ypr_deg = new double[3];
+  
 
-    gyro.getYawPitchRoll(ypr_deg);
-    double robotAngle = ypr_deg[0] * Math.PI / 180;
+    
+    double robotAngle =gyro.getYaw() * Math.PI / 180;
 
     return robotAngle;
   }
@@ -119,8 +120,9 @@ public class Swerve {
       x0 = x * speedMultiplier;
       y0 = y * speedMultiplier;
     } else {
-      x0 = -y * Math.sin(getRobotAngle()) + x * Math.cos(getRobotAngle());
-      y0 = y * Math.cos(getRobotAngle()) + x * Math.sin(getRobotAngle());
+      double robotAngle = getRobotAngle();
+      x0 = -y * Math.sin(robotAngle) + x * Math.cos(robotAngle);
+      y0 = y * Math.cos(robotAngle) + x * Math.sin(robotAngle);
     }
 
     double a = x0 - z * (L / r);

@@ -16,6 +16,7 @@ import frc.robot.Vision.RaspberryPi;
 public class Elevator {
     public static boolean toggleUp = false;
     public static boolean toggleScore = false;
+    public static boolean toggleDown = false;
     /**
      * The PIDController used for elevator position control.
      */
@@ -33,12 +34,13 @@ public class Elevator {
         Map.rightElevator.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         Map.rightElevator.setNeutralMode(NeutralMode.Brake);
         Map.leftElevator.setNeutralMode(NeutralMode.Brake);
-        Map.rightElevator.setSelectedSensorPosition(0, 0, 0);
-        Map.leftElevator.setSelectedSensorPosition(0, 0, 0);
+        Map.rightElevator.setSelectedSensorPosition(0);
+        Map.leftElevator.setSelectedSensorPosition(0);
 
         Map.rightElevator.setInverted(true);
         toggleUp = false;
         toggleScore = false;
+        toggleDown = false;
 
     }
     public static void disable(boolean button){
@@ -58,15 +60,17 @@ public class Elevator {
        
         if (button1) {
             toggleUp = !toggleUp;
+            toggleDown = true;
         }
           if (button2) {
             toggleScore = !toggleScore;
+             toggleDown = true;
         }
 
 
         if (toggleUp == true) {
-
-           
+  
+           toggleDown = true;
 
             Map.rightElevator.set(ControlMode.PercentOutput,-.45);
                    // elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -85000));
@@ -81,21 +85,26 @@ public class Elevator {
 
             
         } else if (toggleScore == true){
-             Map.rightElevator.set(ControlMode.PercentOutput,
-                    elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -85000));
+            toggleDown = true;
+          
+             Map.rightElevator.set(ControlMode.PercentOutput,-.90);
                     
-            Map.leftElevator.follow(Map.rightElevator);
-            if(Map.leftElevator.getSelectedSensorPosition()<-80000 ){
+           Map.leftElevator.set(ControlMode.PercentOutput,-.90);
+            if (Map.elevatorTop.get()){
+                   Map.rightElevator.set(ControlMode.PercentOutput,0);
+            }
+            if(Map.leftElevator.getSelectedSensorPosition()<-74000 ){
                 Map.intakeLeft.set(ControlMode.PercentOutput,-1);
-                    Map.intakeRight.set(ControlMode.PercentOutput,1);
-                    Timer.delay(.28);
+                    Map.intakeRight.set(ControlMode.PercentOutput,-1);
+                    Timer.delay(.45);
                     toggleScore = false;
+               
             }
             
                     
                        if (Map.elevatorTop.get()) {
                 Map.rightElevator.set(ControlMode.PercentOutput,0);
-                Map.leftElevator.follow(Map.rightElevator);
+                Map.leftElevator.set(ControlMode.PercentOutput,0);
               //  Map.leftElevator.setSelectedSensorPosition(-85000);
             }
         } else if (button3){
@@ -105,18 +114,22 @@ public class Elevator {
             Map.leftElevator.follow(Map.rightElevator);
         }
 
-       else if (toggleUp == false&&toggleScore== false && button3 == false) {
+       else if (toggleUp == false&&toggleScore== false && button3 == false && toggleDown == true) {
 
-            Map.rightElevator.set(ControlMode.PercentOutput,
-                    elevatorPID.calculate(Map.rightElevator.getSelectedSensorPosition(), 0));
-            Map.leftElevator.follow(Map.rightElevator);
+            Map.rightElevator.set(ControlMode.PercentOutput, .65);
+            Map.leftElevator.set(ControlMode.PercentOutput,.65);
 
             Map.launcherPivot.set(ControlMode.PercentOutput, 0);
             if (Map.elevatorBottom.get()) {
-                Map.leftElevator.setSelectedSensorPosition(0);
-                 Map.rightElevator.setSelectedSensorPosition(0);
+                toggleDown = false;
+              //  Map.leftElevator.setSelectedSensorPosition(0);
+                // Map.rightElevator.setSelectedSensorPosition(0);
                        Map.rightElevator.set(ControlMode.PercentOutput,0);
+                       Map.leftElevator.set(ControlMode.PercentOutput,0);
             }
+        }else{
+               Map.rightElevator.set(ControlMode.PercentOutput,0);
+                       Map.leftElevator.set(ControlMode.PercentOutput,0);
         }
     }
 
