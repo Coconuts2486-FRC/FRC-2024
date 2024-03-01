@@ -191,13 +191,39 @@ SmartDashboard.putBoolean("45true", Launcher.goTo45);
     Elevator.test(Map.coDriver.getRawButtonPressed(1),Map.coDriver.getRawAxis(5),Map.coDriver.getRawButtonPressed(2),Map.coDriver.getRawButtonPressed(3));
 
 if (Map.driver.getRawButton(6)){
-   Intake.run(Map.driver.getRawButton(6),Map.coDriver.getRawButtonPressed(4),Map.coDriver.getRawButton(6),Map.driver.getRawButton(1),Map.coDriver.getRawButton(5),false,Map.driver.getRawAxis(3),Map.driver.getRawAxis(2),false,Misc.getSelectedColor());
+   Intake.run(
+    Map.driver.getRawButton(6),
+    Map.coDriver.getRawButtonPressed(4),
+    Map.coDriver.getRawButton(6),
+    Map.driver.getRawButton(1),
+    Map.coDriver.getRawButton(5),
+    false,
+    Map.driver.getRawAxis(3),
+    Map.driver.getRawAxis(2),
+    false,
+    Misc.getSelectedColor()
+    );
 }else{
-   Intake.run(Map.driver.getRawButton(2),Map.coDriver.getRawButtonPressed(4),Map.coDriver.getRawButton(6),Map.driver.getRawButton(1),Map.coDriver.getRawButton(5),false,Map.driver.getRawAxis(3),Map.driver.getRawAxis(2),false,Misc.getSelectedColor());
+   Intake.run(
+    Map.driver.getRawButton(2),
+    Map.coDriver.getRawButtonPressed(4),
+    Map.coDriver.getRawButton(6),
+    Map.driver.getRawButton(1),
+    Map.coDriver.getRawButton(5),
+    false,
+    Map.driver.getRawAxis(3),
+    Map.driver.getRawAxis(2),
+    false,
+    Misc.getSelectedColor()
+    );
 }
    //Intake.run(Map.driver.getRawButton(6),Map.coDriver.getRawButtonPressed(4),Map.coDriver.getRawButton(6),Map.coDriver.getRawButton(7),false);
     SmartDashboard.putNumber("launcher Position", Map.launcherPivot.getSelectedSensorPosition());
-     Launcher.run(Map.coDriver.getRawButtonPressed(9),Map.coDriver.getRawButton(7),Launcher.manualAngleTuner( Map.coDriver.getPOV()),false);
+     Launcher.run(
+      Map.driver.getRawButtonPressed(5),
+      Map.coDriver.getRawButton(7),
+      Launcher.manualAngleTuner( Map.coDriver.getPOV())
+      ,false);
 
 
   }

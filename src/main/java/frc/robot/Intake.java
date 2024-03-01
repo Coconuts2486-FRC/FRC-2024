@@ -100,7 +100,9 @@ public class Intake {
 // This is the one im using.
     public static void run(boolean toggle1, boolean toggle2,boolean button3,boolean button4,boolean targetButton,boolean autoScoreTrue,double intakeAxis, double outtakeAxis, boolean autoZero, boolean red) {
         // put number to smart dashboard
-    SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition())+(-1240+Launcher.angleTuner) ) );
+        double positionRelativeToEncoder = Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition())+(-1240+Launcher.angleTuner));
+        double tuningParameter = 13;
+    SmartDashboard.putNumber("intakeZone", positionRelativeToEncoder);
       // toggle for scoring position
     //   trippleToggle = 1;
     //    toggleScore = false;
@@ -135,15 +137,15 @@ public class Intake {
         }
        if (toggle1) {
             toggleOut = !toggleOut;
-            if (Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition())+(-1240+Launcher.angleTuner)) > 13) {
+            if (positionRelativeToEncoder > tuningParameter) {
                 toggleOut = false;
             }
         }
             // if button, and correct position, and light sensor, set the tripple toggle to 2
-        if (toggle1 == true && Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition()) + (-1240+Launcher.angleTuner)) < 13 && Map.lightStop.get()==false) {
+        if (toggle1 == true && positionRelativeToEncoder < tuningParameter && Map.lightStop.get()==false) {
             trippleToggle = 2;
             // if any are false, set it to 3 or 1 depending on if toggle score is true or false
-        } else if (toggle1 == false ||  Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition()) + (-1240+Launcher.angleTuner)) > 13 || Map.lightStop.get()==true) {
+        } else if (toggle1 == false ||  positionRelativeToEncoder > tuningParameter || Map.lightStop.get()==true) {
             if (toggleScore == true && Map.intakeRight.getSelectedSensorPosition()< 1300) {
                 trippleToggle = 3;
 

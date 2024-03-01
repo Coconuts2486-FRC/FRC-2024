@@ -19,7 +19,7 @@ public class Launcher {
   static boolean launcherReady = false;
 
   public static PIDController launcherPID = new PIDController(.0042, 0, 0);
-  public static PIDController pivotPid = new PIDController(.0042, 0, 0);
+  public static PIDController pivotPid = new PIDController(.0042, 0.0000, 0);
 
   public static boolean toggleTarget = false;
   public static double angleTuner = 0;
@@ -102,7 +102,6 @@ public class Launcher {
     }
     else if (fourtyFive) {
       goTo45 = !goTo45;
-
     } if(sixty){
          Map.launcherPivot.set(ControlMode.PercentOutput,
             pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
@@ -112,15 +111,10 @@ public class Launcher {
             }
     }
    else if (goTo45) {
-    if (Map.intakeRight.getSelectedSensorPosition()<1050){
-      goTo45 = false;
-       Map.launcherPivot.set(ControlMode.PercentOutput, 0);
-       SmartDashboard.putBoolean("tripped",true);
-    }
-     else if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
+      if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
         Map.launcherPivot.set(ControlMode.PercentOutput,
             // jut in case: -36900 is motor tick to go back to.
-            launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), 1000));
+            launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), 1100));
       } else {
         Map.launcherPivot.set(ControlMode.PercentOutput,
             pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), (1235 + tuner)));
@@ -130,9 +124,6 @@ public class Launcher {
     }
   }
 
-  
-  
-  
   public static void notRun(boolean manualZero, boolean toggle45, boolean manualChangeButton, boolean changeWithApriltag,
       double manualChangeAxis, boolean red,
       boolean auto45True, boolean autoZeroTrue, double angleChanger) {

@@ -139,8 +139,8 @@ public class Map {
   public static TalonFX launcherPivot = new TalonFX(17);
 
   // Elevator
-  public static TalonFX leftElevator = new TalonFX(21);
-  public static TalonFX rightElevator = new TalonFX(22);
+  public static TalonFX leftElevator = new TalonFX(21,"drive");
+  public static TalonFX rightElevator = new TalonFX(22,"drive");
 
   // Intake
   public static TalonFX movementIntake = new TalonFX(18);

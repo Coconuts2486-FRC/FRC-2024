@@ -27,9 +27,9 @@ public class Module {
     PIDController rController,
     PIDController dController
   ) {
-    this.directionMotor = new TalonFX(directionMotor);
-    this.driveMotor = new TalonFX(driveMotor);
-    this.encoder = new CANCoder(encoder);
+    this.directionMotor = new TalonFX(directionMotor,"drive");
+    this.driveMotor = new TalonFX(driveMotor,"drive");
+    this.encoder = new CANCoder(encoder,"drive");
     this.angleController = rController;
     this.driveController = dController;
   }
