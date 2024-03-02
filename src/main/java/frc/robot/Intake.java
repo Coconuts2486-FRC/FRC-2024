@@ -100,9 +100,7 @@ public class Intake {
 // This is the one im using.
     public static void run(boolean toggle1, boolean toggle2,boolean button3,boolean button4,boolean targetButton,boolean autoScoreTrue,double intakeAxis, double outtakeAxis, boolean autoZero, boolean red) {
         // put number to smart dashboard
-        double positionRelativeToEncoder = Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition())+(-1240+Launcher.angleTuner));
-        double tuningParameter = 13;
-    SmartDashboard.putNumber("intakeZone", positionRelativeToEncoder);
+    SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition())+(-1240+Launcher.angleTuner) ) );
       // toggle for scoring position
     //   trippleToggle = 1;
     //    toggleScore = false;
@@ -137,19 +135,19 @@ public class Intake {
         }
        if (toggle1) {
             toggleOut = !toggleOut;
-            if (positionRelativeToEncoder > tuningParameter) {
+            if (Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition())+(-1240+Launcher.angleTuner)) > 18) {
                 toggleOut = false;
             }
         }
             // if button, and correct position, and light sensor, set the tripple toggle to 2
-        if (toggle1 == true && positionRelativeToEncoder < tuningParameter && Map.lightStop.get()==false) {
+        if (toggle1 == true && Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition()) + (-1240+Launcher.angleTuner)) < 18 && Map.lightStop.get()==false) {
             trippleToggle = 2;
             // if any are false, set it to 3 or 1 depending on if toggle score is true or false
-        } else if (toggle1 == false ||  positionRelativeToEncoder > tuningParameter || Map.lightStop.get()==true) {
+        } else if (toggle1 == false ||  Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition()) + (-1240+Launcher.angleTuner)) > 18 || Map.lightStop.get()==true) {
             if (toggleScore == true && Map.intakeRight.getSelectedSensorPosition()< 1300) {
                 trippleToggle = 3;
 
-            } else if (autoZero||toggleScore == false || Map.launcherPivot.getSelectedSensorPosition()>1300 )  {
+            } else if (autoZero||toggleScore == false || Launcher.launcherPivot.getSelectedSensorPosition()>1300 )  {
                 trippleToggle = 1;
             }
             Map.movementIntake.set(ControlMode.PercentOutput, 0);

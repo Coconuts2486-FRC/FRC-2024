@@ -136,7 +136,7 @@ public class Map {
   // Shooter
   public static TalonSRX rightLauncher = new TalonSRX(15);
   public static TalonSRX leftLauncher = new TalonSRX(16);
-  public static TalonFX launcherPivot = new TalonFX(17);
+ public static int launcherPivot = 17;
 
   // Elevator
   public static TalonFX leftElevator = new TalonFX(21,"drive");

@@ -1,12 +1,8 @@
 package frc.robot.Auto;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Intake;
 import frc.robot.Launcher;
 import frc.robot.Map;
@@ -107,7 +103,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
 
         if (a == 0) {
             Intake.run(false, false, false, false, false, false, 0, 0, false, red);
-            Launcher.notRun(false, false, false, false, 0, red, false, true,0);
+          
             Map.swerve.realignToField(true);
 
             autoYaw = Swerve.gyro.getYaw();
@@ -122,7 +118,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
         else if (a == 1) {
             Launcher.launch(true);
 
-            Launcher.notRun(false, false, false, false, 0, red, false, true,0);
+           
             Intake.run(false, false, true, false, false, false, 0, 0, true, red);
 
             if (Map.leftLauncher.getSelectedSensorVelocity() > 19560) {
@@ -134,7 +130,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
 
         }
         else if (a == 2){
-            Launcher.notRun(false, false, false, false, 0, red, false, true,0);
+         
             Intake.run(false, false, true, false, false, false, 0, 0, true, red);
 
          
@@ -151,7 +147,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
          
         } else if(a==3){
             Launcher.launch(false);
-             Launcher.notRun(false, false, false, false, 0, red, false, true,0);
+           
             Intake.run(false, false, true, false, false, false, 0, 0, true, red);
             if(red){
                  Map.swerve.drive(0, 0, twistPid.calculate(Swerve.gyro.getYaw(),240));
@@ -172,7 +168,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
 
           else if (a == 4) {
             
-            Launcher.notRun(false, false, false, false, 0, red, true, false,-1000);
+         
             Intake.run(true, false, false, false, false, true, 0, 0, false, red);
             RaspberryPi.targetGamePiece(true, false);
             Launcher.launchAuto(false);
@@ -180,8 +176,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
                 a = 5;
             }
         }else if(a == 5){
-             Launcher.notRun(false, false, false, false, 0, red, true, false,0);
-            Intake.run(true, false, false, false, false, true, 0, 0, false, red);
+                      Intake.run(true, false, false, false, false, true, 0, 0, false, red);
             if (red){
                 Map.swerve.drive(0, 0, -.3);
                  if(Math.abs(Map.frontLeft.driveMotor.getSelectedSensorVelocity())>100){
@@ -200,7 +195,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
 
         } else if (a == 6) {
             Intake.run(false, false, false, false, false, true, 0, 0, false, red);
-            Launcher.notRun(false, false, false, false, 0, red, true, false,-000);
+       
             Map.swerve.drive(0, 0, RaspberryPi.targetAprilTag(true, 0, red));
             Launcher.launchAuto(true);
             if (Math.abs(RaspberryPi.getTagX4()) < 7 || Math.abs(RaspberryPi.getTagX7()) < 7) {
@@ -209,7 +204,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
             }
         } else if (a == 7) {
             Intake.run(false, false, true, false, false, true, 0, 0, false, red);
-            Launcher.notRun(false, false, false, false, 0, red, true, false,0);
+          
             Launcher.launchAuto(true);
             Map.swerve.drive(0, 0, 0);
             if (Map.leftLauncher.getSelectedSensorVelocity() > 21560) {
@@ -223,7 +218,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
             }
 
         } else if (a == 7) {
-            Launcher.notRun(false, false, false, false, 0, red, true, false,0);
+    
             Intake.run(false, false, false, false, false, true, 0, 0, false, red);
             Map.swerve.drive(0, 0, twistPid.calculate(Map.swerve.gyro2.getYaw(), 90));
             Timer.delay(1);
@@ -232,7 +227,7 @@ public static void threePieceAmpSideStayInZone(boolean red) {
 
         else if (a == 8) {
             Intake.run(false, false, false, false, false, true, 0, 0, false, red);
-            Launcher.notRun(false, false, false, false, 0, red, true, false,0);
+      
             Launcher.launch(false);
 
             Map.swerve.drive(0, 0, 0);

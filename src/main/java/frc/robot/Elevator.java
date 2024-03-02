@@ -119,7 +119,7 @@ public class Elevator {
             Map.rightElevator.set(ControlMode.PercentOutput, .65);
             Map.leftElevator.set(ControlMode.PercentOutput,.65);
 
-            Map.launcherPivot.set(ControlMode.PercentOutput, 0);
+            Launcher.launcherPivot.set(ControlMode.PercentOutput, 0);
             if (Map.elevatorBottom.get()) {
                 toggleDown = false;
               //  Map.leftElevator.setSelectedSensorPosition(0);

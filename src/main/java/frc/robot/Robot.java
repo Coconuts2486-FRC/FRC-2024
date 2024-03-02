@@ -96,9 +96,10 @@ public static double teleopTime;
     if(Timer.getFPGATimestamp()-startTime>3){
       Map.swerve.drive(0, 0, 0);
     }
+ // <->
     
 //   AutoPaths.auto2();
-   // Misc.runSelectedAuto(Misc.getSelectedColor());
+    // Misc.runSelectedAuto(Misc.getSelectedColor());
     // AutoPaths.auto2(Misc.getSelectedColor());
     // AutoPaths.twoPieceStraightFromSpeaker(Misc.getSelectedColor());
    
@@ -119,8 +120,6 @@ public static double teleopTime;
 
   @Override
   public void teleopPeriodic() {
-
-    // Launcher.run(Map.driver.getRawButtonPressed(5),Map.coDriver.getRawButton(7),Launcher.manualAngleTuner( Map.coDriver.getPOV()),false);
   
 SmartDashboard.putBoolean("45true", Launcher.goTo45);
      teleopTime = Timer.getFPGATimestamp();
@@ -138,7 +137,7 @@ SmartDashboard.putBoolean("45true", Launcher.goTo45);
       driverZ = 0;  
     }
     if(Map.driver.getRawButton(2)){
-         driverZ = -Map.driver.getRawAxis(0) ;
+         driverZ = Map.driver.getRawAxis(0) ;
           if (Math.abs(driverZ)<.15){
       driverZ = 0;  
       }
@@ -218,9 +217,10 @@ if (Map.driver.getRawButton(6)){
     );
 }
    //Intake.run(Map.driver.getRawButton(6),Map.coDriver.getRawButtonPressed(4),Map.coDriver.getRawButton(6),Map.coDriver.getRawButton(7),false);
-    SmartDashboard.putNumber("launcher Position", Map.launcherPivot.getSelectedSensorPosition());
+  
      Launcher.run(
-      Map.driver.getRawButtonPressed(5),
+      //change for testing
+      Map.coDriver.getRawButtonPressed(9),
       Map.coDriver.getRawButton(7),
       Launcher.manualAngleTuner( Map.coDriver.getPOV())
       ,false);

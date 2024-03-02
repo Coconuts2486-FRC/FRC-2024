@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,11 +17,12 @@ import frc.robot.Vision.RaspberryPi;
  * It provides methods to control the launcher.
  */
 public class Launcher {
+   public static TalonFX launcherPivot = new TalonFX(17);
   static boolean goTo45 = false;
   static boolean launcherReady = false;
 
   public static PIDController launcherPID = new PIDController(.0042, 0, 0);
-  public static PIDController pivotPid = new PIDController(.0042, 0.0000, 0);
+  public static PIDController pivotPid = new PIDController(.0039, 0.0000, 0);
 
   public static boolean toggleTarget = false;
   public static double angleTuner = 0;
@@ -29,13 +32,13 @@ public class Launcher {
    */
 
   public static void init() {
-    Map.launcherPivot.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+    launcherPivot.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     Map.rightLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     Map.leftLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     // intakeRight is what the pivot encoder is wired to.
     Map.intakeRight.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-    Map.launcherPivot.setSelectedSensorPosition(0);
-    Map.launcherPivot.setNeutralMode(NeutralMode.Brake);
+    launcherPivot.setSelectedSensorPosition(0);
+    launcherPivot.setNeutralMode(NeutralMode.Brake);
     Map.rightLauncher.setInverted(true);
     goTo45 = false;
     angleTuner = 0;
@@ -45,11 +48,11 @@ public class Launcher {
   public static void disable(boolean button) {
     goTo45 = false;
     if (button) {
-      Map.launcherPivot.setNeutralMode(NeutralMode.Coast);
+      launcherPivot.setNeutralMode(NeutralMode.Coast);
     }
 
     else {
-      Map.launcherPivot.setNeutralMode(NeutralMode.Brake);
+      launcherPivot.setNeutralMode(NeutralMode.Brake);
     }
   }
 
@@ -102,127 +105,37 @@ public class Launcher {
     }
     else if (fourtyFive) {
       goTo45 = !goTo45;
+
     } if(sixty){
-         Map.launcherPivot.set(ControlMode.PercentOutput,
+         launcherPivot.set(ControlMode.PercentOutput,
             pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
             if(Map.pivotTop.get()==false){
-                 Map.launcherPivot.set(ControlMode.PercentOutput,0);
+                 launcherPivot.set(ControlMode.PercentOutput,0);
 
             }
     }
    else if (goTo45) {
-      if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
-        Map.launcherPivot.set(ControlMode.PercentOutput,
+    if (Map.intakeRight.getSelectedSensorPosition()<1050){
+      goTo45 = false;
+       launcherPivot.set(ControlMode.PercentOutput, 0);
+    }
+     else if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
+        launcherPivot.set(ControlMode.PercentOutput,
             // jut in case: -36900 is motor tick to go back to.
-            launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), 1100));
+        pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1100));
       } else {
-        Map.launcherPivot.set(ControlMode.PercentOutput,
+        launcherPivot.set(ControlMode.PercentOutput,
             pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), (1235 + tuner)));
       }
     } else {
-      Map.launcherPivot.set(ControlMode.PercentOutput, 0);
+      launcherPivot.set(ControlMode.PercentOutput, 0);
     }
   }
 
-  public static void notRun(boolean manualZero, boolean toggle45, boolean manualChangeButton, boolean changeWithApriltag,
-      double manualChangeAxis, boolean red,
-      boolean auto45True, boolean autoZeroTrue, double angleChanger) {
-
-    double calculation;
-    if (auto45True) {
-      goTo45 = true;
-    } else if (toggle45) {
-      goTo45 = !goTo45;
-    }
-    if (red) {
-      calculation = calculateAngle(RaspberryPi.getTagZ4());
-    } else if (red == false) {
-      calculation = calculateAngle(RaspberryPi.getTagZ7());
-    }
-    if (Map.intakeStop.get() == false && Map.intakeRight.getSelectedSensorPosition() >= 1270) {
-      Map.launcherPivot.set(ControlMode.PercentOutput, 0);
-    } else if (manualZero) {
-      if (Map.pivotTop.get() == false) {
-        Map.launcherPivot.setSelectedSensorPosition(0);
-        Map.launcherPivot.set(ControlMode.PercentOutput, -0);
-      } else if (Map.pivotTop.get() == true) {
-        Map.launcherPivot.set(ControlMode.PercentOutput, .5);
-      }
-    }
-
-    else if (manualChangeButton) {
-      Map.launcherPivot.set(ControlMode.PercentOutput, manualChangeAxis * .3);
-      if (manualChangeAxis > -.022) {
-        Map.launcherPivot.set(ControlMode.PercentOutput, -.022);
-      }
-    } else if (autoZeroTrue) {
-      Map.launcherPivot.set(ControlMode.PercentOutput,
-          launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
-      if (Map.pivotTop.get() == false) {
-        Map.launcherPivot.set(ControlMode.PercentOutput, 0);
-      }
-    } else if (goTo45) {
-      if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
-        Map.launcherPivot.set(ControlMode.PercentOutput,
-            // jut in case: -36900 is motor tick to go back to.
-            launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), (1120)));
-
-      } else if (changeWithApriltag) {
-        if (red) {
-          if (RaspberryPi.getTagZ4() < 50) {
-
-            Map.launcherPivot.set(ControlMode.PercentOutput,
-                launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
-            if (Map.pivotTop.get() == false) {
-              Map.launcherPivot.set(ControlMode.PercentOutput, 0);
-            }
-
-          } else if (RaspberryPi.getTagZ4() > 50 && RaspberryPi.getTagZ4() < 85) {
-            Map.launcherPivot.set(ControlMode.PercentOutput,
-                launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), (1245 + angleChanger)));
-            // just in case: -21900 is the motor ticks to go back to.
-          } else if (RaspberryPi.getTagZ4() > 85 && RaspberryPi.getTagZ4() < 94) {
-            Map.launcherPivot.set(ControlMode.PercentOutput,
-                launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), (1190 + angleChanger)));
-          } else if (RaspberryPi.getTagZ4() > 94) {
-            Map.launcherPivot.set(ControlMode.PercentOutput,
-                launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), (1180 + angleChanger)));
-          }
-        } else {
-          if (RaspberryPi.getTagZ7() < 50) {
-
-            Map.launcherPivot.set(ControlMode.PercentOutput,
-                launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
-            if (Map.pivotTop.get() == false) {
-              Map.launcherPivot.set(ControlMode.PercentOutput, 0);
-            }
-          } else if (RaspberryPi.getTagZ7() > 50 && RaspberryPi.getTagZ7() < 85) {
-            Map.launcherPivot.set(ControlMode.PercentOutput,
-                launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), (1245 + angleChanger)));
-          } else if (RaspberryPi.getTagZ7() > 85 && RaspberryPi.getTagZ7() < 94) {
-            Map.launcherPivot.set(ControlMode.PercentOutput,
-                launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), (1190 + angleChanger)));
-          } else if (RaspberryPi.getTagZ7() > 94) {
-            Map.launcherPivot.set(ControlMode.PercentOutput,
-                launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), (1180 + angleChanger)));
-          }
-
-        }
-      } else {
-        Map.launcherPivot.set(ControlMode.PercentOutput,
-            launcherPID.calculate(Map.intakeRight.getSelectedSensorPosition(), (1245 + angleChanger)));
-      }
-      if (Map.pivotTop.get() == false) {
-        Map.launcherPivot.setSelectedSensorPosition(0);
-      }
-
-    }
-
-    else {
-      Map.launcherPivot.set(ControlMode.PercentOutput, 0);
-    }
-
-  }
+  
+  
+  
+  
 
   public static void launch(boolean button) {
     if (button) {
