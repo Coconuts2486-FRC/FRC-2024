@@ -98,7 +98,7 @@ public class Intake {
         }
     }
 // This is the one im using.
-    public static void run(boolean toggle1, boolean toggle2,boolean button3,boolean button4,boolean targetButton,boolean autoScoreTrue,double intakeAxis, double outtakeAxis, boolean autoZero, boolean red) {
+    public static void run(boolean intakePositionButton, boolean scoringPositionToggle,boolean launchNote,boolean reZeroIntake,boolean targetButton,boolean autoScoreTrue,double intakeAxis, double outtakeAxis, boolean autoZero, boolean red) {
         // put number to smart dashboard
     SmartDashboard.putNumber("intakeZone", Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition())+(-1240+Launcher.angleTuner) ) );
       // toggle for scoring position
@@ -123,27 +123,27 @@ public class Intake {
             }
 
         }
-        if (button3){
+        if (launchNote){
             shotClock = Timer.getFPGATimestamp();
         }
 
         if (autoScoreTrue){
             toggleScore = true;
         }
-   else if (toggle2) {
+   else if (scoringPositionToggle) {
             toggleScore = !toggleScore;
         }
-       if (toggle1) {
+       if (intakePositionButton) {
             toggleOut = !toggleOut;
             if (Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition())+(-1240+Launcher.angleTuner)) > 18) {
                 toggleOut = false;
             }
         }
             // if button, and correct position, and light sensor, set the tripple toggle to 2
-        if (toggle1 == true && Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition()) + (-1240+Launcher.angleTuner)) < 18 && Map.lightStop.get()==false) {
+        if (intakePositionButton == true && Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition()) + (-1240+Launcher.angleTuner)) < 18 && Map.lightStop.get()==false) {
             trippleToggle = 2;
             // if any are false, set it to 3 or 1 depending on if toggle score is true or false
-        } else if (toggle1 == false ||  Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition()) + (-1240+Launcher.angleTuner)) > 18 || Map.lightStop.get()==true) {
+        } else if (intakePositionButton == false ||  Math.abs(Math.abs(Map.intakeRight.getSelectedSensorPosition()) + (-1240+Launcher.angleTuner)) > 18 || Map.lightStop.get()==true) {
             if (toggleScore == true && Map.intakeRight.getSelectedSensorPosition()< 1300) {
                 trippleToggle = 3;
 
@@ -159,7 +159,7 @@ public class Intake {
                     Map.intakeLeft.set(ControlMode.PercentOutput, .39);
                     Map.intakeRight.set(ControlMode.PercentOutput, .39);
         }
-        else if (button4){
+        else if (reZeroIntake){
             Map.movementIntake.set(ControlMode.PercentOutput, -.3);
             if(Map.intakeStop.get()){
                  Map.movementIntake.set(ControlMode.PercentOutput, 0);
@@ -181,7 +181,7 @@ public class Intake {
                     Map.intakeRight.set(ControlMode.PercentOutput, -1);
             }  
             
-            else if(button3 && Map.leftLauncher.getSelectedSensorVelocity()>20500){
+            else if(launchNote && Map.leftLauncher.getSelectedSensorVelocity()>20500){
                         
                          
                         Map.intakeLeft.set(ControlMode.PercentOutput, 1);
@@ -210,7 +210,7 @@ public class Intake {
                     Map.intakeRight.set(ControlMode.PercentOutput,- 1);
               
             
-             }else if(button3 && Map.leftLauncher.getSelectedSensorVelocity()>20500){
+             }else if(launchNote && Map.leftLauncher.getSelectedSensorVelocity()>20500){
                         
                          
                         Map.intakeLeft.set(ControlMode.PercentOutput, 1);
