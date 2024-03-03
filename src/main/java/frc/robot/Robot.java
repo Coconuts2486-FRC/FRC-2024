@@ -56,6 +56,7 @@ public static double teleopTime;
     Elevator.init();
 
     Map.odometry.init();
+
     Map.swerve.init();
   }
 
@@ -90,16 +91,16 @@ public static double teleopTime;
   public void autonomousPeriodic() {
    // Map.leftLauncher.set(ControlMode.Velocity, 21000)  ;
  // uncomment for drive foreward
-   if (Timer.getFPGATimestamp()-startTime<3) {
-     Map.swerve.drive(0, -.25, 0);
-   }else
-    if(Timer.getFPGATimestamp()-startTime>3){
-      Map.swerve.drive(0, 0, 0);
-    }
+  //  if (Timer.getFPGATimestamp()-startTime<3) {
+  //    Map.swerve.drive(0, -.25, 0);
+  //  }else
+  //   if(Timer.getFPGATimestamp()-startTime>3){
+  //     Map.swerve.drive(0, 0, 0);
+  //   }
  // <->
     
 //   AutoPaths.auto2();
-    // Misc.runSelectedAuto(Misc.getSelectedColor());
+     Misc.runSelectedAuto(Misc.getSelectedColor());
     // AutoPaths.auto2(Misc.getSelectedColor());
     // AutoPaths.twoPieceStraightFromSpeaker(Misc.getSelectedColor());
    

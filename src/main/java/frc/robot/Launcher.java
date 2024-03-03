@@ -21,8 +21,8 @@ public class Launcher {
   static boolean goTo45 = false;
   static boolean launcherReady = false;
 
-  public static PIDController launcherPID = new PIDController(.0042, 0, 0);
-  public static PIDController pivotPid = new PIDController(.0039, 0.0000, 0);
+
+  public static PIDController pivotPid = new PIDController(.0042, 0.0000, 0);
 
   public static boolean toggleTarget = false;
   public static double angleTuner = 0;
@@ -37,7 +37,7 @@ public class Launcher {
     Map.leftLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     // intakeRight is what the pivot encoder is wired to.
     Map.intakeRight.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-    launcherPivot.setSelectedSensorPosition(0);
+
     launcherPivot.setNeutralMode(NeutralMode.Brake);
     Map.rightLauncher.setInverted(true);
     goTo45 = false;
@@ -68,6 +68,7 @@ public class Launcher {
     } else if (POV == 90 || POV == 270) {
       angleTuner = 0;
     }
+    angleTuner = Math.min(Math.max(angleTuner, -100), 100);
     SmartDashboard.putNumber("angle Tuner", angleTuner);
     return angleTuner;
   }
@@ -100,29 +101,34 @@ public class Launcher {
 
   public static void run(boolean fourtyFive,boolean sixty, double tuner, boolean autoFourtyFive) {
     
-    if(autoFourtyFive){
+    if (autoFourtyFive) {
       goTo45 = true;
-    }
-    else if (fourtyFive) {
+    } else if (fourtyFive) {
       goTo45 = !goTo45;
 
-    } if(sixty){
-         launcherPivot.set(ControlMode.PercentOutput,
-            pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
-            if(Map.pivotTop.get()==false){
-                 launcherPivot.set(ControlMode.PercentOutput,0);
+    }
 
-            }
-    }
-   else if (goTo45) {
-    if (Map.intakeRight.getSelectedSensorPosition()<1050){
-      goTo45 = false;
-       launcherPivot.set(ControlMode.PercentOutput, 0);
-    }
-     else if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
+//  if (Map.intakeRight.getSelectedSensorPosition() < 1050) {
+//         goTo45 = false;
+//         sixty = false;
+//         launcherPivot.set(ControlMode.PercentOutput, 0);
+//       }
+
+    if (sixty) {
+      launcherPivot.set(ControlMode.PercentOutput,
+          pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
+      if (Map.pivotTop.get() == false) {
+        launcherPivot.set(ControlMode.PercentOutput, 0);
+
+      }
+    } else if (goTo45) {
+      if (Map.intakeRight.getSelectedSensorPosition() < 1050) {
+        goTo45 = false;
+        launcherPivot.set(ControlMode.PercentOutput, 0);
+      } else if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
         launcherPivot.set(ControlMode.PercentOutput,
             // jut in case: -36900 is motor tick to go back to.
-        pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1100));
+            pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1100));
       } else {
         launcherPivot.set(ControlMode.PercentOutput,
             pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), (1235 + tuner)));
@@ -131,7 +137,6 @@ public class Launcher {
       launcherPivot.set(ControlMode.PercentOutput, 0);
     }
   }
-
   
   
   
