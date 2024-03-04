@@ -19,218 +19,214 @@ import frc.robot.Swerve;
  * blue is 7, red is 4
  */
 public class RaspberryPi {
-  public static boolean targetGamePieceToggle = false;
-  public static double saveYaw;
+    public static boolean targetGamePieceToggle = false;
+    public static double saveYaw;
 
-  public static void init() {
-    targetGamePieceToggle = false;
-  }
+    public static void init() {
+        targetGamePieceToggle = false;
+    }
 
-  /**
-   * The network table used for vision data.
-   */
-  public static NetworkTable table = NetworkTableInstance
-      .getDefault()
-      .getTable("vision");
+    // The network table used for vision data.
+    public static NetworkTable table = NetworkTableInstance
+            .getDefault()
+            .getTable("vision");
 
-  /**
-   * The PID controller used for targeting a specific value.
-   */
-  public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
+    // The PID controller used for targeting a specific value.
+    public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
     public static PIDController targetPid2 = new PIDController(0.007, 0, 0.000002);
 
-  /**
-   * The PID controller used for driving to a specific value.
-   */
-  public static PIDController driveToPid = new PIDController(.03, 0.00, 0);
+    // The PID controller used for driving to a specific value.
+    public static PIDController driveToPid = new PIDController(.03, 0.00, 0);
 
-  /**
-   * Retrieves the X coordinate of April Tag 4 relative to the robot.
-   *
-   * @return The X coordinate of April Tag 4.
-   */
-  public static double getTagX4() {
-    return table.getEntry("speaker_tag4_robot_x").getDouble(0.0);
-  }
-
-  /**
-   * Retrieves the Z coordinate of April Tag 4 relative to the robot.
-   *
-   * @return The Z coordinate of April Tag 4.
-   */
-  public static double getTagZ4() {
-    return table.getEntry("speaker_tag4_robot_z").getDouble(0.0);
-  }
-
-  /**
-   * Retrieves the Z coordinate of April Tag 5 relative to the robot.
-   *
-   * @return The Z coordinate of April Tag 5.
-   */
-  public static double getTagZ5() {
-    return table.getEntry("speaker_tag5_robot_z").getDouble(0.0);
-  }
-
-  /**
-   * Retrieves the X coordinate of April Tag 5 relative to the robot.
-   *
-   * @return The X coordinate of April Tag 5.
-   */
-  public static double getTagX5() {
-    return table.getEntry("speaker_tag5_robot_x").getDouble(0.0);
-  }
-
-  /**
-   * Retrieves the Z coordinate of April Tag 6 relative to the robot.
-   *
-   * @return The Z coordinate of April Tag 6.
-   */
-  public static double getTagZ6() {
-    return table.getEntry("speaker_tag6_robot_z").getDouble(0.0);
-  }
-
-  /**
-   * Retrieves the X coordinate of April Tag 6 relative to the robot.
-   *
-   * @return The X coordinate of April Tag 6.
-   */
-  public static double getTagX6() {
-    return table.getEntry("speaker_tag6_robot_x").getDouble(0.0);
-  }
-
-  /**
-   * Retrieves the X coordinate of April Tag 7 relative to the robot.
-   *
-   * @return The X coordinate of April Tag 7.
-   */
-  public static double getTagX7() {
-    return table.getEntry("speaker_tag7_robot_x").getDouble(0.0);
-  }
-
-  /**
-   * Retrieves the Z coordinate of April Tag 7 relative to the robot.
-   *
-   * @return The Z coordinate of April Tag 7.
-   */
-  public static double getTagZ7() {
-    return table.getEntry("speaker_tag7_robot_z").getDouble(0.0);
-  }
-
-  /**
-   * Retrieves the X coordinate of the game piece relative to the robot.
-   *
-   * @return The X coordinate of the game piece.
-   */
-  public static double gamePieceX() {
-
-    if (table.getEntry("gamepiece_robot_x").getDouble(0.0) == -999) {
-      return 0;
-    } else {
-      return table.getEntry("gamepiece_robot_x").getDouble(0.0);
+    /**
+     * Retrieves the X coordinate of April Tag 4 relative to the robot.
+     *
+     * @return The X coordinate of April Tag 4.
+     */
+    public static double getTagX4() {
+        return table.getEntry("speaker_tag4_robot_x").getDouble(0.0);
     }
-  }
 
-  /**
-   * Retrieves the Z coordinate of the game piece relative to the robot.
-   *
-   * @return The Z coordinate of the game piece.
-   */
-  public static double gamePieceY() {
-
-    if (table.getEntry("gamepiece_robot_z").getDouble(0.0) == -999) {
-      return 0;
-    } else {
-      return table.getEntry("gamepiece_robot_z").getDouble(0.0);
+    /**
+     * Retrieves the Z coordinate of April Tag 4 relative to the robot.
+     *
+     * @return The Z coordinate of April Tag 4.
+     */
+    public static double getTagZ4() {
+        return table.getEntry("speaker_tag4_robot_z").getDouble(0.0);
     }
-  }
 
-  /**
-   * Retrieves the angle of the game piece relative to the robot.
-   *
-   * @return The angle of the game piece.
-   */
-  public static double gamePieceAngle() {
-    return table.getEntry("gamepiece_robot_angle").getDouble(0.0);
-  }
+    /**
+     * Retrieves the Z coordinate of April Tag 5 relative to the robot.
+     *
+     * @return The Z coordinate of April Tag 5.
+     */
+    public static double getTagZ5() {
+        return table.getEntry("speaker_tag5_robot_z").getDouble(0.0);
+    }
 
-  /**
-   * Retrieves the distance to the game piece relative to the robot.
-   *
-   * @return The distance to the game piece.
-   */
-  public static double gamePieceDistance() {
-    return table.getEntry("gamepiece_robot_dist").getDouble(0.0);
-  }
+    /**
+     * Retrieves the X coordinate of April Tag 5 relative to the robot.
+     *
+     * @return The X coordinate of April Tag 5.
+     */
+    public static double getTagX5() {
+        return table.getEntry("speaker_tag5_robot_x").getDouble(0.0);
+    }
 
-  /**
-   * Calculates the target value for April Tags based on the button and axis
-   * inputs.
-   *
-   * @param button The button input.
-   * @param axis   The axis input.
-   * @param red    Whether the target is red or not.
-   * @return The target value for April Tags.
-   */
-  public static double targetAprilTag(
-      boolean button,
-      double axis,
-      boolean red) {
-    if (red) {
-      if (button) {
-        if (getTagX4() == -999) {
-          return axis;
+    /**
+     * Retrieves the Z coordinate of April Tag 6 relative to the robot.
+     *
+     * @return The Z coordinate of April Tag 6.
+     */
+    public static double getTagZ6() {
+        return table.getEntry("speaker_tag6_robot_z").getDouble(0.0);
+    }
+
+    /**
+     * Retrieves the X coordinate of April Tag 6 relative to the robot.
+     *
+     * @return The X coordinate of April Tag 6.
+     */
+    public static double getTagX6() {
+        return table.getEntry("speaker_tag6_robot_x").getDouble(0.0);
+    }
+
+    /**
+     * Retrieves the X coordinate of April Tag 7 relative to the robot.
+     *
+     * @return The X coordinate of April Tag 7.
+     */
+    public static double getTagX7() {
+        return table.getEntry("speaker_tag7_robot_x").getDouble(0.0);
+    }
+
+    /**
+     * Retrieves the Z coordinate of April Tag 7 relative to the robot.
+     *
+     * @return The Z coordinate of April Tag 7.
+     */
+    public static double getTagZ7() {
+        return table.getEntry("speaker_tag7_robot_z").getDouble(0.0);
+    }
+
+    /**
+     * Retrieves the X coordinate of the game piece relative to the robot.
+     *
+     * @return The X coordinate of the game piece.
+     */
+    public static double gamePieceX() {
+
+        if (table.getEntry("gamepiece_robot_x").getDouble(0.0) == -999) {
+            return 0;
         } else {
-          return -targetPid2.calculate(getTagX4());
+            return table.getEntry("gamepiece_robot_x").getDouble(0.0);
         }
-      } else {
-        return axis;
-      }
-    } else {
-      if (button) {
-        if (getTagX7() == -999) {
-          return axis;
+    }
+
+    /**
+     * Retrieves the Z coordinate of the game piece relative to the robot.
+     *
+     * @return The Z coordinate of the game piece.
+     */
+    public static double gamePieceY() {
+
+        if (table.getEntry("gamepiece_robot_z").getDouble(0.0) == -999) {
+            return 0;
         } else {
-          return -targetPid2.calculate(getTagX7());
+            return table.getEntry("gamepiece_robot_z").getDouble(0.0);
         }
-      } else {
-        return axis;
-      }
-    }
-  }
-
-  /**
-   * Calculates the target value for the game piece.
-   *
-   * @return The target value for the game piece.
-   */
-  public static void targetGamePiece(boolean button, boolean released) {
-    if (button && Map.lightStop.get() == false && Map.movementIntake.getSelectedSensorPosition() > 90000) {
-      Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceX()));
-      if (Math.abs(gamePieceX()) < 7) {
-        Swerve.gyro.setYaw(0);
-        Map.swerve.drive(0, -driveToPid.calculate(gamePieceY()), -targetPid.calculate(gamePieceX()));
-      }
-
     }
 
-    // Map.backLeft.autoInit(Swerve.blOffset);
-    // Map.backRight.autoInit(Swerve.brOffset);
-    // Map.frontLeft.autoInit(Swerve.flOffset);
-    // Map.frontRight.autoInit(Swerve.frOffset);
-    // Swerve.modInit();
-
-  }
-
-  /**
-   * Calculates the drive-to value for the game piece.
-   *
-   * @return The drive-to value for the game piece.
-   */
-  public static double driveToGamePiece() {
-    if (Map.lightStop.get()) {
-      return 0;
-    } else {
-      return -driveToPid.calculate(gamePieceY());
+    /**
+     * Retrieves the angle of the game piece relative to the robot.
+     *
+     * @return The angle of the game piece.
+     */
+    public static double gamePieceAngle() {
+        return table.getEntry("gamepiece_robot_angle").getDouble(0.0);
     }
-  }
+
+    /**
+     * Retrieves the distance to the game piece relative to the robot.
+     *
+     * @return The distance to the game piece.
+     */
+    public static double gamePieceDistance() {
+        return table.getEntry("gamepiece_robot_dist").getDouble(0.0);
+    }
+
+    /**
+     * Calculates the target value for April Tags based on the button and axis
+     * inputs.
+     *
+     * @param button The button input.
+     * @param axis   The axis input.
+     * @param red    Are we red alliance?
+     * @return The target value for April Tags.
+     */
+    public static double targetAprilTag(
+            boolean button,
+            double axis,
+            boolean red) {
+        if (red) {
+            // Red-Side Specific-Code
+            if (button) {
+                if (getTagX4() == -999) {
+                    return axis;
+                } else {
+                    return -targetPid2.calculate(getTagX4());
+                }
+            } else {
+                return axis;
+            }
+        } else {
+            // Blue-Side Specific-Code
+            if (button) {
+                if (getTagX7() == -999) {
+                    return axis;
+                } else {
+                    return -targetPid2.calculate(getTagX7());
+                }
+            } else {
+                return axis;
+            }
+        }
+    }
+
+    /**
+     * Calculates the target value for the game piece.
+     *
+     * @return The target value for the game piece.
+     */
+    public static void targetGamePiece(boolean button, boolean released) {
+        if (button && Map.lightStop.get() == false && Map.movementIntake.getSelectedSensorPosition() > 90000) {
+            Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceX()));
+            if (Math.abs(gamePieceX()) < 7) {
+                Swerve.gyro.setYaw(0);
+                Map.swerve.drive(0, -driveToPid.calculate(gamePieceY()), -targetPid.calculate(gamePieceX()));
+            }
+
+        }
+
+        // Map.backLeft.autoInit(Swerve.blOffset);
+        // Map.backRight.autoInit(Swerve.brOffset);
+        // Map.frontLeft.autoInit(Swerve.flOffset);
+        // Map.frontRight.autoInit(Swerve.frOffset);
+        // Swerve.modInit();
+
+    }
+
+    /**
+     * Calculates the drive-to value for the game piece.
+     *
+     * @return The drive-to value for the game piece.
+     */
+    public static double driveToGamePiece() {
+        if (Map.lightStop.get()) {
+            return 0;
+        } else {
+            return -driveToPid.calculate(gamePieceY());
+        }
+    }
 }

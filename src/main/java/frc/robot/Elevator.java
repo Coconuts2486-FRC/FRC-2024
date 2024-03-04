@@ -17,9 +17,8 @@ public class Elevator {
     public static boolean toggleUp = false;
     public static boolean toggleScore = false;
     public static boolean toggleDown = false;
-    /**
-     * The PIDController used for elevator position control.
-     */
+
+    // The PIDController used for elevator position control.
     public static PIDController elevatorPID = new PIDController(
             .0001,
             0.000001,
@@ -43,98 +42,116 @@ public class Elevator {
         toggleDown = false;
 
     }
-    public static void disable(boolean button){
-       
-       toggleUp = false;
-        if (button){      Map.leftElevator.setNeutralMode(NeutralMode.Coast);
-             Map.rightElevator.setNeutralMode(NeutralMode.Coast);
+
+    /**
+     * Disable the Elevator with a button press
+     * 
+     * @param button The disable button
+     */
+    public static void disable(boolean button) {
+
+        toggleUp = false;
+        if (button) {
+            Map.leftElevator.setNeutralMode(NeutralMode.Coast);
+            Map.rightElevator.setNeutralMode(NeutralMode.Coast);
         }
-        
-        else{
-                Map.leftElevator.setNeutralMode(NeutralMode.Brake);
-                Map.rightElevator.setNeutralMode(NeutralMode.Brake);
+
+        else {
+            Map.leftElevator.setNeutralMode(NeutralMode.Brake);
+            Map.rightElevator.setNeutralMode(NeutralMode.Brake);
         }
     }
+
+    /**
+     * The main driving routine
+     * 
+     * NOTE: Change name of this function and its inputs
+     *
+     * @param button1 A button that does something
+     * @param axis    An axis
+     * @param button2 A button that does something
+     * @param button3 A button that does something
+     */
+
     public static void test(boolean button1, double axis, boolean button2, boolean button3) {
-       // SmartDashboard.putNumber("EVelocity", Map.leftElevator.getSelectedSensorVelocity());
-       
+        // SmartDashboard.putNumber("EVelocity",
+        // Map.leftElevator.getSelectedSensorVelocity());
+
         if (button1) {
             toggleUp = !toggleUp;
             toggleDown = true;
         }
-          if (button2) {
+        if (button2) {
             toggleScore = !toggleScore;
-             toggleDown = true;
+            toggleDown = true;
         }
 
-
         if (toggleUp == true) {
-  
-           toggleDown = true;
 
-            Map.rightElevator.set(ControlMode.PercentOutput,-.45);
-                   // elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -85000));
-                       
+            toggleDown = true;
+
+            Map.rightElevator.set(ControlMode.PercentOutput, -.45);
+            // elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -85000));
 
             Map.leftElevator.follow(Map.rightElevator);
 
             if (Map.elevatorTop.get()) {
-                Map.rightElevator.set(ControlMode.PercentOutput,0);
-              //  Map.leftElevator.setSelectedSensorPosition(-85000);
+                Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                // Map.leftElevator.setSelectedSensorPosition(-85000);
             }
 
-            
-        } else if (toggleScore == true){
+        } else if (toggleScore == true) {
             toggleDown = true;
-          
-             Map.rightElevator.set(ControlMode.PercentOutput,-.90);
-                    
-           Map.leftElevator.set(ControlMode.PercentOutput,-.90);
-            if (Map.elevatorTop.get()){
-                   Map.rightElevator.set(ControlMode.PercentOutput,0);
+
+            Map.rightElevator.set(ControlMode.PercentOutput, -.90);
+
+            Map.leftElevator.set(ControlMode.PercentOutput, -.90);
+            if (Map.elevatorTop.get()) {
+                Map.rightElevator.set(ControlMode.PercentOutput, 0);
             }
-            if(Map.leftElevator.getSelectedSensorPosition()<-74000 ){
-                Map.intakeLeft.set(ControlMode.PercentOutput,-1);
-                    Map.intakeRight.set(ControlMode.PercentOutput,-1);
-                    Timer.delay(.45);
-                    toggleScore = false;
-               
+            if (Map.leftElevator.getSelectedSensorPosition() < -74000) {
+                Map.intakeLeft.set(ControlMode.PercentOutput, -1);
+                Map.intakeRight.set(ControlMode.PercentOutput, -1);
+                Timer.delay(.45);
+                toggleScore = false;
+
             }
-            
-                    
-                       if (Map.elevatorTop.get()) {
-                Map.rightElevator.set(ControlMode.PercentOutput,0);
-                Map.leftElevator.set(ControlMode.PercentOutput,0);
-              //  Map.leftElevator.setSelectedSensorPosition(-85000);
+
+            if (Map.elevatorTop.get()) {
+                Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                Map.leftElevator.set(ControlMode.PercentOutput, 0);
+                // Map.leftElevator.setSelectedSensorPosition(-85000);
             }
-        } else if (button3){
-             Map.rightElevator.set(ControlMode.PercentOutput,
+        } else if (button3) {
+            Map.rightElevator.set(ControlMode.PercentOutput,
                     elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -39000));
-                    
+
             Map.leftElevator.follow(Map.rightElevator);
         }
 
-       else if (toggleUp == false&&toggleScore== false && button3 == false && toggleDown == true) {
+        else if (toggleUp == false && toggleScore == false && button3 == false && toggleDown == true) {
 
             Map.rightElevator.set(ControlMode.PercentOutput, .65);
-            Map.leftElevator.set(ControlMode.PercentOutput,.65);
+            Map.leftElevator.set(ControlMode.PercentOutput, .65);
 
             Launcher.launcherPivot.set(ControlMode.PercentOutput, 0);
             if (Map.elevatorBottom.get()) {
                 toggleDown = false;
-              //  Map.leftElevator.setSelectedSensorPosition(0);
+                // Map.leftElevator.setSelectedSensorPosition(0);
                 // Map.rightElevator.setSelectedSensorPosition(0);
-                       Map.rightElevator.set(ControlMode.PercentOutput,0);
-                       Map.leftElevator.set(ControlMode.PercentOutput,0);
+                Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                Map.leftElevator.set(ControlMode.PercentOutput, 0);
             }
-        }else{
-               Map.rightElevator.set(ControlMode.PercentOutput,0);
-                       Map.leftElevator.set(ControlMode.PercentOutput,0);
+        } else {
+            Map.rightElevator.set(ControlMode.PercentOutput, 0);
+            Map.leftElevator.set(ControlMode.PercentOutput, 0);
         }
     }
 
     /**
      * Runs the elevator based on the button inputs and axis value.
+     * 
+     * TODO: Docuement each part of this function in detail!!!
      * 
      * @param button1 The state of button 1.
      * @param button2 The state of button 2.
@@ -212,19 +229,17 @@ public class Elevator {
         }
 
         if (toggle4) {
-
             if (Map.elevatorBottom.get()) {
                 Map.leftElevator.set(ControlMode.PercentOutput, 0);
-
             } else {
                 Map.leftElevator.set(ControlMode.PercentOutput, axis);
-
             }
         }
 
         if (Map.elevatorTop.get()) {
             Map.leftElevator.setSelectedSensorPosition(upperLimit);
         }
+
         if (Map.elevatorBottom.get()) {
             Map.leftElevator.setSelectedSensorPosition(0);
 
