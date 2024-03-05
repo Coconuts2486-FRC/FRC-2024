@@ -21,12 +21,12 @@ public class Launcher {
     static boolean goTo45 = false;
     static boolean launcherReady = false;
 
-    // Proportional Integal Derivative == Speed Controller
+// Proportional Integal Derivative == Speed Controller
     // kp == Constant * Tolerance between current value and stepoint
     // ki == Constant * Integral of the tolerance
     // kd == Constant * Derivative of the tolerance
     public static PIDController pivotPid = new PIDController(.0042, 0.0000, 0);
-
+    
     public static boolean toggleTarget = false;
     public static double angleTuner = 0;
 
@@ -64,7 +64,7 @@ public class Launcher {
     /**
      * Manually tune the angle of the Launcher
      * 
-     * @param POV Point of view?
+     * @param POV D-Pad of a controller?
      * @return double
      */
     public static double manualAngleTuner(int POV) {
@@ -134,7 +134,7 @@ public class Launcher {
         // launcherPivot.set(ControlMode.PercentOutput, 0);
         // }
 
-        // Default "HOME" position, also used for "point-blank" subwoofer shot
+// Default "HOME" position, also used for "point-blank" subwoofer shot
         if (sixty) {
             launcherPivot.set(ControlMode.PercentOutput,
                     pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
@@ -148,7 +148,7 @@ public class Launcher {
         else if (goTo45) {
 
             // Danger Zone: Pivot will rip something off -- STOP EVERYTHING
-            if (pivotEncoderAngle(Map.intakeRight.getSelectedSensorPosition()) < 25.) {
+            if (pivotEncoderAngle(Map.intakeRight.getSelectedSensorPosition()) < 25.0) {
                 goTo45 = false;
                 launcherPivot.set(ControlMode.PercentOutput, 0);
             } 
@@ -181,6 +181,7 @@ public class Launcher {
      * @param button "The Button"
      */
     public static void launch(boolean button) {
+    
         if (button) {
             Map.leftLauncher.set(TalonSRXControlMode.Velocity, 21000);
             Map.rightLauncher.set(TalonSRXControlMode.Velocity, 21000);
@@ -211,6 +212,8 @@ public class Launcher {
         }
     }
 
+
+    
     /**
      * Convert pivot encoder tick values to pivot angle in degrees
      * 
@@ -224,7 +227,7 @@ public class Launcher {
      * @param ticks Value from the encoder
      * @return Head angle in degrees.
      */
-    private static double pivotEncoderAngle(int ticks) {
+    private static double pivotEncoderAngle(double ticks) {
         return ((ticks - 1420) / 4096) * 360. + 60.;
     }
 
@@ -236,7 +239,7 @@ public class Launcher {
      */
 
     private static int pivotAngleEncoder(double angle){
-        return (int)((angle - 60.) / 360. * 4096 + 1420)
+        return (int)((angle - 60.) / 360. * 4096 + 1420);
     }
 
 }
