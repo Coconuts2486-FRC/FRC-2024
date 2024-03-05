@@ -21,6 +21,10 @@ public class Launcher {
     static boolean goTo45 = false;
     static boolean launcherReady = false;
 
+    // Proportional Integal Derivative == Speed Controller
+    // kp == Constant * Tolerance between current value and stepoint
+    // ki == Constant * Integral of the tolerance
+    // kd == Constant * Derivative of the tolerance
     public static PIDController pivotPid = new PIDController(.0042, 0.0000, 0);
 
     public static boolean toggleTarget = false;
@@ -33,7 +37,7 @@ public class Launcher {
         launcherPivot.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         Map.rightLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         Map.leftLauncher.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-        // intakeRight is what the pivot encoder is wired to.
+        // intakeRight is what the pivot encoder is wired to. (Absolute encoder)
         Map.intakeRight.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
         launcherPivot.setNeutralMode(NeutralMode.Brake);
@@ -130,6 +134,7 @@ public class Launcher {
         // launcherPivot.set(ControlMode.PercentOutput, 0);
         // }
 
+        // Default "HOME" position, also used for "point-blank" subwoofer shot
         if (sixty) {
             launcherPivot.set(ControlMode.PercentOutput,
                     pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
@@ -137,19 +142,35 @@ public class Launcher {
                 launcherPivot.set(ControlMode.PercentOutput, 0);
 
             }
-        } else if (goTo45) {
-            if (Map.intakeRight.getSelectedSensorPosition() < 1050) {
+        }
+
+        // Intake position selected
+        else if (goTo45) {
+
+            // Danger Zone: Pivot will rip something off -- STOP EVERYTHING
+            if (pivotEncoderAngle(Map.intakeRight.getSelectedSensorPosition()) < 25.) {
                 goTo45 = false;
                 launcherPivot.set(ControlMode.PercentOutput, 0);
-            } else if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
+            } 
+
+            // As the elevator goes UP, the motor ticks become MORE NEGATIVE
+            // If the elevator is in the "right position", then rotate the pivot
+            //   to score in the AMP.
+            else if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
                 launcherPivot.set(ControlMode.PercentOutput,
                         // jut in case: -36900 is motor tick to go back to.
-                        pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1100));
-            } else {
+                        pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), pivotAngleEncoder(32.0)));
+            } 
+ 
+            // Final something else
+            else {
                 launcherPivot.set(ControlMode.PercentOutput,
                         pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), (1235 + tuner)));
             }
-        } else {
+        }
+
+        // Turn off
+        else {
             launcherPivot.set(ControlMode.PercentOutput, 0);
         }
     }
@@ -189,4 +210,33 @@ public class Launcher {
             Map.rightLauncher.set(ControlMode.Velocity, 10000);
         }
     }
+
+    /**
+     * Convert pivot encoder tick values to pivot angle in degrees
+     * 
+     * Encoder value of 1420 is when the pivot head is at 60º. As the head
+     * to lower angles, the ticks value move to lower values, also. There
+     * are 4096 ticks in the complete circle (360º).
+     * 
+     * By comparison, the 45º position is approximately 1240 ticks. Inserting
+     * this value into this function yields 44.18º.
+     * 
+     * @param ticks Value from the encoder
+     * @return Head angle in degrees.
+     */
+    private static double pivotEncoderAngle(int ticks) {
+        return ((ticks - 1420) / 4096) * 360. + 60.;
+    }
+
+    /**
+     * Convert...
+     * 
+     * @param angle
+     * @return
+     */
+
+    private static int pivotAngleEncoder(double angle){
+        return (int)((angle - 60.) / 360. * 4096 + 1420)
+    }
+
 }
