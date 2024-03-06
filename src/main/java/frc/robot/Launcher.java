@@ -21,12 +21,12 @@ public class Launcher {
     static boolean goTo45 = false;
     static boolean launcherReady = false;
 
-// Proportional Integal Derivative == Speed Controller
+    // Proportional Integal Derivative == Speed Controller
     // kp == Constant * Tolerance between current value and stepoint
     // ki == Constant * Integral of the tolerance
     // kd == Constant * Derivative of the tolerance
     public static PIDController pivotPid = new PIDController(.0042, 0.0000, 0);
-    
+
     public static boolean toggleTarget = false;
     public static double angleTuner = 0;
 
@@ -62,34 +62,41 @@ public class Launcher {
     }
 
     /**
-     * Manually tune the angle of the Launcher
+     * Manually tune the angle of the Launcher (in degrees)
      * 
-     * @param POV D-Pad of a controller?
-     * @return double
+     * Each press of the D-Pad increases/decreases the angle by 0.5º
+     * 
+     * @param POV D-Pad of a controller (which is being pressed?)
+     * @return angular adjustment (in degrees)
      */
     public static double manualAngleTuner(int POV) {
+        // Limit switch for biggest angle (60º); `false` means pressed
         if (Map.pivotTop.get() == false) {
             angleTuner = 0;
-        } else if (POV == 0 || POV == 315 || POV == 45) {
-            angleTuner = angleTuner - 10;
+        }
+
+        // Top half of the D-Pad, increase angle
+        else if (POV == 0 || POV == 315 || POV == 45) {
+            angleTuner = angleTuner - 0.5;
             Timer.delay(.05);
-        } else if (POV == 180 || POV == 255 || POV == 135) {
-            angleTuner = angleTuner + 10;
+        }
+
+        // Bottom half of the D-Pad, decrease angle
+        else if (POV == 180 || POV == 255 || POV == 135) {
+            angleTuner = angleTuner + 0.5;
             Timer.delay(.05);
-        } else if (POV == 90 || POV == 270) {
+        }
+
+        // Either right or left of D-Pad, zero out the angle
+        else if (POV == 90 || POV == 270) {
             angleTuner = 0;
         }
-        angleTuner = Math.min(Math.max(angleTuner, -100), 100);
+
+        // Maximum "tuned" angle is ±10º
+        angleTuner = Math.min(Math.max(angleTuner, -10.), 10.);
         SmartDashboard.putNumber("angle Tuner", angleTuner);
         return angleTuner;
     }
-
-    /**
-     * Powers up the launcher based on the button press.
-     *
-     * @param buttonPress The value of the button press.
-     */
-    // NOTE: There's no code here with this docstring!!!
 
     /**
      * Calculates the angle of the launcher based on the distance.
@@ -128,19 +135,20 @@ public class Launcher {
             goTo45 = !goTo45;
         }
 
+        // Test code to stop the pivot from going to far -- didn't work
         // if (Map.intakeRight.getSelectedSensorPosition() < 1050) {
         // goTo45 = false;
         // sixty = false;
         // launcherPivot.set(ControlMode.PercentOutput, 0);
         // }
 
-// Default "HOME" position, also used for "point-blank" subwoofer shot
+        // Default "HOME" position, also used for "point-blank" subwoofer shot
         if (sixty) {
             launcherPivot.set(ControlMode.PercentOutput,
-                    pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), 1420));
+                    pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), pivotAngleEncoder(60.)));
+            // If pivot at largest angle (limit switch), stop (false => triggered)
             if (Map.pivotTop.get() == false) {
                 launcherPivot.set(ControlMode.PercentOutput, 0);
-
             }
         }
 
@@ -151,21 +159,22 @@ public class Launcher {
             if (pivotEncoderAngle(Map.intakeRight.getSelectedSensorPosition()) < 25.0) {
                 goTo45 = false;
                 launcherPivot.set(ControlMode.PercentOutput, 0);
-            } 
+            }
 
             // As the elevator goes UP, the motor ticks become MORE NEGATIVE
             // If the elevator is in the "right position", then rotate the pivot
-            //   to score in the AMP.
+            // to score in the AMP.
             else if (Map.leftElevator.getSelectedSensorPosition() < -20000) {
                 launcherPivot.set(ControlMode.PercentOutput,
-                        // jut in case: -36900 is motor tick to go back to.
+                        // just in case: -36900 is motor tick to go back to.
                         pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), pivotAngleEncoder(32.0)));
-            } 
- 
+            }
+
             // Final something else
             else {
                 launcherPivot.set(ControlMode.PercentOutput,
-                        pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(), (1235 + tuner)));
+                        pivotPid.calculate(Map.intakeRight.getSelectedSensorPosition(),
+                                pivotAngleEncoder(45. + tuner)));
             }
         }
 
@@ -181,7 +190,7 @@ public class Launcher {
      * @param button "The Button"
      */
     public static void launch(boolean button) {
-    
+
         if (button) {
             Map.leftLauncher.set(TalonSRXControlMode.Velocity, 21000);
             Map.rightLauncher.set(TalonSRXControlMode.Velocity, 21000);
@@ -189,7 +198,7 @@ public class Launcher {
             SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
         } else {
             Map.leftLauncher.set(ControlMode.PercentOutput, .0);
-            Map.rightLauncher.set(ControlMode.PercentOutput, -.0);
+            Map.rightLauncher.set(ControlMode.PercentOutput, .0);
         }
     }
 
@@ -212,8 +221,6 @@ public class Launcher {
         }
     }
 
-
-    
     /**
      * Convert pivot encoder tick values to pivot angle in degrees
      * 
@@ -227,19 +234,23 @@ public class Launcher {
      * @param ticks Value from the encoder
      * @return Head angle in degrees.
      */
-    private static double pivotEncoderAngle(double ticks) {
+    private static double pivotEncoderAngle(int ticks) {
         return ((ticks - 1420) / 4096) * 360. + 60.;
     }
 
     /**
-     * Convert...
+     * Convert from pivot angle in degrees to pivot encoder tick values
      * 
      * @param angle
      * @return
      */
 
-    private static int pivotAngleEncoder(double angle){
-        return (int)((angle - 60.) / 360. * 4096 + 1420);
+    private static int pivotAngleEncoder(double angle) {
+        return (int) ((angle - 60.) / 360. * 4096 + 1420);
     }
 
+    public static double distanceFrom45() {
+        return Math.abs(Math.abs(
+            pivotEncoderAngle(Map.intakeRight.getSelectedSensorPosition())) - (45 + angleTuner));
+    }
 }
