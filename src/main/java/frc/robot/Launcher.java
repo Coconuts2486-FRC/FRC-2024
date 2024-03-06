@@ -234,7 +234,7 @@ public class Launcher {
      * @param ticks Value from the encoder
      * @return Head angle in degrees.
      */
-    private static double pivotEncoderAngle(int ticks) {
+    public static double pivotEncoderAngle(double ticks) {
         return ((ticks - 1420) / 4096) * 360. + 60.;
     }
 
@@ -245,7 +245,7 @@ public class Launcher {
      * @return
      */
 
-    private static int pivotAngleEncoder(double angle) {
+    public static int pivotAngleEncoder(double angle) {
         return (int) ((angle - 60.) / 360. * 4096 + 1420);
     }
 

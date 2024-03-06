@@ -174,7 +174,7 @@ public class Intake {
         }
         // If AUTO hold-zero OR the pivot is steeper than 50º
         else if (autoZero ||
-                Launcher.pivotEncoderAngle(Launcher.intakeRight.getSelectedSensorPosition()) > 50.)){
+                Launcher.pivotEncoderAngle(Map.intakeRight.getSelectedSensorPosition()) > 50.){
             trippleToggle = positionZero;
         }
         // If we WANT to be in scoring position and the intake is NOT too far in (ticks
