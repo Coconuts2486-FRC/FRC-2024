@@ -17,6 +17,7 @@ public class Elevator {
     public static boolean toggleUp = false;
     public static boolean toggleScore = false;
     public static boolean toggleDown = false;
+    public static double rand;
 
     // The PIDController used for elevator position control.
     public static PIDController elevatorPID = new PIDController(
@@ -76,6 +77,11 @@ public class Elevator {
     public static void test(boolean button1, double axis, boolean button2, boolean button3) {
         // SmartDashboard.putNumber("EVelocity",
         // Map.leftElevator.getSelectedSensorVelocity());
+
+        rand = Math.random();
+        if (rand >=.92){
+            System.out.println(Map.intakeRight.getSelectedSensorPosition());
+        }
 
         if (button1) {
             toggleUp = !toggleUp;
