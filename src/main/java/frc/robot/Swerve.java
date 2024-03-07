@@ -45,7 +45,9 @@ public class Swerve {
         this.frontRight = frontRight;
         this.frontLeft = frontLeft;
     }
-
+    /**
+     * Initialize the drive base
+     */
     public void init() {
         gyro.setYaw(180);
         gyro2.setYaw(180);
@@ -63,7 +65,7 @@ public class Swerve {
      * @param reinit true if the swerve drive should be reinitialized, false
      *               otherwise
      */
-    public static void reinit(boolean reinit) {
+    public static void reInit(boolean reinit) {
         if (reinit) {
             gyro.setYaw(180);
             gyro2.setYaw(180);
@@ -77,7 +79,7 @@ public class Swerve {
     }
 
     /**
-     * Initialize the modules
+     * Initialize the individual modules
      */
     public static void modInit() {
         backRight.init();
@@ -112,24 +114,28 @@ public class Swerve {
     /**
      * Drives the swerve drive based on the x, y, and z values.
      * 
-     * @param x The x value of the swerve drive.
-     * @param y The y value of the swerve drive.
-     * @param z The z value of the swerve drive.
+     * @param x From the controller, drive joystick side-to-side command
+     * @param y From the controller, drive joystick up-and-down command
+     * @param z From the controller, rotate joystick side-to-side command
      */
     public void drive(double x, double y, double z) {
-        double L = 17.5;
-        double W = 17.5;
-        double r = Math.sqrt((L * L) + (W * W));
+        double L = 17.5; // length of wheelbase
+        double W = 17.5; // width of wheelbase
+        double r = Math.hypot(L, W);
 
+        // This button is not being used in 2024
         if (driver.getRawButton(robotCentric)) {
             x0 = x * speedMultiplier;
             y0 = y * speedMultiplier;
-        } else {
+        } 
+        // This is the usual case for 2024
+        else {
             double robotAngle = getRobotAngle();
             x0 = -y * Math.sin(robotAngle) + x * Math.cos(robotAngle);
             y0 = y * Math.cos(robotAngle) + x * Math.sin(robotAngle);
         }
 
+        // Swerve drive awesome maths!!
         double a = x0 - z * (L / r);
         double b = x0 + z * (L / r);
         double c = y0 - z * (W / r);
@@ -145,6 +151,7 @@ public class Swerve {
         // double frontRightSpeed = Math.sqrt((b * b) + (d * d));
         // double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
 
+        // NOTE: can change sqrt -> hypot as desired
         double backRightSpeed = Math.sqrt((a0 * a0) + (c0 * c0));
         double backLeftSpeed = Math.sqrt((a * a) + (d * d));
         double frontRightSpeed = Math.sqrt((b * b) + (c * c));
@@ -220,7 +227,7 @@ public class Swerve {
         }
         drive(x, y, z + twistAdjustment);
         realignToField(Map.driver.getRawButton(realign));
-        reinit(driver.getRawButton(reinit));
+        reInit(driver.getRawButton(reinit));
     }
 
     /**

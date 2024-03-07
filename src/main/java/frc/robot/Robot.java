@@ -150,12 +150,15 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putBoolean("45true", Launcher.goTo45);
         teleopTime = Timer.getFPGATimestamp();
+        
+        // Realign wheels after the gamepeice is picked up
         if (Map.driver.getRawButton(6) && Map.lightStop.get()) {
             Map.backLeft.autoInit(Swerve.blOffset);
             Map.backRight.autoInit(Swerve.brOffset);
             Map.frontLeft.autoInit(Swerve.flOffset);
             Map.frontRight.autoInit(Swerve.frOffset);
         }
+        // Upon release of button 6 (intake/pickup), reset gyro to the value of gyro2
         if (Map.driver.getRawButtonReleased(6)) {
             Swerve.gyro.setYaw(Swerve.gyro2.getYaw());
         }
@@ -194,11 +197,14 @@ public class Robot extends TimedRobot {
             }
         }
 
-        Map.swerve.reinit(Map.driver.getRawButton(4));
+        Map.swerve.reInit(Map.driver.getRawButton(4));
 
+        // If "Button 6" is pressed and no gamepice in intake, target the robot on the gamepiece
         if (Map.driver.getRawButton(6) && Map.lightStop.get() == false) {
             RaspberryPi.targetGamePiece(Map.driver.getRawButton(6), Map.driver.getAButtonReleased());
-        } else {
+        } 
+        // Otherwise, just drive
+        else {
             Map.swerve.drive(driverX, driverY,
                     RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(5), -driverZ + (driverY * -.001),
                             Misc.getSelectedColor()));

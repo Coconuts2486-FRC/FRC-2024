@@ -197,13 +197,16 @@ public class RaspberryPi {
     /**
      * Calculates the target value for the game piece.
      *
+     * @param button   This is the magical "Button 6" pressed
+     * @param released Not used
      * @return The target value for the game piece.
      */
     public static void targetGamePiece(boolean button, boolean released) {
+        // If button, no gamepiece in intake, and intake is OUT
         if (button && Map.lightStop.get() == false && Map.movementIntake.getSelectedSensorPosition() > 90000) {
             Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceX()));
             if (Math.abs(gamePieceX()) < 7) {
-                Swerve.gyro.setYaw(0);
+                Swerve.gyro.setYaw(0); // Instead, call getRobotAngle()
                 Map.swerve.drive(0, -driveToPid.calculate(gamePieceY()), -targetPid.calculate(gamePieceX()));
             }
 
@@ -215,6 +218,40 @@ public class RaspberryPi {
         // Map.frontRight.autoInit(Swerve.frOffset);
         // Swerve.modInit();
 
+    }
+
+    /**
+     * Calculates the target value for the gamepiece
+     * 
+     * Secondary function DOES NOT reset the `gyro` yaw -- possibly will allow
+     * us to remove second gyro on the bot (3-6-24)
+     * 
+     * TESTING!!!!
+     * If possible, assign an unallocated controller button to this function for
+     * testing
+     * 
+     * @param button
+     */
+    public static void targetGamepiece2(boolean button) {
+        // If button, no gamepiece in intake, and intake is OUT
+        if (button && Map.lightStop.get() == false && Map.movementIntake.getSelectedSensorPosition() > 90000) {
+            Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceX()));
+            if (Math.abs(gamePieceX()) < 7) {
+
+                // This is the current robot rotation angle w.r.t. initialization
+                double theta = Map.swerve.getRobotAngle(); // radians (might need a minus sign)
+
+                // This is where we want to go w.r.t. our current orientation
+                double xp = 0; // Want the robot to NOT move in x'
+                double yp = -driveToPid.calculate(gamePieceY()); // Move the robot toward the gamepiece
+
+                // Use the 2D rotation matrix to compute the swerve drive motion
+                // based on current YAW and desired robot-centric motion
+                Map.swerve.drive(xp * Math.cos(theta - yp * Math.sin(theta)),
+                        xp * Math.sin(theta) + yp * Math.cos(theta), -targetPid.calculate(gamePieceX()));
+            }
+
+        }
     }
 
     /**
