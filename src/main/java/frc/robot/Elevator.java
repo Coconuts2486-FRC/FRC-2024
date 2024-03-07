@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
-
+@SuppressWarnings("removal")
 public class Elevator {
     public static boolean toggleClimbUp = false;
     public static boolean toggleAmpScore = false;

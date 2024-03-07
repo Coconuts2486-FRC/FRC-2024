@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 
@@ -52,6 +53,7 @@ import edu.wpi.first.wpilibj.XboxController;
  * This class represents the map of the robot.
  * It provides the controller bindings and the motor and sensor ports.
  */
+@SuppressWarnings("removal")
 public class Map {
 
     public static XboxController driver = new XboxController(0);
@@ -119,19 +121,23 @@ public class Map {
 
     // Shooter
 
+    public static TalonSRX leftLauncher = new TalonSRX(16);   
+    public static TalonSRX rightLauncher = new TalonSRX(15);
+    
 
     // Elevator
     public static TalonFX leftElevator = new TalonFX(21, "drive");
     public static TalonFX rightElevator = new TalonFX(22, "drive");
     // Intake
- 
+    public static TalonSRX leftIntake = new TalonSRX(19);
+    public static TalonSRX rightIntake = new TalonSRX(20); 
 
     // Sensor
     public static DigitalInput elevatorBottom = new DigitalInput(0);
     public static DigitalInput elevatorTop = new DigitalInput(1);
     public static DigitalInput lightStop = new DigitalInput(2);
     public static DigitalInput intakeStop = new DigitalInput(3);
-    public static DigitalInput pivotTop = new DigitalInput(4);
+    public static DigitalInput pivotStop = new DigitalInput(4);
     
     
 }

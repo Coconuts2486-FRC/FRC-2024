@@ -24,6 +24,7 @@ public class Robot extends TimedRobot {
   static double driverZ;
   static double driverX;
   static double driverY;
+  
 
   @Override
   public void robotInit() {
@@ -86,7 +87,7 @@ public class Robot extends TimedRobot {
         driverY = 0;
       }
     }
-
+    LauncherTest.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),Launcher.manualAngleTuner(Map.coDriver.getPOV()),false);
     Map.swerve.reinit(Map.driver.getRawButton(4));
 
     Map.swerve.drive(driverX, driverY, -driverZ + (driverY * -.001));

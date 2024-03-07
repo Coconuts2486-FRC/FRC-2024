@@ -12,16 +12,20 @@ import edu.wpi.first.math.controller.PIDController;
  * Represents a module of a robot, which consists of a direction motor, drive
  * motor, encoder, and PID controllers.
  */
+@SuppressWarnings("removal")
 public class Module {
-
+  
     private TalonFX directionMotor;
+      
     public TalonFX driveMotor;
+      
     private CANCoder encoder;
     private PIDController angleController;
     private PIDController driveController;
     private double pi = Math.PI;
 
     // Internal Module Class
+    
     public Module(
             int directionMotor,
             int driveMotor,
@@ -40,6 +44,7 @@ public class Module {
      * inverting the direction motor, setting the neutral mode to brake,
      * and setting the drive motor to factory default and neutral mode to brake.
      */
+      
     public void init() {
         directionMotor.configFactoryDefault();
         directionMotor.setInverted(true);
@@ -82,6 +87,7 @@ public class Module {
      * @param speed The speed of the module.
      * @param angle The angle of the module.
      */
+      
     public void drive(double speed, double angle) {
         angleController.enableContinuousInput(-pi, pi);
 
@@ -118,6 +124,7 @@ public class Module {
      * 
      * @return angle (radians)
      */
+      
     public double getModuleAngle() {
         return (encoder.getAbsolutePosition() / 180) * pi;
     }
@@ -127,6 +134,7 @@ public class Module {
      * 
      * @return angle (degrees)
      */
+      
     public double getModuleAngleDeg() {
         return encoder.getAbsolutePosition();
     }
@@ -138,6 +146,7 @@ public class Module {
      *
      * @param angle The angle of the module.
      */
+      
     public void autoInit(double angle) {
         // make pid continuous on (-pi, pi)
         angleController.enableContinuousInput(-pi, pi);
@@ -194,6 +203,7 @@ public class Module {
      *
      * @param angle The angle of the module.
      */
+      
     public void autoInitDisabled(double angle) {
         // make pid continuous on (-pi, pi)
         angleController.enableContinuousInput(-pi, pi);
@@ -209,6 +219,7 @@ public class Module {
     /**
      * Returns the position of the module.
      */
+      
     public double encoderPos() {
         return encoder.getAbsolutePosition();
     }
