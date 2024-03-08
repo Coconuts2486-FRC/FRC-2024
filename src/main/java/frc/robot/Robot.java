@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Map.swerve.init();
+    Launcher.init();
 
   }
 
@@ -87,11 +88,12 @@ public class Robot extends TimedRobot {
         driverY = 0;
       }
     }
-    LauncherTest.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),Launcher.manualAngleTuner(Map.coDriver.getPOV()),false);
+    Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),Launcher.manualAngleTuner(Map.coDriver.getPOV()),false);
+    Launcher.launch(Map.coDriver.getRawButton(6));
     Map.swerve.reinit(Map.driver.getRawButton(4));
 
     Map.swerve.drive(driverX, driverY, -driverZ + (driverY * -.001));
-
+    //Launcher.intake(Map.coDriver.getRawButton(5));
     Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2),Map.coDriver.getRawAxis(3) , Map.coDriver.getRawAxis(2));
   }
 
@@ -103,6 +105,7 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     //button 10 is right joystick button
     Elevator.disable(Map.coDriver.getRawButton(10));
+    Launcher.disable(Map.coDriver.getRawButton(10));
   }
 
   @Override
