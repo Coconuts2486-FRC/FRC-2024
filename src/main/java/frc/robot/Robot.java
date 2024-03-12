@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     Map.swerve.init();
     Launcher.init();
-
+    Intake.init();
   }
 
   @Override
@@ -88,13 +88,39 @@ public class Robot extends TimedRobot {
         driverY = 0;
       }
     }
+
     Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),Launcher.manualAngleTuner(Map.coDriver.getPOV()),false);
     Launcher.launch(Map.coDriver.getRawButton(6));
     Map.swerve.reinit(Map.driver.getRawButton(4));
 
-    Map.swerve.drive(driverX, driverY, -driverZ + (driverY * -.001));
+    Map.swerve.drive(driverX, driverY, -driverZ + (driverY * -.001),Swerve.gyro.getYaw());
     //Launcher.intake(Map.coDriver.getRawButton(5));
     Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2),Map.coDriver.getRawAxis(3) , Map.coDriver.getRawAxis(2));
+    if (Map.driver.getRawButton(6)) {
+      Intake.run(
+              Map.driver.getRawButton(6),
+              Map.coDriver.getRawButtonPressed(4),
+              Map.coDriver.getRawButton(6),
+              Map.driver.getRawButton(1),
+              Map.coDriver.getRawButton(5),
+              false,
+              Map.driver.getRawAxis(3),
+              Map.driver.getRawAxis(2),
+              false,
+              Misc.getSelectedColor());
+  } else {
+      Intake.run(
+              Map.driver.getRawButton(2),
+              Map.coDriver.getRawButtonPressed(4),
+              Map.coDriver.getRawButton(6),
+              Map.driver.getRawButton(1),
+              Map.coDriver.getRawButton(5),
+              false,
+              Map.driver.getRawAxis(3),
+              Map.driver.getRawAxis(2),
+              false,
+              Misc.getSelectedColor());
+  }
   }
 
   @Override
@@ -106,6 +132,7 @@ public class Robot extends TimedRobot {
     //button 10 is right joystick button
     Elevator.disable(Map.coDriver.getRawButton(10));
     Launcher.disable(Map.coDriver.getRawButton(10));
+    Intake.disable(Map.coDriver.getRawButton(10));
   }
 
   @Override

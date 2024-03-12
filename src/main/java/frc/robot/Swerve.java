@@ -4,7 +4,6 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class Swerve {
 
     private static Module backRight;
@@ -114,7 +113,7 @@ public class Swerve {
      * @param y The y value of the swerve drive.
      * @param z The z value of the swerve drive.
      */
-    public void drive(double x, double y, double z) {
+    public void drive(double x, double y, double z, double yaw) {
         double L = 17.5;
         double W = 17.5;
         double r = Math.sqrt((L * L) + (W * W));
@@ -123,7 +122,7 @@ public class Swerve {
             x0 = x * speedMultiplier;
             y0 = y * speedMultiplier;
         } else {
-            double robotAngle = getRobotAngle();
+            double robotAngle = yaw;
             x0 = -y * Math.sin(robotAngle) + x * Math.cos(robotAngle);
             y0 = y * Math.cos(robotAngle) + x * Math.sin(robotAngle);
         }
@@ -216,7 +215,7 @@ public class Swerve {
             y = (1 / (1 - directionDeadband)) *
                     (y + -Math.signum(x) * directionDeadband);
         }
-        drive(x, y, z + twistAdjustment);
+        drive(x, y, z + twistAdjustment, Swerve.gyro.getYaw());
         realignToField(Map.driver.getRawButton(realign));
         reinit(driver.getRawButton(reinit));
     }

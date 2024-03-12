@@ -185,4 +185,8 @@ public class Launcher {
             Map.rightLauncher.set(ControlMode.Velocity, 10000);
         }
     }
+    public static double distanceFrom45() {
+                return Math.abs(
+                        pivotEncoder.getAbsolutePosition() - (45 + angleTuner));
+            }
 }

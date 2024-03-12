@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 
 /*  Conroller bindings:
@@ -129,6 +130,7 @@ public class Map {
     public static TalonFX leftElevator = new TalonFX(21, "drive");
     public static TalonFX rightElevator = new TalonFX(22, "drive");
     // Intake
+    public static TalonFX intakeExtend = new TalonFX(18);
     public static TalonSRX leftIntake = new TalonSRX(19);
     public static TalonSRX rightIntake = new TalonSRX(20); 
 
@@ -138,6 +140,7 @@ public class Map {
     public static DigitalInput lightStop = new DigitalInput(2);
     public static DigitalInput intakeStop = new DigitalInput(3);
     public static DigitalInput pivotStop = new DigitalInput(4);
-    
+    // Misc
+        public static SendableChooser red = new SendableChooser<>();
     
 }

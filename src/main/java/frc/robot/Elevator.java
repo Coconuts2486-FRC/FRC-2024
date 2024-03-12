@@ -10,11 +10,13 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
+
 @SuppressWarnings("removal")
 public class Elevator {
     public static boolean toggleClimbUp = false;
     public static boolean toggleAmpScore = false;
     public static boolean toggleDown = false;
+    public static boolean toggleOuttake = false;
 
     // The PIDController used for elevator position control.
     public static PIDController elevatorPID = new PIDController(
@@ -38,6 +40,7 @@ public class Elevator {
         toggleClimbUp = false;
         toggleAmpScore = false;
         toggleDown = false;
+        toggleOuttake = false;
 
     }
 
@@ -101,25 +104,23 @@ public class Elevator {
             Map.leftElevator.set(ControlMode.PercentOutput, -.90);
             if (Map.elevatorTop.get()) {
                 Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                Map.leftElevator.set(ControlMode.PercentOutput, 0);
+                // Map.leftElevator.setSelectedSensorPosition(-85000);
             }
-            if (Map.leftElevator.getSelectedSensorPosition() < -74000) {
-
+            if (Map.elevatorTop.get()) {
+                toggleOuttake = true;
                 Timer.delay(.45);
                 toggleAmpScore = false;
 
             }
 
-            if (Map.elevatorTop.get()) {
-                Map.rightElevator.set(ControlMode.PercentOutput, 0);
-                Map.leftElevator.set(ControlMode.PercentOutput, 0);
-                // Map.leftElevator.setSelectedSensorPosition(-85000);
-            }
         } else if (toggleClimbUp == false && toggleAmpScore == false && toggleDown == true) {
 
             Map.rightElevator.set(ControlMode.PercentOutput, .65);
             Map.leftElevator.set(ControlMode.PercentOutput, .65);
 
             if (Map.elevatorBottom.get()) {
+                toggleOuttake = false;
                 toggleDown = false;
                 Map.rightElevator.set(ControlMode.PercentOutput, 0);
                 Map.leftElevator.set(ControlMode.PercentOutput, 0);
