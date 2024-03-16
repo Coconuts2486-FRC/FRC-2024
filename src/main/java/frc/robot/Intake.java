@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 @SuppressWarnings("removal")
 public class Intake {
 
-    private static boolean toggleScore = false;
-    private static int trippleToggle = 1;
-    public static double shotClock;
-    private static double robotToTagZ;
-    private static final int positionIntake = 2;
-    private static final int positionShoot = 3;
-    private static final int positionZero = 1;
+    public static boolean toggleScore = false;
+    public static int trippleToggle = 1;
+
+    public static double robotToTagZ;
+    public static  int positionIntake = 2;
+    public static  int positionShoot = 3;
+    public static int positionZero = 1;
 
     public static void init() {
       //  toggleOut = false;
@@ -76,20 +76,20 @@ public class Intake {
             double intakeAxis, double outtakeAxis, boolean autoZero, boolean red) {
         // put number to smart dashboard
         SmartDashboard.putNumber("intakeZone", Launcher.distanceFrom45());
-        if (targetButton) {
-            // Select which AprilTag based on alliance selection
-            if (red) {
-                robotToTagZ = RaspberryPi.getTagZ4();
-            } else {
-                robotToTagZ = RaspberryPi.getTagZ7();
-            }
-            // `toggleScore` means place the intake in the "shooting position"
-            if (robotToTagZ > 50 && robotToTagZ != -999) {
-                toggleScore = true;
-            } else {
-                toggleScore = false;
-            }
-        }
+        // if (targetButton) {
+        //     // Select which AprilTag based on alliance selection
+        //     if (red) {
+        //         robotToTagZ = RaspberryPi.getTagZ4();
+        //     } else {
+        //         robotToTagZ = RaspberryPi.getTagZ7();
+        //     }
+        //     // `toggleScore` means place the intake in the "shooting position"
+        //     if (robotToTagZ > 50 && robotToTagZ != -999) {
+        //         toggleScore = true;
+        //     } else {
+        //         toggleScore = false;
+        //     }
+        // }
 
         // Check status of scoring toggles
         if (autoScoreTrue) {
@@ -102,12 +102,12 @@ public class Intake {
         // If "make it go out" button is pressed, and the pivot (Launcher) is in
         // the correct position, and the beam-break is NOT triggered, set the
         // tripple toggle to positionIntake
-        if (intakePositionButton == true && Launcher.distanceFrom45() < 2.0 && Map.lightStop.get() == false) {
+        if (intakePositionButton == true && Launcher.distanceFrom45() < 4.0 && Map.lightStop.get() == false) {
             trippleToggle = positionIntake;
         }
         // If AUTO hold-zero OR the pivot is steeper than 50º
         else if (autoZero ||
-                Launcher.pivotEncoder.getAbsolutePosition() > 50.){
+                Launcher.pivotEncoder.getAbsolutePosition() > 50){
             trippleToggle = positionZero;
         }
         // If we WANT to be in scoring position and the intake is NOT too far in (ticks
@@ -141,7 +141,7 @@ public class Intake {
 
         // Move to general shooting position and enable the ability to shoot
         else if (trippleToggle == positionShoot) {
-            Map.intakeExtend.set(ControlMode.Position, 37000);
+            Map.intakeExtend.set(ControlMode.Position, 30000);
 
             // If the elevator is UP, we are scoring in the AMP, so we OUTTAKE the
             //   gamepiece rather than feed it into the shooter mechanism
@@ -152,17 +152,19 @@ public class Intake {
             // If the shooter wheels are up to speed, then automatically insert
             //  the note into the shooter if the `launchNote` button is pressed
             //  NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch button
-            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 20500) {
+            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 16000) {
                 Map.leftIntake.set(ControlMode.PercentOutput, 1);
                 Map.rightIntake.set(ControlMode.PercentOutput, 1);
             }
             // If the shooter wheels are NOT up to speed, manually control the intake/outtake
-            else if (Map.leftLauncher.getSelectedSensorVelocity() < 19500) {
+            else if (Map.leftLauncher.getSelectedSensorVelocity() < 15400) {
                 Map.leftIntake.set(ControlMode.PercentOutput, (intakeAxis - outtakeAxis));
                 Map.rightIntake.set(ControlMode.PercentOutput, -(outtakeAxis - intakeAxis) * 1.4);
             }
             // Other cases, we just sit on our hands
-            else {}
+            else {
+                
+            }
         } 
         
         // Move the intake to the zero position
@@ -185,12 +187,12 @@ public class Intake {
             // If the shooter wheels are up to speed, then automatically insert
             //  the note into the shooter if the `launchNote` button is pressed
             //  NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch button
-            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 20500) {
+            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 16000) {
                 Map.leftIntake.set(ControlMode.PercentOutput, 1);
                 Map.rightIntake.set(ControlMode.PercentOutput, 1);
             }
             // If the shooter wheels are NOT up to speed, manually control the intake/outtake
-            else if (Map.leftLauncher.getSelectedSensorVelocity() < 19500) {
+            else if (Map.leftLauncher.getSelectedSensorVelocity() < 15400) {
                 Map.leftIntake.set(ControlMode.PercentOutput, (intakeAxis - outtakeAxis));
                 Map.rightIntake.set(ControlMode.PercentOutput, -(outtakeAxis - intakeAxis) * 1.4);
             }

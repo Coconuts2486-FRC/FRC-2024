@@ -17,7 +17,7 @@ public class Swerve {
     private XboxController driver = new XboxController(0);
     private int realign = 0;
     private int reinit = 1;
-    private int robotCentric = 2;
+   // private int robotCentric = 2;
 
     private double speedMultiplier = 1;
 
@@ -113,20 +113,24 @@ public class Swerve {
      * @param y The y value of the swerve drive.
      * @param z The z value of the swerve drive.
      */
-    public void drive(double x, double y, double z, double yaw) {
-        double L = 17.5;
-        double W = 17.5;
-        double r = Math.sqrt((L * L) + (W * W));
+    public void drive(double x, double y, double z, boolean robotCentric) {
+        double L = 17.5; // length of wheelbase
+        double W = 17.5; // width of wheelbase
+        double r = Math.hypot(L, W);
 
-        if (driver.getRawButton(robotCentric)) {
+        // This button is not being used in 2024
+        if (robotCentric) {
             x0 = x * speedMultiplier;
             y0 = y * speedMultiplier;
-        } else {
-            double robotAngle = yaw;
+        } 
+        // This is the usual case for 2024
+        else {
+            double robotAngle = getRobotAngle();
             x0 = -y * Math.sin(robotAngle) + x * Math.cos(robotAngle);
             y0 = y * Math.cos(robotAngle) + x * Math.sin(robotAngle);
         }
 
+        // Swerve drive awesome maths!!
         double a = x0 - z * (L / r);
         double b = x0 + z * (L / r);
         double c = y0 - z * (W / r);
@@ -142,6 +146,7 @@ public class Swerve {
         // double frontRightSpeed = Math.sqrt((b * b) + (d * d));
         // double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
 
+        // NOTE: can change sqrt -> hypot as desired
         double backRightSpeed = Math.sqrt((a0 * a0) + (c0 * c0));
         double backLeftSpeed = Math.sqrt((a * a) + (d * d));
         double frontRightSpeed = Math.sqrt((b * b) + (c * c));
@@ -184,7 +189,6 @@ public class Swerve {
             gyro2.setYaw(180);
         }
     }
-
     /**
      * Runs the swerve drive based on the x, y, and z values and the track value.
      * 
@@ -215,7 +219,7 @@ public class Swerve {
             y = (1 / (1 - directionDeadband)) *
                     (y + -Math.signum(x) * directionDeadband);
         }
-        drive(x, y, z + twistAdjustment, Swerve.gyro.getYaw());
+        drive(x, y, z + twistAdjustment,false);
         realignToField(Map.driver.getRawButton(realign));
         reinit(driver.getRawButton(reinit));
     }
@@ -282,7 +286,7 @@ public class Swerve {
         double W = 17.5;
         double r = Math.sqrt((L * L) + (W * W));
 
-        if (driver.getRawButton(robotCentric)) {
+        if (driver.getRawButton(0)) {
             x0 = x * speedMultiplier;
             y0 = y * speedMultiplier;
         } else {

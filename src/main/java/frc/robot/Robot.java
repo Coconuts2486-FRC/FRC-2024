@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * build.gradle file in the
  * project.
  */
+@SuppressWarnings("removal")
 public class Robot extends TimedRobot {
   /**
    * This function is run when the robot is first started up and should be used
@@ -24,13 +27,16 @@ public class Robot extends TimedRobot {
   static double driverZ;
   static double driverX;
   static double driverY;
+  static double time = Timer.getFPGATimestamp();
   
 
   @Override
   public void robotInit() {
+    Misc.isRed();
     Map.swerve.init();
     Launcher.init();
     Intake.init();
+    Auto.init();
   }
 
   @Override
@@ -43,6 +49,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    Auto.twoPieceStraightFromSpeaker(Misc.getSelectedColor());
   }
 
   @Override
@@ -53,6 +60,22 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("note", RaspberryPi.gamePieceY());
+    SmartDashboard.putNumber("calculated angle", Launcher.regressionForAngle(Misc.getSelectedColor()));
+    SmartDashboard.putNumber("encoder angle", Launcher.pivotEncoder.getAbsolutePosition());
+    SmartDashboard.putNumber("distance from tag", RaspberryPi.getTagZ4());
+    SmartDashboard.putNumber("TagX", RaspberryPi.getTagX4());
+
+  //   if (Map.driver.getRawButton(6) && Map.lightStop.get()) {
+  //     Map.backLeft.autoInit(Swerve.blOffset);
+  //     Map.backRight.autoInit(Swerve.brOffset);
+  //     Map.frontLeft.autoInit(Swerve.flOffset);
+  //     Map.frontRight.autoInit(Swerve.frOffset);
+  // }
+  // // Upon release of button 6 (intake/pickup), reset gyro to the value of gyro2
+  // if (Map.driver.getRawButtonReleased(6)) {
+  //     Swerve.gyro.setYaw(Swerve.gyro2.getYaw());
+  // }
     
 
     driverZ = Map.driver.getRawAxis(0);
@@ -89,11 +112,21 @@ public class Robot extends TimedRobot {
       }
     }
 
-    Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),Launcher.manualAngleTuner(Map.coDriver.getPOV()),false);
+    Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),Launcher.manualAngleTuner(Map.coDriver.getPOV()),false,Map.coDriver.getRawButton(3));
     Launcher.launch(Map.coDriver.getRawButton(6));
     Map.swerve.reinit(Map.driver.getRawButton(4));
 
-    Map.swerve.drive(driverX, driverY, -driverZ + (driverY * -.001),Swerve.gyro.getYaw());
+
+    if (Map.driver.getRawButton(6) && Map.lightStop.get() == false) {
+      RaspberryPi.targetGamePiece(Map.driver.getRawButton(6), Map.driver.getAButtonReleased());
+  } 
+  // Otherwise, just drive
+  else {
+      Map.swerve.drive(driverX, driverY,
+              RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(5), -driverZ + (driverY * -.001),
+                      Misc.getSelectedColor()),false);
+  }
+
     //Launcher.intake(Map.coDriver.getRawButton(5));
     Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2),Map.coDriver.getRawAxis(3) , Map.coDriver.getRawAxis(2));
     if (Map.driver.getRawButton(6)) {

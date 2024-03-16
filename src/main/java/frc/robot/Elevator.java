@@ -109,6 +109,8 @@ public class Elevator {
             }
             if (Map.elevatorTop.get()) {
                 toggleOuttake = true;
+                Map.leftIntake.set(ControlMode.PercentOutput, -1);
+                 Map.rightIntake.set(ControlMode.PercentOutput, -1);
                 Timer.delay(.45);
                 toggleAmpScore = false;
 

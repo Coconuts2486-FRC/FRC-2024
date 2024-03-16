@@ -3,7 +3,6 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.sensors.CANCoder;
 
-
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -24,7 +23,9 @@ public class Launcher {
     public static CANCoder pivotEncoder = new CANCoder(31);
 
     public static PIDController pivotPidDown = new PIDController(.042, 0.0000, 0.00005);
-    public static PIDController pivotPidUP = new PIDController(.042, 0.0000, 0.0003);
+    public static PIDController pivotPidUP = new PIDController(.045, 0.0000, 0.000);
+    public static PIDController regressionPidUp = new PIDController(.057, 0, 0);
+    public static PIDController regressionPidDown = new PIDController(.057, 0, 0.0001);
 
     /**
      * Initializes the launcher by setting the selected feedback sensor.
@@ -103,9 +104,24 @@ public class Launcher {
         }
 
         // Maximum "tuned" angle is ±10º
-       // angleTuner = Math.min(Math.max(angleTuner, -10.), 10.);
+        // angleTuner = Math.min(Math.max(angleTuner, -10.), 10.);
         SmartDashboard.putNumber("angle Tuner", angleTuner);
         return angleTuner;
+    }
+
+    public static double regressionForAngle(boolean red) {
+        double distanceFromSpeaker;
+        if (red) {
+            distanceFromSpeaker = RaspberryPi.getTagZ4();
+        } else {
+            distanceFromSpeaker = RaspberryPi.getTagZ7();
+        }
+        if (distanceFromSpeaker == -999) {
+            return 45;
+        } else {
+            return -0.27825 * distanceFromSpeaker + 64.6915;
+        }
+
     }
 
     /**
@@ -117,7 +133,7 @@ public class Launcher {
      * @param autoFortyFive boolean, auto 45º -- how is this different from
      *                      fortyFive?
      */
-    public static void run(boolean fortyFive, boolean sixty, double tuner, boolean autoFortyFive) {
+    public static void run(boolean fortyFive, boolean sixty, double tuner, boolean autoFortyFive, boolean regression) {
 
         if (autoFortyFive) {
             goTo45 = true;
@@ -129,6 +145,15 @@ public class Launcher {
 
         if (sixty) {
             pivot.set(ControlMode.PercentOutput, pivotPidDown.calculate(pivotEncoder.getAbsolutePosition(), 60));
+        } else if (regression) {
+            if (regressionForAngle(Misc.getSelectedColor()) < 46) {
+                pivot.set(ControlMode.PercentOutput, regressionPidUp.calculate(pivotEncoder.getAbsolutePosition(),
+                        (regressionForAngle(Misc.getSelectedColor()) - 1) + tuner));
+            } else {
+                pivot.set(ControlMode.PercentOutput, regressionPidDown.calculate(pivotEncoder.getAbsolutePosition(),
+                        (regressionForAngle(Misc.getSelectedColor()) + .3) + tuner));
+            }
+
         } else if (goTo45) {
             pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 44 + tuner));
         } else {
@@ -144,21 +169,20 @@ public class Launcher {
      */
 
     // public static void testIntake (boolean button){
-    //     if(button){
-    //         Map.leftIntake.set(ControlMode.PercentOutput,1);
-    //     Map.rightIntake.set(ControlMode.PercentOutput,1);
-    //     }else{
-    //              Map.leftIntake.set(ControlMode.PercentOutput,0);
-    //     Map.rightIntake.set(ControlMode.PercentOutput,0);
-    //     }
+    // if(button){
+    // Map.leftIntake.set(ControlMode.PercentOutput,1);
+    // Map.rightIntake.set(ControlMode.PercentOutput,1);
+    // }else{
+    // Map.leftIntake.set(ControlMode.PercentOutput,0);
+    // Map.rightIntake.set(ControlMode.PercentOutput,0);
     // }
-
+    // }
 
     public static void launch(boolean button) {
 
         if (button) {
-            Map.leftLauncher.set(ControlMode.Velocity, 15000);
-            Map.rightLauncher.set(ControlMode.Velocity, 15000);
+            Map.leftLauncher.set(ControlMode.Velocity, 15700);
+            Map.rightLauncher.set(ControlMode.Velocity, 15700);
             SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
             SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
         } else {
@@ -185,8 +209,9 @@ public class Launcher {
             Map.rightLauncher.set(ControlMode.Velocity, 10000);
         }
     }
+
     public static double distanceFrom45() {
-                return Math.abs(
-                        pivotEncoder.getAbsolutePosition() - (45 + angleTuner));
-            }
+        return Math.abs(
+                pivotEncoder.getAbsolutePosition() - (45 + angleTuner));
+    }
 }
