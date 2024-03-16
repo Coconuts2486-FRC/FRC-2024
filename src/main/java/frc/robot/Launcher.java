@@ -24,7 +24,7 @@ public class Launcher {
 
     public static PIDController pivotPidDown = new PIDController(.042, 0.0000, 0.00005);
     public static PIDController pivotPidUP = new PIDController(.045, 0.0000, 0.000);
-    public static PIDController regressionPidUp = new PIDController(.049, 0, 0);
+    public static PIDController regressionPidUp = new PIDController(.051, 0, 0);
     public static PIDController regressionPidDown = new PIDController(.057, 0, 0.0001);
 
     /**
@@ -198,17 +198,17 @@ public class Launcher {
      * 
      * @param button "The Button"
      */
-    public static void launchAuto(boolean button) {
-        if (button) {
-            Map.leftLauncher.set(ControlMode.Velocity, 16000);
-            Map.rightLauncher.set(ControlMode.Velocity, 16000);
-            SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
-            SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
-        } else {
-            Map.leftLauncher.set(ControlMode.Velocity, 0);
-            Map.rightLauncher.set(ControlMode.Velocity, 0);
-        }
-    }
+    // public static void launchAuto(boolean button) {
+    //     if (button) {
+    //         Map.leftLauncher.set(ControlMode.Velocity, 15900);
+    //         Map.rightLauncher.set(ControlMode.Velocity, 15900);
+    //         SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
+    //         SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
+    //     } else {
+    //         Map.leftLauncher.set(ControlMode.PercentOutput, 0);
+    //         Map.rightLauncher.set(ControlMode.PercentOutput, 0);
+    //     }
+    // }
 
     public static double distanceFrom45() {
         return Math.abs(

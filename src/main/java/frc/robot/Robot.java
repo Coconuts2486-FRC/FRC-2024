@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
   static double driverX;
   static double driverY;
   static double time = Timer.getFPGATimestamp();
+  public static double autoStart;
   
 
   @Override
@@ -52,6 +53,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Auto.init();
+    autoStart = Timer.getFPGATimestamp();
   }
 
   @Override
