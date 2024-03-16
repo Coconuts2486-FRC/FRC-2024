@@ -43,11 +43,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
         SmartDashboard.putNumber("Yval", Map.odometry.calculatePosition()[1]);
-    SmartDashboard.putNumber("note", RaspberryPi.gamePieceY());
+    SmartDashboard.putNumber("note", RaspberryPi.gamePieceZ());
     SmartDashboard.putNumber("calculated angle", Launcher.regressionForAngle(Misc.getSelectedColor()));
     SmartDashboard.putNumber("encoder angle", Launcher.pivotEncoder.getAbsolutePosition());
     SmartDashboard.putNumber("distance from tag", RaspberryPi.getTagZ4());
     SmartDashboard.putNumber("TagX", RaspberryPi.getTagX4());
+    SmartDashboard.putNumber("noteAngle", RaspberryPi.gamePieceAngle());
+        SmartDashboard.putNumber("noteX", RaspberryPi.gamePieceX());
+
   }
 
   @Override
@@ -58,7 +61,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    Auto.twoPieceStraightFromSpeaker(Misc.getSelectedColor());
+    Auto.threePieceStraightFromSpeaker(Misc.getSelectedColor());
   }
 
   @Override

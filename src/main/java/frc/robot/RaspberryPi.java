@@ -29,8 +29,9 @@ public class RaspberryPi {
             .getTable("vision");
 
     // The PID controller used for targeting a specific value.
-    public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
-    public static PIDController targetPid2 = new PIDController(0.009, 0, 0.000002);
+    public static PIDController targetPid = new PIDController(.58, 0, 0.0002);
+   // public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
+    public static PIDController targetPid2 = new PIDController(0.0095, 0, 0.000002);
 
     // The PID controller used for driving to a specific value.
     public static PIDController driveToPid = new PIDController(.03, 0.00, 0);
@@ -126,7 +127,7 @@ public class RaspberryPi {
      *
      * @return The Z coordinate of the game piece.
      */
-    public static double gamePieceY() {
+    public static double gamePieceZ() {
 
         if (table.getEntry("gamepiece_robot_z").getDouble(0.0) == -999) {
             return 0;
@@ -141,7 +142,12 @@ public class RaspberryPi {
      * @return The angle of the game piece.
      */
     public static double gamePieceAngle() {
-        return table.getEntry("gamepiece_robot_angle").getDouble(0.0);
+         if (table.getEntry("gamepiece_robot_angle").getDouble(0.0) == -999) {
+            return 0;
+        } else {
+            return table.getEntry("gamepiece_robot_angle").getDouble(0.0);
+        }
+      
     }
 
     /**
@@ -201,10 +207,10 @@ public class RaspberryPi {
     public static void targetGamePiece(boolean button, boolean released) {
         // If button, no gamepiece in intake, and intake is OUT
         if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 90000) {
-            Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceX()),false);
+            Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceAngle()),false);
             if (Math.abs(gamePieceX()) < 7) {
                // Swerve.gyro.setYaw(0); // Instead, call getRobotAngle()
-                Map.swerve.drive(0, -driveToPid.calculate(gamePieceY()), -targetPid.calculate(gamePieceX()),true);
+                Map.swerve.drive(0, .3, -targetPid.calculate(gamePieceAngle()),true);
             }
 
         }
@@ -240,7 +246,7 @@ public class RaspberryPi {
 
                 // This is where we want to go w.r.t. our current orientation
                 double xp = 0; // Want the robot to NOT move in x'
-                double yp = -driveToPid.calculate(gamePieceY()); // Move the robot toward the gamepiece
+                double yp = -driveToPid.calculate(gamePieceZ()); // Move the robot toward the gamepiece
 
                 // Use the 2D rotation matrix to compute the swerve drive motion
                 // based on current YAW and desired robot-centric motion
@@ -260,7 +266,7 @@ public class RaspberryPi {
         if (Map.lightStop.get()) {
             return 0;
         } else {
-            return -driveToPid.calculate(gamePieceY());
+            return -driveToPid.calculate(gamePieceZ());
         }
     }
 }
