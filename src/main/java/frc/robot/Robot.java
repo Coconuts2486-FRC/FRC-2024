@@ -41,10 +41,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+        SmartDashboard.putNumber("Yval", Map.odometry.calculatePosition()[1]);
+    SmartDashboard.putNumber("note", RaspberryPi.gamePieceY());
+    SmartDashboard.putNumber("calculated angle", Launcher.regressionForAngle(Misc.getSelectedColor()));
+    SmartDashboard.putNumber("encoder angle", Launcher.pivotEncoder.getAbsolutePosition());
+    SmartDashboard.putNumber("distance from tag", RaspberryPi.getTagZ4());
+    SmartDashboard.putNumber("TagX", RaspberryPi.getTagX4());
   }
 
   @Override
   public void autonomousInit() {
+    Auto.init();
   }
 
   @Override
@@ -56,15 +63,12 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Map.swerve.init();
     Elevator.init();
+    Map.odometry.init();
   }
 
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("note", RaspberryPi.gamePieceY());
-    SmartDashboard.putNumber("calculated angle", Launcher.regressionForAngle(Misc.getSelectedColor()));
-    SmartDashboard.putNumber("encoder angle", Launcher.pivotEncoder.getAbsolutePosition());
-    SmartDashboard.putNumber("distance from tag", RaspberryPi.getTagZ4());
-    SmartDashboard.putNumber("TagX", RaspberryPi.getTagX4());
+
 
   //   if (Map.driver.getRawButton(6) && Map.lightStop.get()) {
   //     Map.backLeft.autoInit(Swerve.blOffset);
