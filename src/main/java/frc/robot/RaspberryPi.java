@@ -30,11 +30,39 @@ public class RaspberryPi {
 
     // The PID controller used for targeting a specific value.
     public static PIDController targetPid = new PIDController(.58, 0, 0.0002);
-   // public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
+    // public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
     public static PIDController targetPid2 = new PIDController(0.0095, 0, 0.000002);
 
     // The PID controller used for driving to a specific value.
     public static PIDController driveToPid = new PIDController(.03, 0.00, 0);
+
+    /**
+     * Retrieves the X coordinate of SPEAKER CENTER AprilTag, relative to the robot
+     * 
+     * @param red Are we red alliance?
+     * @return The X coordinate of SPEAKER CENTER AprilTag
+     */
+    public static double getSpeakerCenterX(boolean red) {
+        if (red) {
+            return getTagX4();
+        } else {
+            return getTagX7();
+        }
+    }
+
+    /**
+     * Retrieves the Z coordinate of SPEAKER CENTER AprilTag, relative to the robot
+     * 
+     * @param red Are we red alliance?
+     * @return The Z coordinate of SPEAKER CENTER AprilTag
+     */
+    public static double getSpeakerCenterZ(boolean red) {
+        if (red) {
+            return getTagZ4();
+        } else {
+            return getTagZ7();
+        }
+    }
 
     /**
      * Retrieves the X coordinate of April Tag 4 relative to the robot.
@@ -142,12 +170,12 @@ public class RaspberryPi {
      * @return The angle of the game piece.
      */
     public static double gamePieceAngle() {
-         if (table.getEntry("gamepiece_robot_angle").getDouble(0.0) == -999) {
+        if (table.getEntry("gamepiece_robot_angle").getDouble(0.0) == -999) {
             return 0;
         } else {
             return table.getEntry("gamepiece_robot_angle").getDouble(0.0);
         }
-      
+
     }
 
     /**
@@ -207,10 +235,10 @@ public class RaspberryPi {
     public static void targetGamePiece(boolean button, boolean released) {
         // If button, no gamepiece in intake, and intake is OUT
         if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 90000) {
-            Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceAngle()),false);
+            Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceAngle()), false);
             if (Math.abs(gamePieceX()) < 7) {
-               // Swerve.gyro.setYaw(0); // Instead, call getRobotAngle()
-                Map.swerve.drive(0, .3, -targetPid.calculate(gamePieceAngle()),true);
+                // Swerve.gyro.setYaw(0); // Instead, call getRobotAngle()
+                Map.swerve.drive(0, .3, -targetPid.calculate(gamePieceAngle()), true);
             }
 
         }
@@ -238,7 +266,7 @@ public class RaspberryPi {
     public static void targetGamepiece2(boolean button) {
         // If button, no gamepiece in intake, and intake is OUT
         if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 90000) {
-            Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceX()),false);
+            Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceX()), false);
             if (Math.abs(gamePieceX()) < 7) {
 
                 // This is the current robot rotation angle w.r.t. initialization
@@ -251,7 +279,7 @@ public class RaspberryPi {
                 // Use the 2D rotation matrix to compute the swerve drive motion
                 // based on current YAW and desired robot-centric motion
                 Map.swerve.drive(xp * Math.cos(theta - yp * Math.sin(theta)),
-                        xp * Math.sin(theta) + yp * Math.cos(theta), -targetPid.calculate(gamePieceX()),false);
+                        xp * Math.sin(theta) + yp * Math.cos(theta), -targetPid.calculate(gamePieceX()), false);
             }
 
         }

@@ -109,19 +109,23 @@ public class Launcher {
         return angleTuner;
     }
 
+    /**
+     * Compute the Launcher angle from the distance regression
+     * 
+     * @param red Are we red alliance?
+     * @return The angle at which to place the Launcher
+     */
     public static double regressionForAngle(boolean red) {
-        double distanceFromSpeaker;
-        if (red) {
-            distanceFromSpeaker = RaspberryPi.getTagZ4();
-        } else {
-            distanceFromSpeaker = RaspberryPi.getTagZ7();
-        }
+        double distanceFromSpeaker = RaspberryPi.getSpeakerCenterZ(red);
+        double regressionSlope = -0.27825;
+        double regressionIntercept = 64.6915;
+
+        // Check for "Bad Distance" from the PiVision
         if (distanceFromSpeaker == -999) {
             return 45;
         } else {
-            return -0.27825 * distanceFromSpeaker + 64.6915;
+            return regressionSlope * distanceFromSpeaker + regressionIntercept;
         }
-
     }
 
     /**
@@ -199,15 +203,17 @@ public class Launcher {
      * @param button "The Button"
      */
     // public static void launchAuto(boolean button) {
-    //     if (button) {
-    //         Map.leftLauncher.set(ControlMode.Velocity, 15900);
-    //         Map.rightLauncher.set(ControlMode.Velocity, 15900);
-    //         SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
-    //         SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
-    //     } else {
-    //         Map.leftLauncher.set(ControlMode.PercentOutput, 0);
-    //         Map.rightLauncher.set(ControlMode.PercentOutput, 0);
-    //     }
+    // if (button) {
+    // Map.leftLauncher.set(ControlMode.Velocity, 15900);
+    // Map.rightLauncher.set(ControlMode.Velocity, 15900);
+    // SmartDashboard.putNumber("rightLaunch",
+    // Map.rightLauncher.getSelectedSensorVelocity());
+    // SmartDashboard.putNumber("leftLaunch",
+    // Map.leftLauncher.getSelectedSensorVelocity());
+    // } else {
+    // Map.leftLauncher.set(ControlMode.PercentOutput, 0);
+    // Map.rightLauncher.set(ControlMode.PercentOutput, 0);
+    // }
     // }
 
     public static double distanceFrom45() {
