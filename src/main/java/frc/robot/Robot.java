@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    SmartDashboard.putNumber("a",Auto.a);
     Auto.threePieceStraightFromSpeaker(Misc.getSelectedColor());
   }
 
