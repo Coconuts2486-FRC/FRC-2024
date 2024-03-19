@@ -23,38 +23,34 @@ public class Misc {
     /**
      * Select which AUTO path to run
      */
-    // public static void selectAuto() {
-    //     Map.selectedAuto.setDefaultOption("Two note, straight from speaker", 1);
-    //     Map.selectedAuto.addOption("Three piece from amp side, don't leave zone", 2);
-    //     Map.selectedAuto.addOption("Drive out from zone", 3);
-    //     SmartDashboard.putData("SelectAuto", Map.selectedAuto);
+    public static void selectAuto() {
+        Map.selectedAuto.setDefaultOption("Two note, straight from speaker", 1);
+        Map.selectedAuto.addOption("Four piece from subwoofer", 2);
+        SmartDashboard.putData("SelectAuto", Map.selectedAuto);
 
-    // }
+    }
 
     /**
      * Return the selected AUTO path
      * 
      * @return int
      */
-    // public static int getSelectedAuto() {
-    //     return (int) Map.selectedAuto.getSelected();
-    // }
+    public static int getSelectedAuto() {
+        return (int) Map.selectedAuto.getSelected();
+    }
 
     /**
      * Run the selected AUTO path
      * 
      * @param red Are we red alliance?
      */
-    // public static void runSelectedAuto(boolean red) {
-    //     if (getSelectedAuto() == 1) {
-    //         AutoPaths.twoPieceStraightFromSpeaker(red);
-    //     } else if (getSelectedAuto() == 2) {
-    //         AutoPaths.threePieceAmpSideStayInZone(red);
-    //     } else if (getSelectedAuto() == 3) {
-    //         AutoPaths.backUp(red);
-    //     }
-    // }
-
+    public static void runSelectedAuto(boolean red) {
+        if (getSelectedAuto() == 1) {
+            Auto.twoPieceStraightFromSpeaker(red);
+        } else if (getSelectedAuto() == 2) {
+            Auto.fourPieceStraightFromSpeaker(red);
+    }
+    }
     /**
      * Returns the selected alliance color.
      *

@@ -79,7 +79,7 @@ public class RaspberryPi {
      * @return The Z coordinate of April Tag 4.
      */
     public static double getTagZ4() {
-        return table.getEntry("speaker_tag4_robot_z").getDouble(0.0);
+        return table.getEntry("speaker_tag4_robot_z").getDouble(-999);
     }
 
     /**
@@ -133,7 +133,7 @@ public class RaspberryPi {
      * @return The Z coordinate of April Tag 7.
      */
     public static double getTagZ7() {
-        return table.getEntry("speaker_tag7_robot_z").getDouble(0.0);
+        return table.getEntry("speaker_tag7_robot_z").getDouble(-999);
     }
 
     /**
@@ -200,29 +200,18 @@ public class RaspberryPi {
             boolean button,
             double axis,
             boolean red) {
-        if (red) {
-            // Red-Side Specific-Code
-            if (button) {
-                if (getTagX4() == -999) {
-                    return axis;
-                } else {
-                    return -targetPid2.calculate(getTagX4());
-                }
-            } else {
+        double tagXPosition = getSpeakerCenterX(red);
+        if (button) {
+            if (tagXPosition == -999) {
                 return axis;
+            } else {
+               return Math.signum(tagXPosition)*.083;
+               // return -targetPid2.calculate(());
             }
         } else {
-            // Blue-Side Specific-Code
-            if (button) {
-                if (getTagX7() == -999) {
-                    return axis;
-                } else {
-                    return -targetPid2.calculate(getTagX7());
-                }
-            } else {
-                return axis;
-            }
+            return axis;
         }
+
     }
 
     /**

@@ -24,7 +24,7 @@ public class Launcher {
 
     public static PIDController pivotPidDown = new PIDController(.042, 0.0000, 0.00005);
     public static PIDController pivotPidUP = new PIDController(.045, 0.0000, 0.000);
-    public static PIDController regressionPidUp = new PIDController(.051, 0, 0);
+    public static PIDController regressionPidUp = new PIDController(.0505, 0, 0);
     public static PIDController regressionPidDown = new PIDController(.057, 0, 0.0001);
 
     /**

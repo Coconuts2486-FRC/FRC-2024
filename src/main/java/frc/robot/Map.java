@@ -142,6 +142,7 @@ public class Map {
     public static DigitalInput pivotStop = new DigitalInput(4);
     // Misc
         public static SendableChooser red = new SendableChooser<>();
+        public static SendableChooser selectedAuto = new SendableChooser<>();
 
 
         public static Odometry odometry = new Odometry(

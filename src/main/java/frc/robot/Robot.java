@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         Misc.isRed();
+        Misc.selectAuto();
         Map.swerve.init();
         Launcher.init();
         Intake.init();
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+      SmartDashboard.putNumber("gyro", Swerve.gyro.getYaw());
         SmartDashboard.putNumber("Yval", Map.odometry.calculatePosition()[1]);
         SmartDashboard.putNumber("note", RaspberryPi.gamePieceZ());
         SmartDashboard.putNumber("calculated angle", Launcher.regressionForAngle(Misc.getSelectedColor()));
@@ -61,7 +63,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         SmartDashboard.putNumber("a", Auto.a);
-        Auto.fourPieceStraightFromSpeaker(Misc.getSelectedColor());
+        Misc.runSelectedAuto(Misc.getSelectedColor());
+        //Auto.fourPieceStraightFromSpeaker(Misc.getSelectedColor());
     }
 
     @Override
@@ -89,34 +92,17 @@ public class Robot extends TimedRobot {
         if (Math.abs(driverZ) < .15) {
             driverZ = 0;
         }
-        if (Map.driver.getRawButton(2)) {
-            driverZ = Map.driver.getRawAxis(0);
-            if (Math.abs(driverZ) < .15) {
-                driverZ = 0;
-            }
-
-        }
+        
 
         driverX = Map.driver.getRawAxis(4);
         if (Math.abs(driverX) < .15) {
             driverX = 0;
         }
-        if (Map.driver.getRawButton(2)) {
-            driverX = -Map.driver.getRawAxis(4);
-            if (Math.abs(driverX) < .15) {
-                driverX = 0;
-            }
-        }
+    
 
         driverY = Map.driver.getRawAxis(5);
         if (Math.abs(driverY) < .15) {
             driverY = 0;
-        }
-        if (Map.driver.getRawButton(2)) {
-            driverY = -Map.driver.getRawAxis(5);
-            if (Math.abs(driverY) < .15) {
-                driverY = 0;
-            }
         }
 
         Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),
