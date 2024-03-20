@@ -202,19 +202,19 @@ public class Launcher {
      * 
      * @param button "The Button"
      */
-    // public static void launchAuto(boolean button) {
-    // if (button) {
-    // Map.leftLauncher.set(ControlMode.Velocity, 15900);
-    // Map.rightLauncher.set(ControlMode.Velocity, 15900);
-    // SmartDashboard.putNumber("rightLaunch",
-    // Map.rightLauncher.getSelectedSensorVelocity());
-    // SmartDashboard.putNumber("leftLaunch",
-    // Map.leftLauncher.getSelectedSensorVelocity());
-    // } else {
-    // Map.leftLauncher.set(ControlMode.PercentOutput, 0);
-    // Map.rightLauncher.set(ControlMode.PercentOutput, 0);
-    // }
-    // }
+    public static void launchAuto(boolean button) {
+    if (button) {
+    Map.leftLauncher.set(ControlMode.Velocity, 15700);
+    Map.rightLauncher.set(ControlMode.Velocity, 15700);
+    SmartDashboard.putNumber("rightLaunch",
+    Map.rightLauncher.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("leftLaunch",
+    Map.leftLauncher.getSelectedSensorVelocity());
+    } else {
+    Map.leftLauncher.set(ControlMode.PercentOutput, 10000);
+    Map.rightLauncher.set(ControlMode.PercentOutput, 10000);
+    }
+    }
 
     public static double distanceFrom45() {
         return Math.abs(

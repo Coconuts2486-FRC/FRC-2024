@@ -62,6 +62,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
+      SmartDashboard.putNumber("rightLaunchAuto", Map.rightLauncher.getSelectedSensorVelocity());
         SmartDashboard.putNumber("a", Auto.a);
         Misc.runSelectedAuto(Misc.getSelectedColor());
         //Auto.fourPieceStraightFromSpeaker(Misc.getSelectedColor());

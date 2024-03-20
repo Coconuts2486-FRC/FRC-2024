@@ -29,7 +29,7 @@ public class RaspberryPi {
             .getTable("vision");
 
     // The PID controller used for targeting a specific value.
-    public static PIDController targetPid = new PIDController(.58, 0, 0.0002);
+    public static PIDController targetPid = new PIDController(.54, 0, 0.0002);
     // public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
     public static PIDController targetPid2 = new PIDController(0.0095, 0, 0.000002);
 

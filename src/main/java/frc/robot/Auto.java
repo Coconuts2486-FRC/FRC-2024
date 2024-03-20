@@ -150,7 +150,7 @@ public class Auto {
             if (Map.leftLauncher.getSelectedSensorVelocity() > 16000) {
                    Map.leftIntake.set(ControlMode.PercentOutput, 1);
             Map.rightIntake.set(ControlMode.PercentOutput, 1);
-                Timer.delay(.3);
+                Timer.delay(.2);
                 a = 2;
             }
         }
@@ -160,7 +160,7 @@ public class Auto {
             Intake.run(true, false, false, false, false, false, 0, 0, false, red);
             Launcher.run(false, false, 0, true, false);
             Launcher.launch(false);
-            Map.swerve.drive(0, -0.3, 0, false);
+            Map.swerve.drive(0, -0.4, 0, false);
             if (Map.odometry.calculatePosition()[1] >= 4000000) {
                 Map.swerve.drive(0, 0, 0, false);
                 a = 3;
@@ -229,7 +229,7 @@ public class Auto {
             Launcher.run(false, false, 0, true, true);
             Launcher.launch(true);
             RaspberryPi.targetGamePiece(false, false);
-            if (Map.leftLauncher.getSelectedSensorVelocity() < 15400) {
+            if (Map.leftLauncher.getSelectedSensorVelocity() < 15500) {
                 Map.swerve.drive(-0.2598, .15, 0, false);
                 Map.odometry.init();
                 a = 8;
@@ -267,7 +267,7 @@ public class Auto {
             Intake.run(true, false, false, false, false, true, 0, 0, false, red);
             Launcher.run(false, false, 0, true, false);
             Launcher.launch(false);
-            Map.swerve.drive(0, 0, .2, false);
+            Map.swerve.drive(0, 0, .25, false);
             RaspberryPi.targetGamePiece(false, false);
             if (Swerve.gyro.getYaw() >= 195) {
                 Map.swerve.drive(0, 0, 0, false);
@@ -283,7 +283,7 @@ public class Auto {
             Launcher.launch(false);
             Map.swerve.drive(0, 0, 0, false);
             RaspberryPi.targetGamePiece(false, false);
-            if (Timer.getFPGATimestamp() >= delay + .3) {
+            if (Timer.getFPGATimestamp() >= delay + .2) {
                 a = 12;
             }
         }
@@ -336,7 +336,7 @@ public class Auto {
             Launcher.run(false, false, 0, true, true);
             Launcher.launch(true);
             RaspberryPi.targetGamePiece(false, false);
-            if (Map.leftLauncher.getSelectedSensorVelocity() < 15400) {
+            if (Map.leftLauncher.getSelectedSensorVelocity() < 15500) {
                 Map.swerve.drive(.4*Math.cos(Math.toRadians(15)), 0.4*Math.sin(Math.toRadians(15)), 0, false);
                 Map.odometry.init();
                 System.out.println(Timer.getFPGATimestamp() - Robot.autoStart);
@@ -367,7 +367,7 @@ public class Auto {
             Launcher.launch(false);
             Map.swerve.drive(0, 0, -.3, false);
             RaspberryPi.targetGamePiece(false, false);
-            if (Swerve.gyro.getYaw() <= 167) {
+            if (Swerve.gyro.getYaw() <= 158) {
                 Map.swerve.drive(0, 0, 0, false);
                 a = 18;
             }
@@ -376,9 +376,9 @@ public class Auto {
             Intake.run(true, false, false, false, false, true, 0, 0, false, red);
             Launcher.run(false, false, 0, true, false);
             Launcher.launch(false);
-              Map.swerve.drive(0, 0, Math.signum(RaspberryPi.gamePieceX())*.083, false);
+              Map.swerve.drive(0, 0, Math.signum(RaspberryPi.gamePieceX())*.079, false);
             RaspberryPi.targetGamePiece(false, false);
-            if (Math.abs(RaspberryPi.gamePieceX())<4) {
+            if (Math.abs(RaspberryPi.gamePieceX())<4 ) {
                 System.out.println("done "+ RaspberryPi.gamePieceX());
                 Map.swerve.drive(0, 0, 0, false);
 
@@ -389,6 +389,7 @@ public class Auto {
             Intake.run(true, false, false, false, false, true, 0, 0, false, red);
             Launcher.run(false, false, 0, true, false);
             Launcher.launch(false);
+         
             RaspberryPi.targetGamePiece(true, false);
             if (Map.lightStop.get()) {
                 Map.swerve.drive(0, 0, 0, false);
@@ -401,7 +402,7 @@ public class Auto {
             Launcher.launch(false);
             Map.swerve.drive(0, 0, .3, false);
             RaspberryPi.targetGamePiece(false, false);
-            if (Swerve.gyro.getYaw() >= 153) {
+            if (Swerve.gyro.getYaw() >= 150) {
                 Map.swerve.drive(0, 0, 0, false);
                 delay = Timer.getFPGATimestamp();
                 a = 21;
@@ -415,7 +416,7 @@ public class Auto {
             Launcher.launch(false);
             Map.swerve.drive(0, 0, 0, false);
             RaspberryPi.targetGamePiece(false, false);
-            if (Timer.getFPGATimestamp() >= delay + .2) {
+            if (Timer.getFPGATimestamp() >= delay + .1) {
                 a = 22;
             }
         }
@@ -466,7 +467,7 @@ public class Auto {
             Launcher.run(false, false, 0, true, true);
             Launcher.launch(true);
             RaspberryPi.targetGamePiece(false, false);
-            if (Map.leftLauncher.getSelectedSensorVelocity() < 15400) {
+            if (Map.leftLauncher.getSelectedSensorVelocity() < 15500) {
                 System.out.println(Timer.getFPGATimestamp() - Robot.autoStart);
                 a = 100;
             }
@@ -496,6 +497,29 @@ public class Auto {
                 Swerve.gyro.setYaw(120);
             }
               a = 1;
+                }
+                else if (a==1){
+                     Intake.run(false, false, true, false, false, false, 0, 0, false, red);
+            Launcher.launch(true);
+            if (Map.leftLauncher.getSelectedSensorVelocity() > 16000) {
+                   Map.leftIntake.set(ControlMode.PercentOutput, 1);
+            Map.rightIntake.set(ControlMode.PercentOutput, 1);
+                Timer.delay(.2);
+                a = 2;
+            }
+
+                }
+                else if (a==2){
+            //             Intake.run(true, false, false, false, false, false, 0, 0, false, red);
+            // Launcher.run(false, false, 0, true, false);
+            // Launcher.launch(false);
+            // Map.swerve.drive(-.4*Math.cos(Math.toRadians()), -0.4*Math.sin(Math.toRadians(15)), 0, false);
+            // if (Map.odometry.calculatePosition()[1] >= 4000000) {
+            //     Map.swerve.drive(0, 0, 0, false);
+            //     a = 3;
+            // }
+
+
                 }
         //shoot pre-load
         //drive robot-centric to outer wall
