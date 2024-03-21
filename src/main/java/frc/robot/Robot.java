@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putNumber("extend", Map.intakeExtend.getSelectedSensorPosition());
       SmartDashboard.putNumber("gyro", Swerve.gyro.getYaw());
         SmartDashboard.putNumber("Yval", Map.odometry.calculatePosition()[1]);
         SmartDashboard.putNumber("note", RaspberryPi.gamePieceZ());
@@ -56,6 +57,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+
         Auto.init();
         autoStart = Timer.getFPGATimestamp();
     }
@@ -64,7 +66,8 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
       SmartDashboard.putNumber("rightLaunchAuto", Map.rightLauncher.getSelectedSensorVelocity());
         SmartDashboard.putNumber("a", Auto.a);
-        Misc.runSelectedAuto(Misc.getSelectedColor());
+        // Auto.threePieceCenterLine(Misc.getSelectedColor());
+       Misc.runSelectedAuto(Misc.getSelectedColor());
         //Auto.fourPieceStraightFromSpeaker(Misc.getSelectedColor());
     }
 

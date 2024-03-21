@@ -152,7 +152,7 @@ public class Intake {
             // If the shooter wheels are up to speed, then automatically insert
             //  the note into the shooter if the `launchNote` button is pressed
             //  NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch button
-            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 16000) {
+            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 16300) {
                 Map.leftIntake.set(ControlMode.PercentOutput, 1);
                 Map.rightIntake.set(ControlMode.PercentOutput, 1);
             }

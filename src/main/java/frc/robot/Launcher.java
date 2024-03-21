@@ -118,7 +118,8 @@ public class Launcher {
     public static double regressionForAngle(boolean red) {
         double distanceFromSpeaker = RaspberryPi.getSpeakerCenterZ(red);
         double regressionSlope = -0.27825;
-        double regressionIntercept = 64.6915;
+      //  double regressionIntercept = 64.6915;
+      double regressionIntercept = 65;
 
         // Check for "Bad Distance" from the PiVision
         if (distanceFromSpeaker == -999) {
@@ -185,8 +186,8 @@ public class Launcher {
     public static void launch(boolean button) {
 
         if (button) {
-            Map.leftLauncher.set(ControlMode.Velocity, 15700);
-            Map.rightLauncher.set(ControlMode.Velocity, 15700);
+            Map.leftLauncher.set(ControlMode.Velocity, 16000);
+            Map.rightLauncher.set(ControlMode.Velocity, 16000);
             SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
             SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
         } else {
