@@ -26,6 +26,7 @@ public class Misc {
     public static void selectAuto() {
         Map.selectedAuto.setDefaultOption("Two note, straight from speaker", 1);
         Map.selectedAuto.addOption("Four piece from subwoofer", 2);
+              Map.selectedAuto.addOption("the out one", 3);
         SmartDashboard.putData("SelectAuto", Map.selectedAuto);
 
     }
@@ -49,6 +50,8 @@ public class Misc {
             Auto.twoPieceStraightFromSpeaker(red);
         } else if (getSelectedAuto() == 2) {
             Auto.fourPieceStraightFromSpeaker(red);
+    } else if ( getSelectedAuto() == 3){
+           Auto.threePieceCenterLine(red);
     }
     }
     /**

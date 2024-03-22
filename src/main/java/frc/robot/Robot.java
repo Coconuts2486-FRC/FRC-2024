@@ -42,14 +42,17 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putBoolean("LightStop", Map.lightStop.get());
         SmartDashboard.putNumber("extend", Map.intakeExtend.getSelectedSensorPosition());
       SmartDashboard.putNumber("gyro", Swerve.gyro.getYaw());
         SmartDashboard.putNumber("Yval", Map.odometry.calculatePosition()[1]);
         SmartDashboard.putNumber("note", RaspberryPi.gamePieceZ());
         SmartDashboard.putNumber("calculated angle", Launcher.regressionForAngle(Misc.getSelectedColor()));
         SmartDashboard.putNumber("encoder angle", Launcher.pivotEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("distance from tag", RaspberryPi.getTagZ4());
-        SmartDashboard.putNumber("TagX", RaspberryPi.getTagX4());
+        SmartDashboard.putNumber("distance from tag 4", RaspberryPi.getTagZ4());
+          SmartDashboard.putNumber("distance from tag 7", RaspberryPi.getTagZ4());
+        SmartDashboard.putNumber("Tag4X", RaspberryPi.getTagX4());
+                SmartDashboard.putNumber("Tag7X", RaspberryPi.getTagX7());
         SmartDashboard.putNumber("noteAngle", RaspberryPi.gamePieceAngle());
         SmartDashboard.putNumber("noteX", RaspberryPi.gamePieceX());
 
@@ -132,7 +135,7 @@ public class Robot extends TimedRobot {
             Intake.run(
                     Map.driver.getRawButton(6),
                     Map.coDriver.getRawButtonPressed(4),
-                    Map.coDriver.getRawButton(6),
+                    Map.coDriver.getRawButton(8),
                     Map.driver.getRawButton(1),
                     Map.coDriver.getRawButton(5),
                     false,
@@ -144,7 +147,7 @@ public class Robot extends TimedRobot {
             Intake.run(
                     Map.driver.getRawButton(2),
                     Map.coDriver.getRawButtonPressed(4),
-                    Map.coDriver.getRawButton(6),
+                    Map.coDriver.getRawButton(8),
                     Map.driver.getRawButton(1),
                     Map.coDriver.getRawButton(5),
                     false,

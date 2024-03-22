@@ -56,6 +56,7 @@ public class Launcher {
         Map.leftLauncher.config_kP(0, 0.7);
         Map.rightLauncher.config_kI(0, 0.0055);
         Map.leftLauncher.config_kI(0, 0.0055);
+          
         Map.rightLauncher.config_IntegralZone(0, 300);
         Map.leftLauncher.config_IntegralZone(0, 300);
 
@@ -119,7 +120,7 @@ public class Launcher {
         double distanceFromSpeaker = RaspberryPi.getSpeakerCenterZ(red);
         double regressionSlope = -0.27825;
       //  double regressionIntercept = 64.6915;
-      double regressionIntercept = 65;
+      double regressionIntercept = 71;
 
         // Check for "Bad Distance" from the PiVision
         if (distanceFromSpeaker == -999) {
@@ -186,13 +187,15 @@ public class Launcher {
     public static void launch(boolean button) {
 
         if (button) {
-            Map.leftLauncher.set(ControlMode.Velocity, 16000);
-            Map.rightLauncher.set(ControlMode.Velocity, 16000);
+            Map.leftLauncher.set(ControlMode.Velocity, 18000);
+            Map.rightLauncher.set(ControlMode.Velocity, 18000);
             SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
             SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
         } else {
-            Map.leftLauncher.set(ControlMode.PercentOutput, .0);
-            Map.rightLauncher.set(ControlMode.PercentOutput, .0);
+             SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
+            SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
+            Map.leftLauncher.set(ControlMode.PercentOutput, 0);
+            Map.rightLauncher.set(ControlMode.PercentOutput, 0);
         }
     }
 
@@ -205,8 +208,8 @@ public class Launcher {
      */
     public static void launchAuto(boolean button) {
     if (button) {
-    Map.leftLauncher.set(ControlMode.Velocity, 15700);
-    Map.rightLauncher.set(ControlMode.Velocity, 15700);
+    Map.leftLauncher.set(ControlMode.Velocity, 15900);
+    Map.rightLauncher.set(ControlMode.Velocity, 15900);
     SmartDashboard.putNumber("rightLaunch",
     Map.rightLauncher.getSelectedSensorVelocity());
     SmartDashboard.putNumber("leftLaunch",
