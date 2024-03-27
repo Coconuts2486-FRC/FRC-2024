@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj.Timer;
 public class Elevator {
     public static boolean toggleClimbUp = false;
     public static boolean toggleAmpScore = false;
+    public static boolean readyToScore = false;
     public static boolean toggleDown = false;
     public static boolean toggleOuttake = false;
+    public static boolean toggleUp = false;
 
     // The PIDController used for elevator position control.
     public static PIDController elevatorPID = new PIDController(
@@ -41,6 +43,8 @@ public class Elevator {
         toggleAmpScore = false;
         toggleDown = false;
         toggleOuttake = false;
+        toggleUp = false;
+        readyToScore = false;
 
     }
 
@@ -71,62 +75,55 @@ public class Elevator {
      * @param manualDownAxis
      */
     public static void run(boolean toggleUpForClimb, boolean toggleUpForAmp, double manualUpAxis,
-            double manualDownAxis) {
-
+            double manualDownAxis, boolean kill) {
+        
         if (toggleUpForClimb) {
-            toggleClimbUp = !toggleClimbUp;
+            toggleUp = !toggleUp;
             toggleDown = true;
+          //  toggleAmpScore = false;
         }
         if (toggleUpForAmp) {
-            toggleAmpScore = !toggleAmpScore;
+            toggleUp = !toggleUp;
             toggleDown = true;
+            toggleAmpScore = true;
         }
 
-        if (toggleClimbUp == true) {
-
-            toggleDown = true;
-
-            Map.rightElevator.set(ControlMode.PercentOutput, -.45);
-            // elevatorPID.calculate(Map.leftElevator.getSelectedSensorPosition(), -85000));
-
-            Map.leftElevator.follow(Map.rightElevator);
-
-            if (Map.elevatorTop.get()) {
-                Map.rightElevator.set(ControlMode.PercentOutput, 0);
-                // Map.leftElevator.setSelectedSensorPosition(-85000);
-            }
-
-        } else if (toggleAmpScore == true) {
-            toggleDown = true;
-
-            Map.rightElevator.set(ControlMode.PercentOutput, -.90);
-
-            Map.leftElevator.set(ControlMode.PercentOutput, -.90);
-            if (Map.elevatorTop.get()) {
-                Map.rightElevator.set(ControlMode.PercentOutput, 0);
+        if (kill){
+                       Map.rightElevator.set(ControlMode.PercentOutput, 0);
                 Map.leftElevator.set(ControlMode.PercentOutput, 0);
+        }
+        if (toggleUp) {
+
+            toggleDown = true;
+
+              Map.rightElevator.set(ControlMode.PercentOutput, -.90);
+            Map.leftElevator.set(ControlMode.PercentOutput, -.90);
+
+            if (Map.elevatorTop.get()) {
+                           Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                Map.leftElevator.set(ControlMode.PercentOutput, 0);
+                if (toggleAmpScore){
+                    readyToScore = true;
+                }
+
                 // Map.leftElevator.setSelectedSensorPosition(-85000);
             }
-            if (Map.elevatorTop.get()) {
-                toggleOuttake = true;
-                Map.leftIntake.set(ControlMode.PercentOutput, -1);
-                 Map.rightIntake.set(ControlMode.PercentOutput, -1);
-                Timer.delay(.45);
-                toggleAmpScore = false;
 
-            }
-
-        } else if (toggleClimbUp == false && toggleAmpScore == false && toggleDown == true) {
+        } else if (toggleDown == true) {
 
             Map.rightElevator.set(ControlMode.PercentOutput, .65);
-            Map.leftElevator.set(ControlMode.PercentOutput, .65);
 
+            Map.leftElevator.set(ControlMode.PercentOutput, .65);
             if (Map.elevatorBottom.get()) {
-                toggleOuttake = false;
-                toggleDown = false;
-                Map.rightElevator.set(ControlMode.PercentOutput, 0);
+     
+                 Map.rightElevator.set(ControlMode.PercentOutput, 0);
                 Map.leftElevator.set(ControlMode.PercentOutput, 0);
+                // Map.leftElevator.setSelectedSensorPosition(-85000);
+                toggleDown = false;
+                readyToScore = false;
             }
+           
+
         } else {
             if (manualUpAxis > .1) {
                 Map.rightElevator.set(ControlMode.PercentOutput, -manualUpAxis);

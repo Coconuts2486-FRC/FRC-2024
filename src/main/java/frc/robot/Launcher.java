@@ -22,9 +22,9 @@ public class Launcher {
     // encoder offset is 26
     public static CANCoder pivotEncoder = new CANCoder(31);
 
-    public static PIDController pivotPidDown = new PIDController(.042, 0.0000, 0.00005);
-    public static PIDController pivotPidUP = new PIDController(.045, 0.0000, 0.000);
-    public static PIDController regressionPidUp = new PIDController(.0505, 0, 0);
+    public static PIDController pivotPidDown = new PIDController(.044, 0.0000, 0.00005);
+    public static PIDController pivotPidUP = new PIDController(.046, 0.0000, 0.000);
+    public static PIDController regressionPidUp = new PIDController(.0513, 0, 0);
     public static PIDController regressionPidDown = new PIDController(.057, 0, 0.0001);
 
     /**
@@ -52,8 +52,8 @@ public class Launcher {
 
         Map.rightLauncher.config_kF(0, 0.1);
         Map.leftLauncher.config_kF(0, 0.1);
-        Map.rightLauncher.config_kP(0, 0.7);
-        Map.leftLauncher.config_kP(0, 0.7);
+        Map.rightLauncher.config_kP(0, 0.9);
+        Map.leftLauncher.config_kP(0, 0.9);
         Map.rightLauncher.config_kI(0, 0.0055);
         Map.leftLauncher.config_kI(0, 0.0055);
           
@@ -120,7 +120,7 @@ public class Launcher {
         double distanceFromSpeaker = RaspberryPi.getSpeakerCenterZ(red);
         double regressionSlope = -0.27825;
       //  double regressionIntercept = 64.6915;
-      double regressionIntercept = 71;
+      double regressionIntercept = 66;
 
         // Check for "Bad Distance" from the PiVision
         if (distanceFromSpeaker == -999) {
@@ -139,9 +139,14 @@ public class Launcher {
      * @param autoFortyFive boolean, auto 45º -- how is this different from
      *                      fortyFive?
      */
-    public static void run(boolean fortyFive, boolean sixty, double tuner, boolean autoFortyFive, boolean regression) {
-
-        if (autoFortyFive) {
+    public static void run(boolean fortyFive, boolean sixty, double tuner, boolean autoFortyFive, boolean regression, boolean kill) {
+        if(kill){
+              goTo45 = false;
+              sixty = false;
+              pivot.set(ControlMode.PercentOutput, 0);
+            
+        }
+        else if (autoFortyFive) {
             goTo45 = true;
         }
 
@@ -161,7 +166,7 @@ public class Launcher {
             }
 
         } else if (goTo45) {
-            pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 44 + tuner));
+            pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 45 + tuner));
         } else {
             pivot.set(ControlMode.PercentOutput, 0);
         }
@@ -208,15 +213,15 @@ public class Launcher {
      */
     public static void launchAuto(boolean button) {
     if (button) {
-    Map.leftLauncher.set(ControlMode.Velocity, 15900);
-    Map.rightLauncher.set(ControlMode.Velocity, 15900);
+    Map.leftLauncher.set(ControlMode.Velocity, 16000);
+    Map.rightLauncher.set(ControlMode.Velocity, 16000);
     SmartDashboard.putNumber("rightLaunch",
     Map.rightLauncher.getSelectedSensorVelocity());
     SmartDashboard.putNumber("leftLaunch",
     Map.leftLauncher.getSelectedSensorVelocity());
     } else {
-    Map.leftLauncher.set(ControlMode.PercentOutput, 10000);
-    Map.rightLauncher.set(ControlMode.PercentOutput, 10000);
+    Map.leftLauncher.set(ControlMode.PercentOutput, 0);
+    Map.rightLauncher.set(ControlMode.PercentOutput, 0);
     }
     }
 

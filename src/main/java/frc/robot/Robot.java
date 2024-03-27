@@ -95,8 +95,8 @@ public class Robot extends TimedRobot {
         // Swerve.gyro.setYaw(Swerve.gyro2.getYaw());
         // }
 
-        driverZ = Map.driver.getRawAxis(0);
-        if (Math.abs(driverZ) < .15) {
+        driverZ = Map.driver.getRawAxis(0) - (Math.signum(driverZ)*.05);
+        if (Math.abs(Map.driver.getRawAxis(0)) < .15) {
             driverZ = 0;
         }
         
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
         }
 
         Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),
-                Launcher.manualAngleTuner(Map.coDriver.getPOV()), false, Map.coDriver.getRawButton(3));
+                Launcher.manualAngleTuner(Map.coDriver.getPOV()), false, Map.coDriver.getRawButton(3),Map.driver.getRawButton(8));
         Launcher.launch(Map.coDriver.getRawButton(6));
         Map.swerve.reinit(Map.driver.getRawButton(4));
 
@@ -123,19 +123,19 @@ public class Robot extends TimedRobot {
         // Otherwise, just drive
         else {
             Map.swerve.drive(driverX, driverY,
-                    RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(5), -driverZ + (driverY * -.001),
+                    RaspberryPi.targetAprilTag(/*Map.coDriver.getRawButton(5)*/false, -driverZ ,
                             Misc.getSelectedColor()),
                     false);
         }
 
         // Launcher.intake(Map.coDriver.getRawButton(5));
         Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2),
-                Map.coDriver.getRawAxis(3), Map.coDriver.getRawAxis(2));
+                Map.coDriver.getRawAxis(3), Map.coDriver.getRawAxis(2),Map.driver.getRawButton(7));
         if (Map.driver.getRawButton(6)) {
-            Intake.run(
+            Intake.auto(
                     Map.driver.getRawButton(6),
                     Map.coDriver.getRawButtonPressed(4),
-                    Map.coDriver.getRawButton(8),
+                    Map.coDriver.getRawButton(6),
                     Map.driver.getRawButton(1),
                     Map.coDriver.getRawButton(5),
                     false,
@@ -144,10 +144,10 @@ public class Robot extends TimedRobot {
                     false,
                     Misc.getSelectedColor());
         } else {
-            Intake.run(
+            Intake.auto(
                     Map.driver.getRawButton(2),
                     Map.coDriver.getRawButtonPressed(4),
-                    Map.coDriver.getRawButton(8),
+                    Map.coDriver.getRawButton(6),
                     Map.driver.getRawButton(1),
                     Map.coDriver.getRawButton(5),
                     false,
@@ -155,6 +155,15 @@ public class Robot extends TimedRobot {
                     Map.driver.getRawAxis(2),
                     false,
                     Misc.getSelectedColor());
+        }
+                
+        if (Map.driver.getRawButton(8)){
+            Launcher.init();
+  
+        }
+        if (Map.driver.getRawButton(7)){
+            Elevator.init();
+  
         }
     }
 
@@ -168,6 +177,7 @@ public class Robot extends TimedRobot {
         Elevator.disable(Map.coDriver.getRawButton(10));
         Launcher.disable(Map.coDriver.getRawButton(10));
         Intake.disable(Map.coDriver.getRawButton(10));
+        Map.swerve.disabled(Map.coDriver.getRawButton(10));
     }
 
     @Override

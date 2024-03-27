@@ -21,10 +21,11 @@ public class Swerve {
 
     private double speedMultiplier = 1;
 
-    public static double flOffset = (3 * pi / 90);
-    public static double frOffset = (7 * pi / 90);
-    public static double blOffset = (11.9 * pi / 30);
-    public static double brOffset = (9 * pi / 90);
+    public static double flOffset = (Math.toRadians(15.205));
+  //  public static double flOffset = (3 * pi / 90);
+    public static double frOffset = (Math.toRadians(44.648));
+    public static double blOffset = (Math.toRadians(4.04));
+    public static double brOffset = (Math.toRadians(72.334));
 
     private double x0 = 0.0;
     private double y0 = 0.0;
@@ -87,11 +88,11 @@ public class Swerve {
      * Disables the swerve drive by setting the neutral mode to coast for all the
      * modules.
      */
-    public void disabled() {
-        backRight.disable();
-        backLeft.disable();
-        frontRight.disable();
-        frontLeft.disable();
+    public void disabled(boolean button) {
+        backRight.disable(button);
+        backLeft.disable(button);
+        frontRight.disable(button);
+        frontLeft.disable(button);
     }
 
     /**
@@ -167,10 +168,10 @@ public class Swerve {
         // double backLeftAngle = Math.atan2(a, c);
         // double frontRightAngle = Math.atan2(b, d);
         // double frontLeftAngle = Math.atan2(b, c);
-        double backRightAngle = Math.atan2(a0, c0);
-        double backLeftAngle = Math.atan2(a, d);
-        double frontRightAngle = Math.atan2(b, c);
-        double frontLeftAngle = Math.atan2(b0, d0);
+        double backRightAngle = Math.atan2(a, d);
+        double backLeftAngle = Math.atan2(b0, d0);
+        double frontRightAngle = Math.atan2(a0, c0);
+        double frontLeftAngle = Math.atan2(b, c);
 
         backRight.drive(backRightSpeed, (backRightAngle + brOffset));
         backLeft.drive(backLeftSpeed, (backLeftAngle + blOffset));

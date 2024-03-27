@@ -148,18 +148,21 @@ public class Intake {
             if (Elevator.toggleAmpScore && Elevator.toggleOuttake) {
                 Map.leftIntake.set(ControlMode.PercentOutput, -1);
                 Map.rightIntake.set(ControlMode.PercentOutput, -1);
+            } else if (Map.coDriver.getRawButton(5)){
+                   Map.leftIntake.set(ControlMode.PercentOutput, -1);
+                Map.rightIntake.set(ControlMode.PercentOutput, -1);
             }
             // If the shooter wheels are up to speed, then automatically insert
             //  the note into the shooter if the `launchNote` button is pressed
             //  NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch button
-            else if (launchNote && Map.rightLauncher.getSelectedSensorVelocity() > 18000) {
+            else if (launchNote && Map.rightLauncher.getSelectedSensorVelocity() > 16000) {
                 Map.leftIntake.set(ControlMode.PercentOutput, 1+(intakeAxis - outtakeAxis));
                 Map.rightIntake.set(ControlMode.PercentOutput, 1-(outtakeAxis - intakeAxis) );
             }
             // If the shooter wheels are NOT up to speed, manually control the intake/outtake
-            else if (Map.leftLauncher.getSelectedSensorVelocity() < 17500) {
-                Map.leftIntake.set(ControlMode.PercentOutput, (intakeAxis - outtakeAxis));
-                Map.rightIntake.set(ControlMode.PercentOutput, -(outtakeAxis - intakeAxis) );
+            else if (Map.leftLauncher.getSelectedSensorVelocity() < 15800) {
+                Map.leftIntake.set(ControlMode.PercentOutput, (intakeAxis - (outtakeAxis)));
+                Map.rightIntake.set(ControlMode.PercentOutput, -((outtakeAxis) - intakeAxis) );
             }
             // Other cases, we just sit on our hands
             else {
@@ -187,12 +190,12 @@ public class Intake {
             // If the shooter wheels are up to speed, then automatically insert
             //  the note into the shooter if the `launchNote` button is pressed
             //  NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch button
-            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 18000) {
+            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 16000) {
                 Map.leftIntake.set(ControlMode.PercentOutput, 1+(intakeAxis - outtakeAxis));
                 Map.rightIntake.set(ControlMode.PercentOutput, 1 -(outtakeAxis - intakeAxis) * 1.4);
             }
             // If the shooter wheels are NOT up to speed, manually control the intake/outtake
-            else if (Map.leftLauncher.getSelectedSensorVelocity() < 17500) {
+            else if (Map.leftLauncher.getSelectedSensorVelocity() < 15800) {
                 Map.leftIntake.set(ControlMode.PercentOutput, (intakeAxis - outtakeAxis));
                 Map.rightIntake.set(ControlMode.PercentOutput, -(outtakeAxis - intakeAxis) * 1.4);
             }
@@ -202,7 +205,7 @@ public class Intake {
     }
  public static void run(boolean intakePositionButton, boolean scoringPositionToggle,
             boolean launchNote, boolean reZeroIntake, boolean targetButton, boolean autoScoreTrue,
-            double intakeAxis, double outtakeAxis, boolean autoZero, boolean red) {
+            double intakeAxis, double outtakeAxis, boolean autoZero, boolean red,boolean ampOutButton) {
         // put number to smart dashboard
         SmartDashboard.putNumber("intakeZone", Launcher.distanceFrom45());
         // if (targetButton) {
@@ -281,7 +284,7 @@ public class Intake {
             // If the shooter wheels are up to speed, then automatically insert
             //  the note into the shooter if the `launchNote` button is pressed
             //  NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch button
-            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity()>600) {
+            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 18000) {
                 Map.leftIntake.set(ControlMode.PercentOutput, 1+(intakeAxis - outtakeAxis));
                 Map.rightIntake.set(ControlMode.PercentOutput, 1-(outtakeAxis - intakeAxis) );
             }
@@ -311,10 +314,14 @@ public class Intake {
                 Map.leftIntake.set(ControlMode.PercentOutput, -1);
                 Map.rightIntake.set(ControlMode.PercentOutput, -1);
             }
+            else if (ampOutButton){
+                Map.leftIntake.set(ControlMode.PercentOutput, -1);
+                Map.rightIntake.set(ControlMode.PercentOutput, -1);
+            }
             // If the shooter wheels are up to speed, then automatically insert
             //  the note into the shooter if the `launchNote` button is pressed
             //  NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch button
-            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity()>600) {
+            else if (launchNote && Map.leftLauncher.getSelectedSensorVelocity() > 18000) {
                 Map.leftIntake.set(ControlMode.PercentOutput, 1+(intakeAxis - outtakeAxis));
                 Map.rightIntake.set(ControlMode.PercentOutput, 1 -(outtakeAxis - intakeAxis));
             }

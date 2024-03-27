@@ -65,10 +65,10 @@ public class Map {
     public static int encoderBL = 12;
     public static int encoderBR = 13;
 
-    public static CANCoder FR = new CANCoder(10);
-    public static CANCoder FL = new CANCoder(11);
-    public static CANCoder BR = new CANCoder(12);
-    public static CANCoder BL = new CANCoder(13);
+    public static CANCoder FR = new CANCoder(11);
+    public static CANCoder FL = new CANCoder(10);
+    public static CANCoder BR = new CANCoder(13);
+    public static CANCoder BL = new CANCoder(12);
 
     public static int driveFL = 2;
     public static int driveFR = 3;

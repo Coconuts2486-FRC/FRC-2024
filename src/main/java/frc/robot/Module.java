@@ -63,9 +63,16 @@ public class Module {
      * Disables the module by setting the neutral mode to coast for both the
      * direction and drive motors.
      */
-    public void disable() {
-        directionMotor.setNeutralMode(NeutralMode.Coast);
+    public void disable(boolean button) {
+        if (button){
+  directionMotor.setNeutralMode(NeutralMode.Coast);
         driveMotor.setNeutralMode(NeutralMode.Coast);
+        }else{
+              directionMotor.setNeutralMode(NeutralMode.Brake);
+        driveMotor.setNeutralMode(NeutralMode.Brake);
+
+        }
+      
     }
 
     /**
