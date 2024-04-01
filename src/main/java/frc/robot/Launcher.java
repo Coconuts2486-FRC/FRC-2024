@@ -22,15 +22,16 @@ public class Launcher {
     // encoder offset is 26
     public static CANCoder pivotEncoder = new CANCoder(31);
 
-    public static PIDController pivotPidDown = new PIDController(.044, 0.0000, 0.00005);
-    public static PIDController pivotPidUP = new PIDController(.046, 0.0000, 0.000);
-    public static PIDController regressionPidUp = new PIDController(.0513, 0, 0);
+    public static PIDController pivotPidDown = new PIDController(.045, 0.0000, 0.00005);
+    public static PIDController pivotPidUP = new PIDController(.045, 0.0000, 0.000);
+    public static PIDController regressionPidUp = new PIDController(.0516, 0, 0);
     public static PIDController regressionPidDown = new PIDController(.057, 0, 0.0001);
 
     /**
      * Initializes the launcher by setting the selected feedback sensor.
      */
     public static void init() {
+       // pivotPidUP.enableContinuousInput(0, 360);
         pivot.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         Map.rightLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         Map.leftLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
@@ -120,7 +121,7 @@ public class Launcher {
         double distanceFromSpeaker = RaspberryPi.getSpeakerCenterZ(red);
         double regressionSlope = -0.27825;
       //  double regressionIntercept = 64.6915;
-      double regressionIntercept = 66;
+      double regressionIntercept = 69;
 
         // Check for "Bad Distance" from the PiVision
         if (distanceFromSpeaker == -999) {
@@ -165,7 +166,13 @@ public class Launcher {
                         (regressionForAngle(Misc.getSelectedColor()) + .3) + tuner));
             }
 
-        } else if (goTo45) {
+        } else if(Map.driver.getRawButton(3)) {
+            pivot.set(ControlMode.PercentOutput, 0);
+            if(pivotEncoder.getAbsolutePosition()<4){
+                goTo45 = false;
+            }
+
+        }else if (goTo45) {
             pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 45 + tuner));
         } else {
             pivot.set(ControlMode.PercentOutput, 0);

@@ -29,7 +29,7 @@ public class RaspberryPi {
             .getTable("vision");
 
     // The PID controller used for targeting a specific value.
-    public static PIDController targetPid = new PIDController(.54, 0, 0.0002);
+    public static PIDController targetPid = new PIDController(.56, 0, 0.000);
     // public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
     public static PIDController targetPid2 = new PIDController(0.0095, 0, 0.000002);
 
@@ -223,7 +223,7 @@ public class RaspberryPi {
      */
     public static void targetGamePiece(boolean button, boolean released) {
         // If button, no gamepiece in intake, and intake is OUT
-        if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 90000) {
+        if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 89000) {
             Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceAngle()), false);
             if (Math.abs(gamePieceX()) < 7) {
                 // Swerve.gyro.setYaw(0); // Instead, call getRobotAngle()

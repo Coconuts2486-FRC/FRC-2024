@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putBoolean("elevator Bottom DIO", Map.elevatorBottom.get());
         SmartDashboard.putBoolean("LightStop", Map.lightStop.get());
         SmartDashboard.putNumber("extend", Map.intakeExtend.getSelectedSensorPosition());
       SmartDashboard.putNumber("gyro", Swerve.gyro.getYaw());
@@ -123,14 +124,16 @@ public class Robot extends TimedRobot {
         // Otherwise, just drive
         else {
             Map.swerve.drive(driverX, driverY,
-                    RaspberryPi.targetAprilTag(/*Map.coDriver.getRawButton(5)*/false, -driverZ ,
+                    RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(5),-driverZ ,
                             Misc.getSelectedColor()),
                     false);
         }
 
         // Launcher.intake(Map.coDriver.getRawButton(5));
-        Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2),
-                Map.coDriver.getRawAxis(3), Map.coDriver.getRawAxis(2),Map.driver.getRawButton(7));
+         Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2),
+        //         Map.coDriver.getRawAxis(3), Map.coDriver.getRawAxis(2),Map.driver.getRawButton(7));
+       // Elevator.manualRun(Map.coDriver.getRawButton(1), Map.coDriver.getRawButton(2),
+                 Map.coDriver.getRawAxis(3), Map.coDriver.getRawAxis(2),Map.driver.getRawButton(7));
         if (Map.driver.getRawButton(6)) {
             Intake.auto(
                     Map.driver.getRawButton(6),

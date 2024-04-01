@@ -9,7 +9,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 @SuppressWarnings("removal")
 public class Elevator {
@@ -110,7 +112,7 @@ public class Elevator {
             }
 
         } else if (toggleDown == true) {
-
+            toggleAmpScore = false;
             Map.rightElevator.set(ControlMode.PercentOutput, .65);
 
             Map.leftElevator.set(ControlMode.PercentOutput, .65);
@@ -145,4 +147,97 @@ public class Elevator {
             }
         }
     }
+
+public static void manualRun(boolean toggleUpForClimb, boolean toggleUpForAmp, double manualUpAxis,
+            double manualDownAxis, boolean kill) {
+
+
+           if (toggleUpForAmp) {
+            toggleAmpScore = true;
+        } else {
+            toggleAmpScore = false;
+        }
+
+        if (kill){
+                       Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                Map.leftElevator.set(ControlMode.PercentOutput, 0);
+        }
+        if (toggleUpForAmp) {
+
+           
+
+              Map.rightElevator.set(ControlMode.PercentOutput, -.90);
+            Map.leftElevator.set(ControlMode.PercentOutput, -.90);
+
+            if (Map.elevatorTop.get()) {
+                           Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                Map.leftElevator.set(ControlMode.PercentOutput, 0);
+                if (toggleAmpScore){
+                    readyToScore = true;
+                }
+
+                // Map.leftElevator.setSelectedSensorPosition(-85000);
+            }
+
+        } else if (toggleUpForClimb) {
+              
+
+              Map.rightElevator.set(ControlMode.PercentOutput, -.90);
+            Map.leftElevator.set(ControlMode.PercentOutput, -.90);
+
+            if (Map.elevatorTop.get()) {
+                           Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                Map.leftElevator.set(ControlMode.PercentOutput, 0);
+            
+                // Map.leftElevator.setSelectedSensorPosition(-85000);
+            }
+
+
+        } else if (Map.elevatorBottom.get()){
+            init();
+
+            if (manualUpAxis > .1) {
+                Map.rightElevator.set(ControlMode.PercentOutput, -manualUpAxis);
+                Map.leftElevator.set(ControlMode.PercentOutput, -manualUpAxis);
+                if (Map.elevatorTop.get()) {
+                    Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                    Map.leftElevator.set(ControlMode.PercentOutput, 0);
+                }
+            } else if (manualDownAxis > .1) {
+                Map.rightElevator.set(ControlMode.PercentOutput, manualDownAxis);
+                Map.leftElevator.set(ControlMode.PercentOutput, manualDownAxis);
+                if (Map.elevatorBottom.get()) {
+                    Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                    Map.leftElevator.set(ControlMode.PercentOutput, 0);
+                }
+            } else {
+                Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                Map.leftElevator.set(ControlMode.PercentOutput, 0);
+            }
+
+        }else{
+            
+             if (manualUpAxis > .1) {
+                Map.rightElevator.set(ControlMode.PercentOutput, -manualUpAxis);
+                Map.leftElevator.set(ControlMode.PercentOutput, -manualUpAxis);
+                if (Map.elevatorTop.get()) {
+                    Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                    Map.leftElevator.set(ControlMode.PercentOutput, 0);
+                }
+            } else if (manualDownAxis > .1) {
+                Map.rightElevator.set(ControlMode.PercentOutput, manualDownAxis);
+                Map.leftElevator.set(ControlMode.PercentOutput, manualDownAxis);
+                if (Map.elevatorBottom.get()) {
+                    Map.rightElevator.set(ControlMode.PercentOutput, 0);
+                    Map.leftElevator.set(ControlMode.PercentOutput, 0);
+                }
+            } else {
+                Map.rightElevator.set(ControlMode.PercentOutput, .80);
+                Map.leftElevator.set(ControlMode.PercentOutput, .80);
+            }
+        
+        } 
+    }
 }
+
+

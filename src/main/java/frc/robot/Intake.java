@@ -145,13 +145,14 @@ public class Intake {
 
             // If the elevator is UP, we are scoring in the AMP, so we OUTTAKE the
             //   gamepiece rather than feed it into the shooter mechanism
-            if (Elevator.toggleAmpScore && Elevator.toggleOuttake) {
+            if (Elevator.toggleAmpScore && Map.elevatorTop.get()) {
                 Map.leftIntake.set(ControlMode.PercentOutput, -1);
                 Map.rightIntake.set(ControlMode.PercentOutput, -1);
-            } else if (Map.coDriver.getRawButton(5)){
-                   Map.leftIntake.set(ControlMode.PercentOutput, -1);
-                Map.rightIntake.set(ControlMode.PercentOutput, -1);
             }
+            // } else if (Map.coDriver.getRawButton(5)){
+            //        Map.leftIntake.set(ControlMode.PercentOutput, -1);
+            //     Map.rightIntake.set(ControlMode.PercentOutput, -1);
+            // }
             // If the shooter wheels are up to speed, then automatically insert
             //  the note into the shooter if the `launchNote` button is pressed
             //  NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch button
@@ -183,7 +184,7 @@ public class Intake {
 
             // If the elevator is UP, we are scoring in the AMP, so we OUTTAKE the
             //   gamepiece rather than feed it into the shooter mechanism
-            if (Elevator.toggleAmpScore && Elevator.toggleOuttake) {
+            if (Elevator.toggleAmpScore && Map.elevatorTop.get()) {
                 Map.leftIntake.set(ControlMode.PercentOutput, -1);
                 Map.rightIntake.set(ControlMode.PercentOutput, -1);
             }
@@ -205,7 +206,7 @@ public class Intake {
     }
  public static void run(boolean intakePositionButton, boolean scoringPositionToggle,
             boolean launchNote, boolean reZeroIntake, boolean targetButton, boolean autoScoreTrue,
-            double intakeAxis, double outtakeAxis, boolean autoZero, boolean red,boolean ampOutButton) {
+            double intakeAxis, double outtakeAxis, boolean autoZero, boolean red) {
         // put number to smart dashboard
         SmartDashboard.putNumber("intakeZone", Launcher.distanceFrom45());
         // if (targetButton) {
@@ -314,10 +315,10 @@ public class Intake {
                 Map.leftIntake.set(ControlMode.PercentOutput, -1);
                 Map.rightIntake.set(ControlMode.PercentOutput, -1);
             }
-            else if (ampOutButton){
-                Map.leftIntake.set(ControlMode.PercentOutput, -1);
-                Map.rightIntake.set(ControlMode.PercentOutput, -1);
-            }
+            // else if (ampOutButton){
+            //     Map.leftIntake.set(ControlMode.PercentOutput, -1);
+            //     Map.rightIntake.set(ControlMode.PercentOutput, -1);
+            // }
             // If the shooter wheels are up to speed, then automatically insert
             //  the note into the shooter if the `launchNote` button is pressed
             //  NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch button
