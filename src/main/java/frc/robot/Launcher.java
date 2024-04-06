@@ -40,6 +40,7 @@ public class Launcher {
         Map.leftLauncher.setNeutralMode(NeutralMode.Coast);
         pivot.setNeutralMode(NeutralMode.Brake);
         Map.leftLauncher.setInverted(true);
+         Map.rightLauncher.setInverted(true);
         goTo45 = false;
         angleTuner = 0;
 

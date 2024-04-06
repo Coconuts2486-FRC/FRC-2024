@@ -232,6 +232,26 @@ public class RaspberryPi {
 
         }
 
+     
+        // Map.backLeft.autoInit(Swerve.blOffset);
+        // Map.backRight.autoInit(Swerve.brOffset);
+        // Map.frontLeft.autoInit(Swerve.flOffset);
+        // Map.frontRight.autoInit(Swerve.frOffset);
+        // Swerve.modInit();
+
+    }
+ public static void targetGamePieceAuto(boolean button, boolean released) {
+        // If button, no gamepiece in intake, and intake is OUT
+        if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 89000) {
+            Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceAngle()), false);
+            if (Math.abs(gamePieceX()) < 7) {
+                // Swerve.gyro.setYaw(0); // Instead, call getRobotAngle()
+                Map.swerve.drive(0, .5, -targetPid.calculate(gamePieceAngle()), true);
+            }
+
+        }
+
+     
         // Map.backLeft.autoInit(Swerve.blOffset);
         // Map.backRight.autoInit(Swerve.brOffset);
         // Map.frontLeft.autoInit(Swerve.flOffset);

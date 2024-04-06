@@ -127,7 +127,7 @@ public class Map {
     
 
     // Elevator
-    public static TalonFX leftElevator = new TalonFX(21, "drive");
+    //public static TalonFX leftElevator = new TalonFX(21, "drive");
     public static TalonFX rightElevator = new TalonFX(22, "drive");
     // Intake
     public static TalonFX intakeExtend = new TalonFX(18);
