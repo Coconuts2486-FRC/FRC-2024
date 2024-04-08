@@ -24,9 +24,10 @@ public class Misc {
      * Select which AUTO path to run
      */
     public static void selectAuto() {
-        Map.selectedAuto.setDefaultOption("Two note, straight from speaker", 1);
+        Map.selectedAuto.setDefaultOption("The Three Note that goes out", 1);
         Map.selectedAuto.addOption("Four piece from subwoofer", 2);
-              Map.selectedAuto.addOption("the out one", 3);
+              Map.selectedAuto.addOption("the old out one", 3);
+              Map.selectedAuto.addOption("The close sweep", 4);
         SmartDashboard.putData("SelectAuto", Map.selectedAuto);
 
     }
@@ -47,11 +48,13 @@ public class Misc {
      */
     public static void runSelectedAuto(boolean red) {
         if (getSelectedAuto() == 1) {
-            Auto.twoPieceStraightFromSpeaker(red);
+            Auto.threeNoteTwoOut(red);
         } else if (getSelectedAuto() == 2) {
             Auto.fourPieceStraightFromSpeaker(red);
     } else if ( getSelectedAuto() == 3){
            Auto.threePieceCenterLine(red);
+    } else if ( getSelectedAuto() == 4){
+        Auto.closeSweep(red);
     }
     }
     /**

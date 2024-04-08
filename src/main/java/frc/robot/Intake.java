@@ -125,8 +125,15 @@ public class Intake {
         // Move to intake position & turn on the intake rollers (leftIntake & rightIntake)
         if (trippleToggle == positionIntake) {
             Map.intakeExtend.set(ControlMode.Position, 98000);
-            Map.leftIntake.set(ControlMode.PercentOutput, .3);
-            Map.rightIntake.set(ControlMode.PercentOutput, .3);
+           
+            if (Map.lightStop.get()){
+                 Map.leftIntake.set(ControlMode.PercentOutput, 0);
+            Map.rightIntake.set(ControlMode.PercentOutput, 0);
+
+            }else{
+                 Map.leftIntake.set(ControlMode.PercentOutput, .4);
+            Map.rightIntake.set(ControlMode.PercentOutput, .4);
+            }
         }
 
         // If intaking (present tense), and the rezero button is pressed, then rezero

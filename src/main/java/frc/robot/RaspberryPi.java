@@ -29,7 +29,7 @@ public class RaspberryPi {
             .getTable("vision");
 
     // The PID controller used for targeting a specific value.
-    public static PIDController targetPid = new PIDController(.56, 0, 0.000);
+    public static PIDController targetPid = new PIDController(.5, 0, 0.00007);
     // public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
     public static PIDController targetPid2 = new PIDController(0.0095, 0, 0.000002);
 
@@ -205,8 +205,8 @@ public class RaspberryPi {
             if (tagXPosition == -999) {
                 return axis;
             } else {
-               return Math.signum(tagXPosition)*.083;
-               // return -targetPid2.calculate(());
+                return Math.signum(tagXPosition) * .083;
+                // return -targetPid2.calculate(());
             }
         } else {
             return axis;
@@ -221,18 +221,24 @@ public class RaspberryPi {
      * @param released Not used
      * @return The target value for the game piece.
      */
-    public static void targetGamePiece(boolean button, boolean released) {
+    public static void targetGamePiece(boolean button, boolean gently) {
         // If button, no gamepiece in intake, and intake is OUT
+        double velocity;
         if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 89000) {
             Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceAngle()), false);
             if (Math.abs(gamePieceX()) < 7) {
+                // Taper the velocity to zero in the last foot
+                if (gently) {
+                    velocity = Math.max(gamePieceZ() / 36., 1) * 0.25;
+                } else {
+                    velocity = Math.max(gamePieceZ() / 36., 1) * 0.45;
+                }
                 // Swerve.gyro.setYaw(0); // Instead, call getRobotAngle()
-                Map.swerve.drive(0, .3, -targetPid.calculate(gamePieceAngle()), true);
+                Map.swerve.drive(0, velocity, -targetPid.calculate(gamePieceAngle()), true);
             }
 
         }
 
-     
         // Map.backLeft.autoInit(Swerve.blOffset);
         // Map.backRight.autoInit(Swerve.brOffset);
         // Map.frontLeft.autoInit(Swerve.flOffset);
@@ -240,18 +246,18 @@ public class RaspberryPi {
         // Swerve.modInit();
 
     }
- public static void targetGamePieceAuto(boolean button, boolean released) {
+
+    public static void targetGamePieceAuto(boolean button, boolean released) {
         // If button, no gamepiece in intake, and intake is OUT
         if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 89000) {
             Map.swerve.drive(0, 0, -targetPid.calculate(gamePieceAngle()), false);
             if (Math.abs(gamePieceX()) < 7) {
                 // Swerve.gyro.setYaw(0); // Instead, call getRobotAngle()
-                Map.swerve.drive(0, .5, -targetPid.calculate(gamePieceAngle()), true);
+                Map.swerve.drive(0, .45, -targetPid.calculate(gamePieceAngle()), true);
             }
 
         }
 
-     
         // Map.backLeft.autoInit(Swerve.blOffset);
         // Map.backRight.autoInit(Swerve.brOffset);
         // Map.frontLeft.autoInit(Swerve.flOffset);

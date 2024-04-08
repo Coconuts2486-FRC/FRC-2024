@@ -107,6 +107,21 @@ public class Swerve {
         return robotAngle;
     }
 
+
+    /**
+     * Wrapper around drive to accept velocity and angle
+     * 
+     * @param v Velocity
+     * @param theta Angle (with respect to something...)
+     * @param z The value of the swerve drive
+     */
+
+    public void drive_fc(double v, double theta, double z){
+        double y = v * Math.cos(Math.toRadians(-theta));
+        double x = -v * Math.sin(Math.toRadians(-theta));
+        drive(x,y,z,false);
+    }
+
     /**
      * Drives the swerve drive based on the x, y, and z values.
      * 

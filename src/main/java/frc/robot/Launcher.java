@@ -201,7 +201,7 @@ public class Launcher {
 
         if (button) {
             Map.leftLauncher.set(ControlMode.Velocity, 18000);
-            Map.rightLauncher.set(ControlMode.Velocity, 18000);
+            Map.rightLauncher.set(ControlMode.Velocity, -18000);
             SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
             SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
         } else {
