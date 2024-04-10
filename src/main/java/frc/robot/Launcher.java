@@ -33,14 +33,14 @@ public class Launcher {
     public static void init() {
        // pivotPidUP.enableContinuousInput(0, 360);
         pivot.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        Map.rightLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+        Map.topLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         Map.leftLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         // rightIntake is what the pivot encoder is wired to. (Absolute encoder)
-        Map.rightLauncher.setNeutralMode(NeutralMode.Coast);
+        Map.topLauncher.setNeutralMode(NeutralMode.Coast);
         Map.leftLauncher.setNeutralMode(NeutralMode.Coast);
         pivot.setNeutralMode(NeutralMode.Brake);
         Map.leftLauncher.setInverted(true);
-         Map.rightLauncher.setInverted(true);
+         Map.topLauncher.setInverted(true);
         goTo45 = false;
         angleTuner = 0;
 
@@ -50,16 +50,16 @@ public class Launcher {
         // Map.leftLauncher.config_kI(0,.1);
 
         Map.leftLauncher.configOpenloopRamp(0.1);
-        Map.rightLauncher.configOpenloopRamp(0.1);
+        Map.topLauncher.configOpenloopRamp(0.1);
 
-        Map.rightLauncher.config_kF(0, 0.1);
+        Map.topLauncher.config_kF(0, 0.1);
         Map.leftLauncher.config_kF(0, 0.1);
-        Map.rightLauncher.config_kP(0, 0.9);
+        Map.topLauncher.config_kP(0, 0.9);
         Map.leftLauncher.config_kP(0, 0.9);
-        Map.rightLauncher.config_kI(0, 0.0055);
+        Map.topLauncher.config_kI(0, 0.0055);
         Map.leftLauncher.config_kI(0, 0.0055);
           
-        Map.rightLauncher.config_IntegralZone(0, 300);
+        Map.topLauncher.config_IntegralZone(0, 300);
         Map.leftLauncher.config_IntegralZone(0, 300);
 
     }
@@ -91,14 +91,14 @@ public class Launcher {
 
         // Top half of the D-Pad, increase angle
         if (POV == 0 || POV == 315 || POV == 45) {
-            angleTuner = angleTuner - 0.5;
-            Timer.delay(.09);
+            angleTuner = angleTuner - 0.1;
+           
         }
 
         // Bottom half of the D-Pad, decrease angle
         else if (POV == 180 || POV == 255 || POV == 135) {
-            angleTuner = angleTuner + 0.5;
-            Timer.delay(.09);
+            angleTuner = angleTuner + 0.1;
+           
         }
 
         // Either right or left of D-Pad, zero out the angle
@@ -120,15 +120,18 @@ public class Launcher {
      */
     public static double regressionForAngle(boolean red) {
         double distanceFromSpeaker = RaspberryPi.getSpeakerCenterZ(red);
-        double regressionSlope = -0.27825;
+        double a = -6.6E-6;
+        double b = 3.65E-3;
+        double c = -.706;
+        
       //  double regressionIntercept = 64.6915;
-      double regressionIntercept = 69;
+      double regressionIntercept = 75.6;
 
         // Check for "Bad Distance" from the PiVision
         if (distanceFromSpeaker == -999) {
             return 45;
         } else {
-            return regressionSlope * distanceFromSpeaker + regressionIntercept;
+            return (a*Math.pow(distanceFromSpeaker, 3)) + (b*Math.pow(distanceFromSpeaker,2)) + (c*distanceFromSpeaker)+(regressionIntercept);
         }
     }
 
@@ -200,15 +203,15 @@ public class Launcher {
     public static void launch(boolean button) {
 
         if (button) {
-            Map.leftLauncher.set(ControlMode.Velocity, 18000);
-            Map.rightLauncher.set(ControlMode.Velocity, -18000);
-            SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
+            Map.leftLauncher.set(ControlMode.Velocity, 10000);
+            Map.topLauncher.set(ControlMode.Velocity, 16000);
+            SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
             SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
         } else {
-             SmartDashboard.putNumber("rightLaunch", Map.rightLauncher.getSelectedSensorVelocity());
+             SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
             SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
             Map.leftLauncher.set(ControlMode.PercentOutput, 0);
-            Map.rightLauncher.set(ControlMode.PercentOutput, 0);
+            Map.topLauncher.set(ControlMode.PercentOutput, 0);
         }
     }
 
@@ -222,14 +225,14 @@ public class Launcher {
     public static void launchAuto(boolean button) {
     if (button) {
     Map.leftLauncher.set(ControlMode.Velocity, 16000);
-    Map.rightLauncher.set(ControlMode.Velocity, 16000);
+    Map.topLauncher.set(ControlMode.Velocity, 16000);
     SmartDashboard.putNumber("rightLaunch",
-    Map.rightLauncher.getSelectedSensorVelocity());
+    Map.topLauncher.getSelectedSensorVelocity());
     SmartDashboard.putNumber("leftLaunch",
     Map.leftLauncher.getSelectedSensorVelocity());
     } else {
     Map.leftLauncher.set(ControlMode.PercentOutput, 0);
-    Map.rightLauncher.set(ControlMode.PercentOutput, 0);
+    Map.topLauncher.set(ControlMode.PercentOutput, 0);
     }
     }
 

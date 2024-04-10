@@ -123,7 +123,7 @@ public class Map {
     // Shooter
 
     public static TalonFX leftLauncher = new TalonFX(16);   
-    public static TalonFX rightLauncher = new TalonFX(15);
+    public static TalonFX topLauncher = new TalonFX(15);
     
 
     // Elevator
