@@ -31,7 +31,7 @@ public class RaspberryPi {
     // The PID controller used for targeting a specific value.
     public static PIDController targetPid = new PIDController(.5, 0, 0.00007);
     // public static PIDController targetPid = new PIDController(0.01, 0, 0.000002);
-    public static PIDController targetPid2 = new PIDController(0.0095, 0, 0.000002);
+    public static PIDController targetPid2 = new PIDController(0.5, 0.00, 0.000002);
 
     // The PID controller used for driving to a specific value.
     public static PIDController driveToPid = new PIDController(.03, 0.00, 0);
@@ -50,6 +50,13 @@ public class RaspberryPi {
         }
     }
 
+ public static double getSpeakerCenterA(boolean red) {
+        if (red) {
+            return getTagA4();
+        } else {
+            return getTagA7();
+        }
+    }
     /**
      * Retrieves the Z coordinate of SPEAKER CENTER AprilTag, relative to the robot
      * 
@@ -71,6 +78,10 @@ public class RaspberryPi {
      */
     public static double getTagX4() {
         return table.getEntry("speaker_tag4_robot_x").getDouble(0.0);
+    }
+
+    public static double getTagA4() {
+        return table.getEntry("speaker_tag4_robot_ang").getDouble(0.0);
     }
 
     /**
@@ -135,7 +146,9 @@ public class RaspberryPi {
     public static double getTagZ7() {
         return table.getEntry("speaker_tag7_robot_z").getDouble(-999);
     }
-
+public static double getTagA7() {
+        return table.getEntry("speaker_tag7_robot_ang").getDouble(0.0);
+    }
     /**
      * Retrieves the X coordinate of the game piece relative to the robot.
      *
@@ -200,13 +213,31 @@ public class RaspberryPi {
             boolean button,
             double axis,
             boolean red) {
-        double tagXPosition = getSpeakerCenterX(red);
+        double tagAPosition = getSpeakerCenterA(red);
+        double velocity;
+        // if (Math.abs(tagXPosition) > 27) {
+        //     velocity = .22 * Math.signum(tagXPosition);
+        // } else if (Math.abs(tagXPosition) > 21) {
+        //     velocity = .16 * Math.signum(tagXPosition);
+        // }else if (){
+
+        // } else if (Math.abs(tagXPosition) >= 12) {
+        //     velocity = .12 * Math.signum(tagXPosition);
+        // } else if (Math.abs(tagXPosition) >= 6) {
+        //     velocity = .09 * Math.signum(tagXPosition);
+        // } else if (Math.abs(tagXPosition) < 6) {
+        //     velocity = .0;
+        // } else {
+        //     velocity = 0;
+        // }
+             velocity =  -targetPid2.calculate(tagAPosition);
         if (button) {
-            if (tagXPosition == -999) {
+            if (tagAPosition == -999) {
                 return axis;
             } else {
-                return Math.signum(tagXPosition) * .083;
-                // return -targetPid2.calculate(());
+                // return Math.signum(tagXPosition) * .083;
+                return velocity;
+                // return -targetPid2.calculate(tagXPosition);
             }
         } else {
             return axis;

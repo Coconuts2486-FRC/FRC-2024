@@ -34,12 +34,12 @@ public class Launcher {
        // pivotPidUP.enableContinuousInput(0, 360);
         pivot.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         Map.topLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        Map.leftLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+        Map.bottomLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         // rightIntake is what the pivot encoder is wired to. (Absolute encoder)
         Map.topLauncher.setNeutralMode(NeutralMode.Coast);
-        Map.leftLauncher.setNeutralMode(NeutralMode.Coast);
+        Map.bottomLauncher.setNeutralMode(NeutralMode.Coast);
         pivot.setNeutralMode(NeutralMode.Brake);
-        Map.leftLauncher.setInverted(true);
+        Map.bottomLauncher.setInverted(true);
          Map.topLauncher.setInverted(true);
         goTo45 = false;
         angleTuner = 0;
@@ -49,18 +49,18 @@ public class Launcher {
         // Map.rightLauncher.config_kI(0,.1);
         // Map.leftLauncher.config_kI(0,.1);
 
-        Map.leftLauncher.configOpenloopRamp(0.1);
+        Map.bottomLauncher.configOpenloopRamp(0.1);
         Map.topLauncher.configOpenloopRamp(0.1);
 
         Map.topLauncher.config_kF(0, 0.1);
-        Map.leftLauncher.config_kF(0, 0.1);
+        Map.bottomLauncher.config_kF(0, 0.1);
         Map.topLauncher.config_kP(0, 0.9);
-        Map.leftLauncher.config_kP(0, 0.9);
+        Map.bottomLauncher.config_kP(0, 0.9);
         Map.topLauncher.config_kI(0, 0.0055);
-        Map.leftLauncher.config_kI(0, 0.0055);
+        Map.bottomLauncher.config_kI(0, 0.0055);
           
         Map.topLauncher.config_IntegralZone(0, 300);
-        Map.leftLauncher.config_IntegralZone(0, 300);
+        Map.bottomLauncher.config_IntegralZone(0, 300);
 
     }
 
@@ -144,7 +144,7 @@ public class Launcher {
      * @param autoFortyFive boolean, auto 45º -- how is this different from
      *                      fortyFive?
      */
-    public static void run(boolean fortyFive, boolean sixty, double tuner, boolean autoFortyFive, boolean regression, boolean kill) {
+    public static void run(boolean fortyFive, boolean sixty, double tuner, boolean autoFortyFive, boolean regression, boolean kill, boolean targetRegress) {
         if(kill){
               goTo45 = false;
               sixty = false;
@@ -161,7 +161,23 @@ public class Launcher {
 
         if (sixty) {
             pivot.set(ControlMode.PercentOutput, pivotPidDown.calculate(pivotEncoder.getAbsolutePosition(), 60));
-        } else if (regression) {
+        } 
+        else if (targetRegress){
+          if(Math.abs(RaspberryPi.getSpeakerCenterX(Misc.getSelectedColor())) < 7)  {
+         if (regressionForAngle(Misc.getSelectedColor()) < 46) {
+                pivot.set(ControlMode.PercentOutput, regressionPidUp.calculate(pivotEncoder.getAbsolutePosition(),
+                        (regressionForAngle(Misc.getSelectedColor()) - 1) + tuner));
+            } else {
+                pivot.set(ControlMode.PercentOutput, regressionPidDown.calculate(pivotEncoder.getAbsolutePosition(),
+                        (regressionForAngle(Misc.getSelectedColor()) + .3) + tuner));
+            }
+
+        
+        }else{
+              pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 45 + tuner));
+        }
+    }
+        else if (regression) {
             if (regressionForAngle(Misc.getSelectedColor()) < 46) {
                 pivot.set(ControlMode.PercentOutput, regressionPidUp.calculate(pivotEncoder.getAbsolutePosition(),
                         (regressionForAngle(Misc.getSelectedColor()) - 1) + tuner));
@@ -177,7 +193,7 @@ public class Launcher {
             }
 
         }else if (goTo45) {
-            pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 45 + tuner));
+            pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 46.5 + tuner));
         } else {
             pivot.set(ControlMode.PercentOutput, 0);
         }
@@ -200,21 +216,37 @@ public class Launcher {
     // }
     // }
 
-    public static void launch(boolean button) {
+    public static void launch(boolean button,boolean kateLaunch) {
 
         if (button) {
-            Map.leftLauncher.set(ControlMode.Velocity, 10000);
+            Map.bottomLauncher.set(ControlMode.Velocity, 10000);
             Map.topLauncher.set(ControlMode.Velocity, 16000);
             SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
-            SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
-        } else {
+            SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getSelectedSensorVelocity());
+        } else if (kateLaunch){
+   Map.bottomLauncher.set(ControlMode.Velocity, 10000);
+            Map.topLauncher.set(ControlMode.Velocity, 10000);
+            SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
+            SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getSelectedSensorVelocity());
+            if (Map.topLauncher.getSelectedSensorVelocity()>10000){
+                Map.leftIntake.set(ControlMode.PercentOutput, 1 );
+                Map.rightIntake.set(ControlMode.PercentOutput, 1);                                
+
+            }
+            else if (Map.topLauncher.getSelectedSensorVelocity()<8000){
+                 Map.leftIntake.set(ControlMode.PercentOutput, 0 );
+                Map.rightIntake.set(ControlMode.PercentOutput, 0);        
+            }
+        }else {
              SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
-            SmartDashboard.putNumber("leftLaunch", Map.leftLauncher.getSelectedSensorVelocity());
-            Map.leftLauncher.set(ControlMode.PercentOutput, 0);
+            SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getSelectedSensorVelocity());
+
+            Map.bottomLauncher.set(ControlMode.PercentOutput, 0);
             Map.topLauncher.set(ControlMode.PercentOutput, 0);
         }
     }
 
+    
     /**
      * AutoLaunch! (The "Doomsday Device")
      * 
@@ -224,14 +256,14 @@ public class Launcher {
      */
     public static void launchAuto(boolean button) {
     if (button) {
-    Map.leftLauncher.set(ControlMode.Velocity, 16000);
+    Map.bottomLauncher.set(ControlMode.Velocity, 16000);
     Map.topLauncher.set(ControlMode.Velocity, 16000);
     SmartDashboard.putNumber("rightLaunch",
     Map.topLauncher.getSelectedSensorVelocity());
     SmartDashboard.putNumber("leftLaunch",
-    Map.leftLauncher.getSelectedSensorVelocity());
+    Map.bottomLauncher.getSelectedSensorVelocity());
     } else {
-    Map.leftLauncher.set(ControlMode.PercentOutput, 0);
+    Map.bottomLauncher.set(ControlMode.PercentOutput, 0);
     Map.topLauncher.set(ControlMode.PercentOutput, 0);
     }
     }

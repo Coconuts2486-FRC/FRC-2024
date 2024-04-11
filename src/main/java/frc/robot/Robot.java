@@ -113,9 +113,10 @@ public class Robot extends TimedRobot {
             driverY = 0;
         }
 
-        Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),
-                Launcher.manualAngleTuner(Map.coDriver.getPOV()), false, Map.coDriver.getRawButton(3),Map.driver.getRawButton(8));
-        Launcher.launch(Map.coDriver.getRawButton(6));
+        Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),Launcher.manualAngleTuner(Map.coDriver.getPOV()), 
+        false, Map.coDriver.getRawButton(3),Map.driver.getRawButton(8),Map.coDriver.getRawButton(5));
+        Launcher.launch(Map.coDriver.getRawButton(6),Map.driver.getRawButton(3));
+    
         Map.swerve.reinit(Map.driver.getRawButton(4));
 
         if (Map.driver.getRawButton(6) && Map.lightStop.get() == false) {
@@ -135,25 +136,19 @@ public class Robot extends TimedRobot {
        // Elevator.manualRun(Map.coDriver.getRawButton(1), Map.coDriver.getRawButton(2),
                  Map.coDriver.getRawAxis(3), Map.coDriver.getRawAxis(2),Map.driver.getRawButton(7));
         if (Map.driver.getRawButton(6)) {
-            Intake.auto(
+            Intake.run(
                     Map.driver.getRawButton(6),
-                    Map.coDriver.getRawButtonPressed(4),
                     Map.coDriver.getRawButton(6),
                     Map.driver.getRawButton(1),
-                    Map.coDriver.getRawButton(5),
-                    false,
                     Map.driver.getRawAxis(3),
                     Map.driver.getRawAxis(2),
                     false,
                     Misc.getSelectedColor());
         } else {
-            Intake.auto(
+            Intake.run(
                     Map.driver.getRawButton(2),
-                    Map.coDriver.getRawButtonPressed(4),
                     Map.coDriver.getRawButton(6),
                     Map.driver.getRawButton(1),
-                    Map.coDriver.getRawButton(5),
-                    false,
                     Map.driver.getRawAxis(3),
                     Map.driver.getRawAxis(2),
                     false,
