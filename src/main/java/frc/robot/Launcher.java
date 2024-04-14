@@ -23,8 +23,8 @@ public class Launcher {
     public static CANCoder pivotEncoder = new CANCoder(31);
 
     public static PIDController pivotPidDown = new PIDController(.045, 0.0000, 0.00005);
-    public static PIDController pivotPidUP = new PIDController(.045, 0.0000, 0.000);
-    public static PIDController regressionPidUp = new PIDController(.0516, 0, 0);
+    public static PIDController pivotPidUP = new PIDController(.056, 0.0000, 0.000001);
+    public static PIDController regressionPidUp = new PIDController(.0546, 0, 0);
     public static PIDController regressionPidDown = new PIDController(.057, 0, 0.0001);
 
     /**
@@ -125,7 +125,8 @@ public class Launcher {
         double c = -.706;
         
       //  double regressionIntercept = 64.6915;
-      double regressionIntercept = 75.6;
+      double regressionIntercept = 77.;
+      //75.6
 
         // Check for "Bad Distance" from the PiVision
         if (distanceFromSpeaker == -999) {
@@ -160,7 +161,7 @@ public class Launcher {
         }
 
         if (sixty) {
-            pivot.set(ControlMode.PercentOutput, pivotPidDown.calculate(pivotEncoder.getAbsolutePosition(), 60));
+            pivot.set(ControlMode.PercentOutput, pivotPidDown.calculate(pivotEncoder.getAbsolutePosition(), 61));
         } 
         else if (targetRegress){
           if(Math.abs(RaspberryPi.getSpeakerCenterX(Misc.getSelectedColor())) < 7)  {
@@ -193,7 +194,11 @@ public class Launcher {
             }
 
         }else if (goTo45) {
-            pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 46.5 + tuner));
+            if (Math.abs(Map.rightElevator.getSelectedSensorPosition())>30000){
+                 pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 38 + tuner));
+            }else{
+            pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 48.5 + tuner));
+            }
         } else {
             pivot.set(ControlMode.PercentOutput, 0);
         }
@@ -229,13 +234,13 @@ public class Launcher {
             SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
             SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getSelectedSensorVelocity());
             if (Map.topLauncher.getSelectedSensorVelocity()>10000){
-                Map.leftIntake.set(ControlMode.PercentOutput, 1 );
-                Map.rightIntake.set(ControlMode.PercentOutput, 1);                                
+                Map.intakeBottom.set(ControlMode.PercentOutput, 1 );
+                Map.intakeTop.set(ControlMode.PercentOutput, 1);                                
 
             }
             else if (Map.topLauncher.getSelectedSensorVelocity()<8000){
-                 Map.leftIntake.set(ControlMode.PercentOutput, 0 );
-                Map.rightIntake.set(ControlMode.PercentOutput, 0);        
+                 Map.intakeBottom.set(ControlMode.PercentOutput, 0 );
+                Map.intakeTop.set(ControlMode.PercentOutput, 0);        
             }
         }else {
              SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
@@ -270,6 +275,6 @@ public class Launcher {
 
     public static double distanceFrom45() {
         return Math.abs(
-                pivotEncoder.getAbsolutePosition() - (45 + angleTuner));
+                pivotEncoder.getAbsolutePosition() - (48.5 + angleTuner));
     }
 }

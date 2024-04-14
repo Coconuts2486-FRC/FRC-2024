@@ -21,6 +21,7 @@ public class Elevator {
     public static boolean toggleDown = false;
     public static boolean toggleOuttake = false;
     public static boolean toggleUp = false;
+    public static int a = 0;
 
     // The PIDController used for elevator position control.
     public static PIDController elevatorPID = new PIDController(
@@ -105,13 +106,16 @@ public class Elevator {
                            Map.rightElevator.set(ControlMode.PercentOutput, 0);
                //// Map.leftElevator.set(ControlMode.PercentOutput, 0);
                 if (toggleAmpScore){
+                    
                     readyToScore = true;
+                    
                 }
 
                 ////// Map.leftElevator.setSelectedSensorPosition(-85000);
             }
 
         } else if (toggleDown == true) {
+            a = 0;
             toggleAmpScore = false;
             Map.rightElevator.set(ControlMode.PercentOutput, .65);
 

@@ -131,8 +131,8 @@ public class Map {
     public static TalonFX rightElevator = new TalonFX(22, "drive");
     // Intake
     public static TalonFX intakeExtend = new TalonFX(18);
-    public static TalonSRX leftIntake = new TalonSRX(19);
-    public static TalonSRX rightIntake = new TalonSRX(20); 
+    public static TalonSRX intakeBottom = new TalonSRX(19);
+    public static TalonSRX intakeTop = new TalonSRX(20); 
 
     // Sensor
     public static DigitalInput elevatorBottom = new DigitalInput(0);

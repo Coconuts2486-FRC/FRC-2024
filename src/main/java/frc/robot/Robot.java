@@ -42,6 +42,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+         SmartDashboard.putNumber("DriveFR", Map.frontRight.driveMotor.getSelectedSensorPosition());
+        SmartDashboard.putNumber("ampIndex", RaspberryPi.AmpIndex);
+        SmartDashboard.putNumber("ampTag", RaspberryPi.getAmpCenterX(Misc.getSelectedColor()));
         SmartDashboard.putBoolean("elevator Bottom DIO", Map.elevatorBottom.get());
         SmartDashboard.putBoolean("LightStop", Map.lightStop.get());
         SmartDashboard.putNumber("extend", Map.intakeExtend.getSelectedSensorPosition());
@@ -77,6 +80,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        Map.frontRight.driveMotor.setSelectedSensorPosition(0);
         Map.swerve.init();
         Elevator.init();
         Map.odometry.init();
@@ -122,8 +126,12 @@ public class Robot extends TimedRobot {
         if (Map.driver.getRawButton(6) && Map.lightStop.get() == false) {
             RaspberryPi.targetGamePiece(Map.driver.getRawButton(6), Map.driver.getAButtonReleased());
         }
+        else if(Map.driver.getRawButton(5)){
+            RaspberryPi.targetAmp(Map.driver.getRawButton(5),Misc.getSelectedColor(),Map.driver.getRawButtonReleased(5));
+        }
         // Otherwise, just drive
         else {
+            RaspberryPi.AmpIndex=0;
             Map.swerve.drive(driverX, driverY,
                     RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(5),-driverZ ,
                             Misc.getSelectedColor()),
@@ -144,7 +152,8 @@ public class Robot extends TimedRobot {
                     Map.driver.getRawAxis(2),
                     false,
                     Misc.getSelectedColor());
-        } else {
+        } else if(Map.driver.getRawButton(5)){}
+        else{
             Intake.run(
                     Map.driver.getRawButton(2),
                     Map.coDriver.getRawButton(6),
