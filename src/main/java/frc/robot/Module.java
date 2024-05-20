@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -14,6 +15,7 @@ import edu.wpi.first.math.controller.PIDController;
  */
 @SuppressWarnings("removal")
 public class Module {
+  public static StatorCurrentLimitConfiguration limit = new StatorCurrentLimitConfiguration();
   
     private TalonFX directionMotor;
       
@@ -57,6 +59,7 @@ public class Module {
                 TalonFXFeedbackDevice.IntegratedSensor,
                 0,
                 0);
+            
     }
 
     /**
@@ -97,6 +100,7 @@ public class Module {
       
     public void drive(double speed, double angle) {
         angleController.enableContinuousInput(-pi, pi);
+     
 
         double currentAngle = (encoder.getAbsolutePosition() / 360) * (2 * pi);
         double setpoint = 0;

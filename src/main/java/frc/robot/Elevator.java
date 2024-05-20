@@ -79,7 +79,9 @@ public class Elevator {
      */
     public static void run(boolean toggleUpForClimb, boolean toggleUpForAmp, double manualUpAxis,
             double manualDownAxis, boolean kill) {
-        
+        if(Map.elevatorBottom.get()){
+            Map.rightElevator.setSelectedSensorPosition(0);
+        }
         if (toggleUpForClimb) {
             toggleUp = !toggleUp;
             toggleDown = true;
@@ -121,7 +123,7 @@ public class Elevator {
 
            //// Map.leftElevator.set(ControlMode.PercentOutput, .65);
             if (Map.elevatorBottom.get()) {
-     
+                Map.rightElevator.setSelectedSensorPosition(0);
                  Map.rightElevator.set(ControlMode.PercentOutput, 0);
                //// Map.leftElevator.set(ControlMode.PercentOutput, 0);
                 ////// Map.leftElevator.setSelectedSensorPosition(-85000);

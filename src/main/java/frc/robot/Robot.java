@@ -151,7 +151,8 @@ public class Robot extends TimedRobot {
                     Map.driver.getRawAxis(3),
                     Map.driver.getRawAxis(2),
                     false,
-                    Misc.getSelectedColor());
+                    Misc.getSelectedColor(),
+                    Map.coDriver.getRawButton(4));
         } else if(Map.driver.getRawButton(5)){}
         else{
             Intake.run(
@@ -161,7 +162,9 @@ public class Robot extends TimedRobot {
                     Map.driver.getRawAxis(3),
                     Map.driver.getRawAxis(2),
                     false,
-                    Misc.getSelectedColor());
+                    Misc.getSelectedColor(),
+                    Map.coDriver.getRawButton(4));
+
         }
                 
         if (Map.driver.getRawButton(8)){

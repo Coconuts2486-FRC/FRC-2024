@@ -28,6 +28,9 @@ public class Misc {
         Map.selectedAuto.addOption("Four piece from subwoofer", 2);
               Map.selectedAuto.addOption("the old out one", 3);
               Map.selectedAuto.addOption("The close sweep", 4);
+              Map.selectedAuto.addOption("Right Delay", 5);
+                  Map.selectedAuto.addOption("Left Delay", 6);
+                            Map.selectedAuto.addOption("High Rollers", 7);
         SmartDashboard.putData("SelectAuto", Map.selectedAuto);
 
     }
@@ -55,6 +58,12 @@ public class Misc {
            Auto.threePieceCenterLine(red);
     } else if ( getSelectedAuto() == 4){
         Auto.closeSweep(red);
+    } else if (getSelectedAuto() == 5){
+        Auto.preLoadDelayLeaveRight(red);
+    } else if (getSelectedAuto() == 6){
+        Auto.preLoadDelayLeaveLeft(red);
+    } else if (getSelectedAuto() == 7){
+        Auto.highRoller(red);
     }
     }
     /**
