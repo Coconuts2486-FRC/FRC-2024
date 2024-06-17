@@ -32,6 +32,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
+        LED.init();
+      Map.init();
         Misc.isRed();
         Misc.selectAuto();
         Map.swerve.init();
@@ -42,23 +44,26 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-         SmartDashboard.putNumber("DriveFR", Map.frontRight.driveMotor.getSelectedSensorPosition());
-        SmartDashboard.putNumber("ampIndex", RaspberryPi.AmpIndex);
-        SmartDashboard.putNumber("ampTag", RaspberryPi.getAmpCenterX(Misc.getSelectedColor()));
-        SmartDashboard.putBoolean("elevator Bottom DIO", Map.elevatorBottom.get());
-        SmartDashboard.putBoolean("LightStop", Map.lightStop.get());
-        SmartDashboard.putNumber("extend", Map.intakeExtend.getSelectedSensorPosition());
-      SmartDashboard.putNumber("gyro", Swerve.gyro.getYaw());
-        SmartDashboard.putNumber("Yval", Map.odometry.calculatePosition()[1]);
-        SmartDashboard.putNumber("note", RaspberryPi.gamePieceZ());
-        SmartDashboard.putNumber("calculated angle", Launcher.regressionForAngle(Misc.getSelectedColor()));
-        SmartDashboard.putNumber("encoder angle", Launcher.pivotEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("distance from tag 4", RaspberryPi.getTagZ4());
-          SmartDashboard.putNumber("distance from tag 7", RaspberryPi.getTagZ4());
-        SmartDashboard.putNumber("Tag4X", RaspberryPi.getTagX4());
-                SmartDashboard.putNumber("Tag7X", RaspberryPi.getTagX7());
-        SmartDashboard.putNumber("noteAngle", RaspberryPi.gamePieceAngle());
-        SmartDashboard.putNumber("noteX", RaspberryPi.gamePieceX());
+        //LED.Animate();
+        SmartDashboard.putNumber("pivotEncoder", Launcher.pivotEncoder.getAbsolutePosition().getValueAsDouble());
+         SmartDashboard.putNumber("pivotAngle", Launcher.encoderAsDegrees());
+    //      SmartDashboard.putNumber("DriveFR", Map.frontRight.driveMotor.getPosition().getValueAsDouble());
+    //     SmartDashboard.putNumber("ampIndex", RaspberryPi.AmpIndex);
+    //     SmartDashboard.putNumber("ampTag", RaspberryPi.getAmpCenterX(Misc.getSelectedColor()));
+    //     SmartDashboard.putBoolean("elevator Bottom DIO", Map.elevatorBottom.get());
+    //     SmartDashboard.putBoolean("LightStop", Map.lightStop.get());
+    //     SmartDashboard.putNumber("extend", Map.intakeExtend.getPosition().getValueAsDouble());
+    //   SmartDashboard.putNumber("gyro", Swerve.gyro.getYaw().getValueAsDouble());
+    //     SmartDashboard.putNumber("Yval", Map.odometry.calculatePosition()[1]);
+    //     SmartDashboard.putNumber("note", RaspberryPi.gamePieceZ());
+    //     SmartDashboard.putNumber("calculated angle", Launcher.regressionForAngle(Misc.getSelectedColor()));
+    //     SmartDashboard.putNumber("encoder angle", Launcher.pivotEncoder.getAbsolutePosition().getValueAsDouble());
+    //     SmartDashboard.putNumber("distance from tag 4", RaspberryPi.getTagZ4());
+    //       SmartDashboard.putNumber("distance from tag 7", RaspberryPi.getTagZ4());
+    //     SmartDashboard.putNumber("Tag4X", RaspberryPi.getTagX4());
+    //             SmartDashboard.putNumber("Tag7X", RaspberryPi.getTagX7());
+    //     SmartDashboard.putNumber("noteAngle", RaspberryPi.gamePieceAngle());
+    //     SmartDashboard.putNumber("noteX", RaspberryPi.gamePieceX());
 
     }
 
@@ -71,7 +76,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-      SmartDashboard.putNumber("rightLaunchAuto", Map.topLauncher.getSelectedSensorVelocity());
+      SmartDashboard.putNumber("rightLaunchAuto", Map.topLauncher.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("a", Auto.a);
         // Auto.threePieceCenterLine(Misc.getSelectedColor());
        Misc.runSelectedAuto(Misc.getSelectedColor());
@@ -80,7 +85,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        Map.frontRight.driveMotor.setSelectedSensorPosition(0);
+        Map.frontRight.driveMotor.setPosition(0);
         Map.swerve.init();
         Elevator.init();
         Map.odometry.init();
@@ -88,6 +93,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        LED.Animate();
 
         // if (Map.driver.getRawButton(6) && Map.lightStop.get()) {
         // Map.backLeft.autoInit(Swerve.blOffset);
@@ -106,16 +112,18 @@ public class Robot extends TimedRobot {
         }
         
 
-        driverX = Map.driver.getRawAxis(4);
-        if (Math.abs(driverX) < .15) {
-            driverX = 0;
-        }
+         driverX = Misc.joystickCalc(Map.driver.getRawAxis(4));
+        driverY = Misc.joystickCalc(Map.driver.getRawAxis(5));
+        // driverX = Map.driver.getRawAxis(4);
+        // if (Math.abs(driverX) < .15) {
+        //     driverX = 0;
+        // }
     
 
-        driverY = Map.driver.getRawAxis(5);
-        if (Math.abs(driverY) < .15) {
-            driverY = 0;
-        }
+        // driverY = Map.driver.getRawAxis(5);
+        // if (Math.abs(driverY) < .15) {
+        //     driverY = 0;
+        // }
 
         Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),Launcher.manualAngleTuner(Map.coDriver.getPOV()), 
         false, Map.coDriver.getRawButton(3),Map.driver.getRawButton(8),Map.coDriver.getRawButton(5));
@@ -183,6 +191,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        LED.disable();
+        LED.ledStrip.setData(LED.ledBuffer);
         // button 10 is right joystick button
         Elevator.disable(Map.coDriver.getRawButton(10));
         Launcher.disable(Map.coDriver.getRawButton(10));

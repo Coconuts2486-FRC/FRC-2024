@@ -77,14 +77,14 @@ public class Odometry {
      * @return the position of the robot
      */
     public double[] calculatePosition() {
-        aBR = Math.sin(backRight.getModuleAngle()) * backRight.getModuleSpeed();
-        aBL = Math.sin(backLeft.getModuleAngle()) * backLeft.getModuleSpeed();
-        bFR = Math.sin(frontRight.getModuleAngle()) * frontRight.getModuleSpeed();
-        bFL = Math.sin(frontLeft.getModuleAngle()) * frontLeft.getModuleSpeed();
-        cFR = Math.cos(frontRight.getModuleAngle()) * frontRight.getModuleSpeed();
-        cBR = Math.cos(backRight.getModuleAngle()) * backRight.getModuleSpeed();
-        dFL = Math.cos(frontLeft.getModuleAngle()) * frontLeft.getModuleSpeed();
-        dBL = Math.cos(backLeft.getModuleAngle()) * backLeft.getModuleSpeed();
+        aBR = Math.sin(backRight.currentAngleRadians()) * backRight.getModuleSpeed();
+        aBL = Math.sin(backLeft.currentAngleRadians()) * backLeft.getModuleSpeed();
+        bFR = Math.sin(frontRight.currentAngleRadians()) * frontRight.getModuleSpeed();
+        bFL = Math.sin(frontLeft.currentAngleRadians()) * frontLeft.getModuleSpeed();
+        cFR = Math.cos(frontRight.currentAngleRadians()) * frontRight.getModuleSpeed();
+        cBR = Math.cos(backRight.currentAngleRadians()) * backRight.getModuleSpeed();
+        dFL = Math.cos(frontLeft.currentAngleRadians()) * frontLeft.getModuleSpeed();
+        dBL = Math.cos(backLeft.currentAngleRadians()) * backLeft.getModuleSpeed();
 
         a = (aBR + aBL) / 2;
         b = (bFR + bFL) / 2;

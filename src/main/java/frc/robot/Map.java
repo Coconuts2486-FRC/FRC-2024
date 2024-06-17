@@ -1,9 +1,11 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.CANCoder;
-
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -11,52 +13,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
-
-/*  Conroller bindings:
- *    ===Driver===
- *  Right stick x & y: strafe
- *  Left stick x: rotate
- *  Left stick y:
- *  Left stick button:
- *  Right stick button:
- *  A: Re-Zero
- *  B:
- *  X:
- *  Y:
- *  Right Bumper: intake out + intake + target
- *  Left Bumper: intake in
- *  Right trigger:
- *  Left Trigger: outtake
- *  POV:
- *  Back:
- *  Start:
- *
- *    ===CoDriver==
- *  Right stick x
- *  Right stick y
- *  Left stick x:
- *  Left stick y: manual elevator control
- *  Left stick button:
- *  Right stick button:
- *  A: Elevator position 0
- *  B: Elevator position amp score
- *  X: Elevator manual mode on
- *  Y: Elevator climb
- *  Right Bumper: shoot
- *  Left Bumper: Aim/spin up
- *  Right trigger: manual aim
- *  Left Trigger: manual aim
- *  POV + Start: Swap controllers
- *  Back:
- */
-
-/**
- * This class represents the map of the robot.
- * It provides the controller bindings and the motor and sensor ports.
- */
-@SuppressWarnings("removal")
 public class Map {
 
+    public static MotorOutputConfigs coast = new MotorOutputConfigs();
+    public static MotorOutputConfigs brake = new MotorOutputConfigs();
+    public static MotorOutputConfigs invertTrue = new MotorOutputConfigs();
+    public static MotorOutputConfigs invertFalse = new MotorOutputConfigs();
+   
     public static XboxController driver = new XboxController(0);
     public static Joystick coDriver = new Joystick(1);
 
@@ -65,10 +28,10 @@ public class Map {
     public static int encoderBL = 12;
     public static int encoderBR = 13;
 
-    public static CANCoder FR = new CANCoder(11);
-    public static CANCoder FL = new CANCoder(10);
-    public static CANCoder BR = new CANCoder(13);
-    public static CANCoder BL = new CANCoder(12);
+    public static CANcoder FR = new CANcoder(11);
+    public static CANcoder FL = new CANcoder(10);
+    public static CANcoder BR = new CANcoder(13);
+    public static CANcoder BL = new CANcoder(12);
 
     public static int driveFL = 2;
     public static int driveFR = 3;
@@ -128,7 +91,7 @@ public class Map {
 
     // Elevator
     //public static TalonFX leftElevator = new TalonFX(21, "drive");
-    public static TalonFX rightElevator = new TalonFX(22, "drive");
+    public static TalonFX elevator = new TalonFX(22, "drive");
     // Intake
     public static TalonFX intakeExtend = new TalonFX(18);
     public static TalonSRX intakeBottom = new TalonSRX(19);
@@ -151,5 +114,14 @@ public class Map {
             frontRight,
             frontLeft,
             swerve);
+
+            public static void init(){
+
+        coast.withNeutralMode(NeutralModeValue.Coast);
+        brake.withNeutralMode(NeutralModeValue.Brake);
+        invertTrue.withInverted(InvertedValue.CounterClockwise_Positive);
+        invertFalse.withInverted(InvertedValue.Clockwise_Positive);
+    
+            }
     
 }

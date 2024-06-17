@@ -1,17 +1,19 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.sensors.CANCoder;
-
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-@SuppressWarnings("removal")
 public class Launcher {
 
     static boolean goTo45 = false;
@@ -20,7 +22,11 @@ public class Launcher {
     public static TalonFX pivot = new TalonFX(17);
 
     // encoder offset is 26
-    public static CANCoder pivotEncoder = new CANCoder(31);
+    public static CANcoder pivotEncoder = new CANcoder(31);
+
+    public static OpenLoopRampsConfigs ramp = new OpenLoopRampsConfigs();
+    
+    public static Slot0Configs shotPIDConfigs = new Slot0Configs();
 
     public static PIDController pivotPidDown = new PIDController(.045, 0.0000, 0.00005);
     public static PIDController pivotPidUP = new PIDController(.056, 0.0000, 0.000001);
@@ -30,37 +36,28 @@ public class Launcher {
     /**
      * Initializes the launcher by setting the selected feedback sensor.
      */
+    public static double encoderAsDegrees(){
+        return pivotEncoder.getAbsolutePosition().getValueAsDouble() * 360;
+    }
     public static void init() {
+      
        // pivotPidUP.enableContinuousInput(0, 360);
-        pivot.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        Map.topLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        Map.bottomLauncher.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         // rightIntake is what the pivot encoder is wired to. (Absolute encoder)
-        Map.topLauncher.setNeutralMode(NeutralMode.Coast);
-        Map.bottomLauncher.setNeutralMode(NeutralMode.Coast);
-        pivot.setNeutralMode(NeutralMode.Brake);
+        Map.topLauncher.getConfigurator().apply(Map.coast);
+        Map.bottomLauncher.getConfigurator().apply(Map.coast);
+        pivot.getConfigurator().apply(Map.brake);
         Map.bottomLauncher.setInverted(true);
          Map.topLauncher.setInverted(true);
         goTo45 = false;
         angleTuner = 0;
 
-        // Map.rightLauncher.config_kP(0,1);
-        // Map.leftLauncher.config_kP(0,1);
-        // Map.rightLauncher.config_kI(0,.1);
-        // Map.leftLauncher.config_kI(0,.1);
+        shotPIDConfigs.kV = .1;
+        shotPIDConfigs.kP = 0.9;
+        shotPIDConfigs.kI = 0.0055;
 
-        Map.bottomLauncher.configOpenloopRamp(0.1);
-        Map.topLauncher.configOpenloopRamp(0.1);
+        Map.bottomLauncher.getConfigurator().apply(shotPIDConfigs);
+        Map.topLauncher.getConfigurator().apply(shotPIDConfigs);
 
-        Map.topLauncher.config_kF(0, 0.1);
-        Map.bottomLauncher.config_kF(0, 0.1);
-        Map.topLauncher.config_kP(0, 0.9);
-        Map.bottomLauncher.config_kP(0, 0.9);
-        Map.topLauncher.config_kI(0, 0.0055);
-        Map.bottomLauncher.config_kI(0, 0.0055);
-          
-        Map.topLauncher.config_IntegralZone(0, 300);
-        Map.bottomLauncher.config_IntegralZone(0, 300);
 
     }
 
@@ -72,9 +69,9 @@ public class Launcher {
     public static void disable(boolean button) {
         goTo45 = false;
         if (button) {
-            pivot.setNeutralMode(NeutralMode.Coast);
+            pivot.getConfigurator().apply(Map.coast);
         } else {
-            pivot.setNeutralMode(NeutralMode.Brake);
+            pivot.getConfigurator().apply(Map.brake);
         }
     }
 
@@ -125,7 +122,7 @@ public class Launcher {
         double c = -.706;
         
       //  double regressionIntercept = 64.6915;
-      double regressionIntercept = 77.;
+      double regressionIntercept = 79.;
       //75.6
 
         // Check for "Bad Distance" from the PiVision
@@ -149,7 +146,7 @@ public class Launcher {
         if(kill){
               goTo45 = false;
               sixty = false;
-              pivot.set(ControlMode.PercentOutput, 0);
+              pivot.setControl(new DutyCycleOut(0));
             
         }
         else if (autoFortyFive) {
@@ -161,46 +158,44 @@ public class Launcher {
         }
 
         if (sixty) {
-            pivot.set(ControlMode.PercentOutput, pivotPidDown.calculate(pivotEncoder.getAbsolutePosition(), 61));
+            pivot.setControl(new DutyCycleOut(pivotPidDown.calculate(encoderAsDegrees(), 61)));
         } 
         else if (targetRegress){
           if(Math.abs(RaspberryPi.getSpeakerCenterX(Misc.getSelectedColor())) < 7)  {
          if (regressionForAngle(Misc.getSelectedColor()) < 46) {
-                pivot.set(ControlMode.PercentOutput, regressionPidUp.calculate(pivotEncoder.getAbsolutePosition(),
-                        (regressionForAngle(Misc.getSelectedColor()) - 1) + tuner));
+                pivot.setControl(new DutyCycleOut(regressionPidUp.calculate(encoderAsDegrees(),(regressionForAngle(Misc.getSelectedColor()) - 1) + tuner)));
             } else {
-                pivot.set(ControlMode.PercentOutput, regressionPidDown.calculate(pivotEncoder.getAbsolutePosition(),
-                        (regressionForAngle(Misc.getSelectedColor()) + .3) + tuner));
+                pivot.setControl(new DutyCycleOut(regressionPidDown.calculate(encoderAsDegrees(),(regressionForAngle(Misc.getSelectedColor()) + .3) + tuner)));
             }
 
         
         }else{
-              pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 45 + tuner));
+              pivot.setControl(new DutyCycleOut(pivotPidUP.calculate(encoderAsDegrees(), 45 + tuner)));
         }
     }
         else if (regression) {
             if (regressionForAngle(Misc.getSelectedColor()) < 46) {
-                pivot.set(ControlMode.PercentOutput, regressionPidUp.calculate(pivotEncoder.getAbsolutePosition(),
-                        (regressionForAngle(Misc.getSelectedColor()) - 1) + tuner));
+                pivot.setControl(new DutyCycleOut(regressionPidUp.calculate(encoderAsDegrees(),
+                        (regressionForAngle(Misc.getSelectedColor()) - 1) + tuner)));
             } else {
-                pivot.set(ControlMode.PercentOutput, regressionPidDown.calculate(pivotEncoder.getAbsolutePosition(),
-                        (regressionForAngle(Misc.getSelectedColor()) + .3) + tuner));
+                pivot.setControl(new DutyCycleOut(regressionPidDown.calculate(encoderAsDegrees(),
+                        (regressionForAngle(Misc.getSelectedColor()) + .3) + tuner)));
             }
 
         } else if(Map.driver.getRawButton(3)) {
-            pivot.set(ControlMode.PercentOutput, 0);
-            if(pivotEncoder.getAbsolutePosition()<4){
+            pivot.setControl(new DutyCycleOut(0));
+            if(encoderAsDegrees()<4){
                 goTo45 = false;
             }
 
         }else if (goTo45) {
-            if (Math.abs(Map.rightElevator.getSelectedSensorPosition())>30000){
-                 pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 38 + tuner));
+            if (Math.abs(Map.elevator.getPosition().getValueAsDouble())>14.65){
+                 pivot.setControl(new DutyCycleOut(pivotPidUP.calculate(encoderAsDegrees(), 36 + tuner)));
             }else{
-            pivot.set(ControlMode.PercentOutput, pivotPidUP.calculate(pivotEncoder.getAbsolutePosition(), 48.5 + tuner));
+            pivot.setControl(new DutyCycleOut(pivotPidUP.calculate(encoderAsDegrees(), 45 + tuner)));
             }
         } else {
-            pivot.set(ControlMode.PercentOutput, 0);
+            pivot.setControl(new DutyCycleOut(0));
         }
 
     }
@@ -221,33 +216,33 @@ public class Launcher {
     // }
     // }
 
-    public static void launch(boolean button,boolean kateLaunch) {
-
-        if (button) {
-            Map.bottomLauncher.set(ControlMode.Velocity, 10000);
-            Map.topLauncher.set(ControlMode.Velocity, 16000);
-            SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
-            SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getSelectedSensorVelocity());
+    public static void launch(boolean connorLaunch,boolean kateLaunch) {
+        // change velocities for Phoenix v6
+        if (connorLaunch) {
+            Map.bottomLauncher.setControl(new VelocityDutyCycle(48.8));
+            Map.topLauncher.setControl(new VelocityDutyCycle(78.125));
+            SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getVelocity().getValueAsDouble());
         } else if (kateLaunch){
-   Map.bottomLauncher.set(ControlMode.Velocity, 10000);
-            Map.topLauncher.set(ControlMode.Velocity, 10000);
-            SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
-            SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getSelectedSensorVelocity());
-            if (Map.topLauncher.getSelectedSensorVelocity()>10000){
-                Map.intakeBottom.set(ControlMode.PercentOutput, 1 );
+   Map.bottomLauncher.setControl(new VelocityDutyCycle( 48.8));
+            Map.topLauncher.setControl(new VelocityDutyCycle (48.8));
+            SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getVelocity().getValueAsDouble());
+            if (Map.topLauncher.getVelocity().getValueAsDouble()>48.8){
+                Map.intakeBottom.set(ControlMode.PercentOutput, 1);
                 Map.intakeTop.set(ControlMode.PercentOutput, 1);                                
 
             }
-            else if (Map.topLauncher.getSelectedSensorVelocity()<8000){
-                 Map.intakeBottom.set(ControlMode.PercentOutput, 0 );
+            else if (Map.topLauncher.getVelocity().getValueAsDouble()<39.06){
+                 Map.intakeBottom.set(ControlMode.PercentOutput, 0);
                 Map.intakeTop.set(ControlMode.PercentOutput, 0);        
             }
         }else {
-             SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getSelectedSensorVelocity());
-            SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getSelectedSensorVelocity());
+             SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getVelocity().getValueAsDouble());
 
-            Map.bottomLauncher.set(ControlMode.PercentOutput, 0);
-            Map.topLauncher.set(ControlMode.PercentOutput, 0);
+            Map.bottomLauncher.setControl(new DutyCycleOut(0));
+            Map.topLauncher.setControl(new DutyCycleOut(0));
         }
     }
 
@@ -261,20 +256,21 @@ public class Launcher {
      */
     public static void launchAuto(boolean button) {
     if (button) {
-    Map.bottomLauncher.set(ControlMode.Velocity, 16000);
-    Map.topLauncher.set(ControlMode.Velocity, 16000);
+        // has to change for v6
+    Map.bottomLauncher.setControl(new VelocityDutyCycle (8));
+    Map.topLauncher.setControl(new VelocityDutyCycle (8));
     SmartDashboard.putNumber("rightLaunch",
-    Map.topLauncher.getSelectedSensorVelocity());
+    Map.topLauncher.getVelocity().getValueAsDouble());
     SmartDashboard.putNumber("leftLaunch",
-    Map.bottomLauncher.getSelectedSensorVelocity());
+    Map.bottomLauncher.getVelocity().getValueAsDouble());
     } else {
-    Map.bottomLauncher.set(ControlMode.PercentOutput, 0);
-    Map.topLauncher.set(ControlMode.PercentOutput, 0);
+    Map.bottomLauncher.setControl(new DutyCycleOut(0));
+    Map.topLauncher.setControl(new DutyCycleOut(0));
     }
     }
 
     public static double distanceFrom45() {
         return Math.abs(
-                pivotEncoder.getAbsolutePosition() - (48.5 + angleTuner));
+                encoderAsDegrees() - (45 + angleTuner));
     }
 }

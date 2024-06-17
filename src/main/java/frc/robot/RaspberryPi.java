@@ -443,7 +443,7 @@ public class RaspberryPi {
         } else {
             rotation = -noteTargetPidFar.calculate(gamePieceAngle());
         }
-        if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 89000) {
+        if (button && Map.lightStop.get() == false && Map.intakeExtend.getPosition().getValueAsDouble() > 89000) {
             Map.swerve.drive(0, 0, rotation, false);
             if (Math.abs(gamePieceX()) < 7) {
                 // Taper the velocity to zero in the last foot
@@ -468,7 +468,7 @@ public class RaspberryPi {
 
     public static void targetGamePieceAuto(boolean button, boolean released) {
         // If button, no gamepiece in intake, and intake is OUT
-        if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 89000) {
+        if (button && Map.lightStop.get() == false && Map.intakeExtend.getPosition().getValueAsDouble() > 89000) {
             Map.swerve.drive(0, 0, -noteTargetPidFar.calculate(gamePieceAngle()), false);
             if (Math.abs(gamePieceX()) < 7) {
                 // Swerve.gyro.setYaw(0); // Instead, call getRobotAngle()
@@ -499,7 +499,7 @@ public class RaspberryPi {
      */
     public static void targetGamepiece2(boolean button) {
         // If button, no gamepiece in intake, and intake is OUT
-        if (button && Map.lightStop.get() == false && Map.intakeExtend.getSelectedSensorPosition() > 90000) {
+        if (button && Map.lightStop.get() == false && Map.intakeExtend.getPosition().getValueAsDouble() > 90000) {
             Map.swerve.drive(0, 0, -noteTargetPidFar.calculate(gamePieceX()), false);
             if (Math.abs(gamePieceX()) < 7) {
 
@@ -543,14 +543,14 @@ public class RaspberryPi {
         if (button) {
             if (AmpIndex == 0) {
                 if (red) {
-                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw(), 90), false);
-                      if(Math.abs(90-Swerve.gyro.getYaw())<1){
+                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw().getValueAsDouble(), 90), false);
+                      if(Math.abs(90-Swerve.gyro.getYaw().getValueAsDouble())<1){
                         delay = Timer.getFPGATimestamp();
                         AmpIndex = 1;
                       }
                 } else {
-                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw(), 270), false);
-                    if(Math.abs(270-Swerve.gyro.getYaw())<1){
+                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw().getValueAsDouble(), 270), false);
+                    if(Math.abs(270-Swerve.gyro.getYaw().getValueAsDouble())<1){
                         delay = Timer.getFPGATimestamp();
                         AmpIndex = 1;
                     }
@@ -566,14 +566,14 @@ public class RaspberryPi {
             
             if (AmpIndex == 2) {
                 if (red) {
-                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw(), 90), false);
-                      if(Math.abs(90-Swerve.gyro.getYaw())<1){
+                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw().getValueAsDouble(), 90), false);
+                      if(Math.abs(90-Swerve.gyro.getYaw().getValueAsDouble())<1){
                         delay = Timer.getFPGATimestamp();
                         AmpIndex = 3;
                       }
                 } else {
-                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw(), 270), false);
-                    if(Math.abs(270-Swerve.gyro.getYaw())<1){
+                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw().getValueAsDouble(), 270), false);
+                    if(Math.abs(270-Swerve.gyro.getYaw().getValueAsDouble())<1){
                         delay = Timer.getFPGATimestamp();
                         AmpIndex = 3;
                     }
@@ -587,14 +587,14 @@ public class RaspberryPi {
             }
             if (AmpIndex == 4) {
                 if (red) {
-                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw(), 90), false);
-                      if(Math.abs(90-Swerve.gyro.getYaw())<2.5){
+                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw().getValueAsDouble(), 90), false);
+                      if(Math.abs(90-Swerve.gyro.getYaw().getValueAsDouble())<2.5){
                         delay = Timer.getFPGATimestamp();
                         AmpIndex = 5;
                       }
                 } else {
-                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw(), 270), false);
-                    if(Math.abs(270-Swerve.gyro.getYaw())<2.5){
+                    Map.swerve.drive(0, 0, twist(Swerve.gyro.getYaw().getValueAsDouble(), 270), false);
+                    if(Math.abs(270-Swerve.gyro.getYaw().getValueAsDouble())<2.5){
                         delay = Timer.getFPGATimestamp();
                         AmpIndex = 5;
                     }
@@ -603,14 +603,14 @@ public class RaspberryPi {
             } else if (AmpIndex == 5){
                  Map.swerve.drive(0, 0,0, false);
                  if ( Timer.getFPGATimestamp() - delay > .2){
-                    hold = Swerve.gyro.getYaw();
+                    hold = Swerve.gyro.getYaw().getValueAsDouble();
                     AmpIndex = 6;
 
                  }
             }
             else if (AmpIndex == 6){
 
-                Map.swerve.drive(driveToPid.calculate(ampTagX), 0, Auto.twistPid.calculate(Swerve.gyro.getYaw(),hold), true);
+                Map.swerve.drive(driveToPid.calculate(ampTagX), 0, Auto.twistPid.calculate(Swerve.gyro.getYaw().getValueAsDouble(),hold), true);
                 if (Math.abs(RaspberryPi.getAmpCenterX(red))<5){
                     AmpIndex = 8;
                 } 
@@ -630,15 +630,15 @@ public class RaspberryPi {
                     Map.intakeBottom.set(ControlMode.PercentOutput,0);
                    Map.intakeTop.set(ControlMode.PercentOutput,0);
                     ampTagZ = getAmpCenterZ(red);
-                    Map.frontRight.driveMotor.setSelectedSensorPosition(0);
+                    Map.frontRight.driveMotor.setPosition(0);
 
-                    hold = Swerve.gyro.getYaw();
+                    hold = Swerve.gyro.getYaw().getValueAsDouble();
                     AmpIndex = 9;
                    }
                 } else if ( AmpIndex == 9){
                     
                      Map.swerve.drive(0, .5,0,true);// Auto.holdPid.calculate(hold), true);
-                     if (Math.abs(Map.frontRight.driveMotor.getSelectedSensorPosition())>(ampTagZ*2120)){
+                     if (Math.abs(Map.frontRight.driveMotor.getPosition().getValueAsDouble())>(ampTagZ*2120)){
                         AmpIndex = 10;
                      }
 

@@ -1,87 +1,72 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.math.controller.PIDController;
 
-
-/**
- * Represents a module of a robot, which consists of a direction motor, drive
- * motor, encoder, and PID controllers.
- */
-@SuppressWarnings("removal")
 public class Module {
-  public static StatorCurrentLimitConfiguration limit = new StatorCurrentLimitConfiguration();
-  
     private TalonFX directionMotor;
-      
+
     public TalonFX driveMotor;
-      
-    private CANCoder encoder;
+
+    public static MotorOutputConfigs coastConfig = new MotorOutputConfigs();
+    public static MotorOutputConfigs brakeConfig = new MotorOutputConfigs();
+
+    private CANcoder encoder;
     private PIDController angleController;
     private PIDController driveController;
     private double pi = Math.PI;
 
-    // Internal Module Class
-    
-    public Module(
-            int directionMotor,
-            int driveMotor,
-            int encoder,
-            PIDController rController,
+    private DutyCycleOut driveRequest = new DutyCycleOut(0);
+    private DutyCycleOut rotateRequest = new DutyCycleOut(0);
+    public Module(int directionMotor, int driveMotor, int encoder, PIDController rController,
             PIDController dController) {
         this.directionMotor = new TalonFX(directionMotor, "drive");
         this.driveMotor = new TalonFX(driveMotor, "drive");
-        this.encoder = new CANCoder(encoder, "drive");
+        this.encoder = new CANcoder(encoder, "drive");
         this.angleController = rController;
         this.driveController = dController;
+
     }
 
-    /**
-     * Initializes the module by setting the factory default,
-     * inverting the direction motor, setting the neutral mode to brake,
-     * and setting the drive motor to factory default and neutral mode to brake.
-     */
-      
     public void init() {
-        directionMotor.configFactoryDefault();
-        directionMotor.setInverted(true);
-        directionMotor.setNeutralMode(NeutralMode.Brake);
-        driveMotor.setInverted(true);
-        driveMotor.configFactoryDefault();
-        driveMotor.setNeutralMode(NeutralMode.Brake);
+        coastConfig.withNeutralMode(NeutralModeValue.Coast);
+        brakeConfig.withNeutralMode(NeutralModeValue.Brake);
 
-        driveMotor.configSelectedFeedbackSensor(
-                TalonFXFeedbackDevice.IntegratedSensor,
-                0,
-                0);
-            
+        var driveMotorConfig = new MotorOutputConfigs();
+        driveMotorConfig.withNeutralMode(NeutralModeValue.Brake);
+        driveMotorConfig.withInverted(InvertedValue.Clockwise_Positive);
+
+        driveMotor.getConfigurator().apply(new TalonFXConfiguration());
+        driveMotor.getConfigurator().apply(driveMotorConfig);
+
+        var directionMotorConfig = new MotorOutputConfigs();
+        directionMotorConfig.withNeutralMode(NeutralModeValue.Brake);
+        directionMotorConfig.withInverted(InvertedValue.Clockwise_Positive);
+
+        directionMotor.getConfigurator().apply(new TalonFXConfiguration());
+        directionMotor.getConfigurator().apply(directionMotorConfig);
+       
     }
 
-    /**
-     * Disables the module by setting the neutral mode to coast for both the
-     * direction and drive motors.
-     */
     public void disable(boolean button) {
-        if (button){
-  directionMotor.setNeutralMode(NeutralMode.Coast);
-        driveMotor.setNeutralMode(NeutralMode.Coast);
-        }else{
-              directionMotor.setNeutralMode(NeutralMode.Brake);
-        driveMotor.setNeutralMode(NeutralMode.Brake);
 
+        if (button) {
+
+            directionMotor.getConfigurator().apply(coastConfig);
+            driveMotor.getConfigurator().apply(coastConfig);
+
+        } else {
+            directionMotor.getConfigurator().apply(brakeConfig);
+            driveMotor.getConfigurator().apply(brakeConfig);
         }
-      
     }
-
-    /**
-     * Enables the module by setting the neutral mode to brake for both the
-     * direction and drive motors.
-     */
     public double nearestAngle(double currentAngle, double targetAngle) {
         double direction = (targetAngle % (2 * pi) - (currentAngle % (2 * pi)));
 
@@ -90,19 +75,19 @@ public class Module {
         }
         return direction;
     }
+    
+    public double currentAngleRadians(){
+        return encoder.getAbsolutePosition().getValueAsDouble() * (2*pi);
+    }
+      public double currentAngleDegrees(){
+        return encoder.getAbsolutePosition().getValueAsDouble() * 360;
+    }
 
-    /**
-     * Drives the module based on the speed and angle.
-     *
-     * @param speed The speed of the module.
-     * @param angle The angle of the module.
-     */
-      
+
     public void drive(double speed, double angle) {
         angleController.enableContinuousInput(-pi, pi);
-     
 
-        double currentAngle = (encoder.getAbsolutePosition() / 360) * (2 * pi);
+        double currentAngle = currentAngleRadians();
         double setpoint = 0;
 
         double setpointAngle = nearestAngle(currentAngle, angle);
@@ -115,19 +100,17 @@ public class Module {
             speed *= -1;
         }
         double optimizedAngle = angleController.calculate(currentAngle, setpoint);
-        directionMotor.set(ControlMode.PercentOutput, optimizedAngle);
+        rotateRequest.Output = optimizedAngle;
+        directionMotor.setControl(rotateRequest);
         double optimizedSpeed = driveController.calculate(speed);
-        driveMotor.set(ControlMode.PercentOutput, optimizedSpeed);
+        driveRequest.Output = optimizedSpeed;
+        driveMotor.setControl(driveRequest);
         // SmartDashboard.putNumber("OptimizedAngle", optimizedAngle);
     }
 
-    /**
-     * Returns the speed of the module.
-     * 
-     * @return speed
-     */
+
     public double getModuleSpeed() {
-        return driveMotor.getSelectedSensorVelocity();
+        return driveMotor.getVelocity().getValueAsDouble();
     }
 
     /**
@@ -136,9 +119,6 @@ public class Module {
      * @return angle (radians)
      */
       
-    public double getModuleAngle() {
-        return (encoder.getAbsolutePosition() / 180) * pi;
-    }
 
     /**
      * Returns the angle of the module in degrees.
@@ -146,9 +126,6 @@ public class Module {
      * @return angle (degrees)
      */
       
-    public double getModuleAngleDeg() {
-        return encoder.getAbsolutePosition();
-    }
 
     /**
      * Initializes the module for autonomous by setting the angle controller to
@@ -163,21 +140,15 @@ public class Module {
         angleController.enableContinuousInput(-pi, pi);
 
         // get the current position reading of the direction encoder
-        double currentAngle = (encoder.getAbsolutePosition() * (2 * pi) / 360);
+        double currentAngle = (encoder.getAbsolutePosition().getValueAsDouble() * (2 * pi) / 360);
         // SmartDashboard.putNumber("Current Angle", currentAngle);
         double optimizedAngle = angleController.calculate(currentAngle, angle);
-        directionMotor.set(ControlMode.PercentOutput, optimizedAngle);
+        directionMotor.setControl(new DutyCycleOut(optimizedAngle));
         // directionMotor.set(ControlMode.Position,radiansToTicks(2*pi));
 
     }
-
-    /**
-     * Returns the optimized angle of the module.
-     * 
-     * @return optimized angle
-     */
-    public double getOptimizedAngle() {
-        return angleController.calculate(getModuleAngleDeg(), 0);
+     public double getOptimizedAngle() {
+        return angleController.calculate(currentAngleDegrees(), 0);
     }
 
     /**
@@ -195,7 +166,7 @@ public class Module {
      * @return position
      */
     public double getPosition() {
-        return directionMotor.getSelectedSensorPosition();
+        return directionMotor.getPosition().getValueAsDouble();
     }
 
     /**
@@ -220,10 +191,10 @@ public class Module {
         angleController.enableContinuousInput(-pi, pi);
 
         // get the current position reading of the direction encoder
-        double currentAngle = (encoder.getAbsolutePosition() * (2 * pi) / 360);
+        double currentAngle = (encoder.getAbsolutePosition().getValueAsDouble() * (2 * pi) / 360);
         // SmartDashboard.putNumber("Current Angle", currentAngle);
         double optimizedAngle = angleController.calculate(currentAngle, pi / 2);
-        directionMotor.set(ControlMode.PercentOutput, optimizedAngle);
+        directionMotor.setControl(new DutyCycleOut(optimizedAngle));
         // directionMotor.set(ControlMode.Position,radiansToTicks(2*pi));
     }
 
@@ -232,6 +203,7 @@ public class Module {
      */
       
     public double encoderPos() {
-        return encoder.getAbsolutePosition();
+        return encoder.getAbsolutePosition().getValueAsDouble();
     }
 }
+   

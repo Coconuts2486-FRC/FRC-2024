@@ -26,11 +26,11 @@ public class Misc {
     public static void selectAuto() {
         Map.selectedAuto.setDefaultOption("The Three Note that goes out", 1);
         Map.selectedAuto.addOption("Four piece from subwoofer", 2);
-              Map.selectedAuto.addOption("the old out one", 3);
-              Map.selectedAuto.addOption("The close sweep", 4);
-              Map.selectedAuto.addOption("Right Delay", 5);
-                  Map.selectedAuto.addOption("Left Delay", 6);
-                            Map.selectedAuto.addOption("High Rollers", 7);
+        Map.selectedAuto.addOption("the old out one", 3);
+        Map.selectedAuto.addOption("The close sweep", 4);
+        Map.selectedAuto.addOption("Right Delay", 5);
+        Map.selectedAuto.addOption("Left Delay", 6);
+        Map.selectedAuto.addOption("High Rollers", 7);
         SmartDashboard.putData("SelectAuto", Map.selectedAuto);
 
     }
@@ -54,18 +54,19 @@ public class Misc {
             Auto.threeNoteTwoOut(red);
         } else if (getSelectedAuto() == 2) {
             Auto.fourPieceStraightFromSpeaker(red);
-    } else if ( getSelectedAuto() == 3){
-           Auto.threePieceCenterLine(red);
-    } else if ( getSelectedAuto() == 4){
-        Auto.closeSweep(red);
-    } else if (getSelectedAuto() == 5){
-        Auto.preLoadDelayLeaveRight(red);
-    } else if (getSelectedAuto() == 6){
-        Auto.preLoadDelayLeaveLeft(red);
-    } else if (getSelectedAuto() == 7){
-        Auto.highRoller(red);
+        } else if (getSelectedAuto() == 3) {
+            Auto.threePieceCenterLine(red);
+        } else if (getSelectedAuto() == 4) {
+            Auto.closeSweep(red);
+        } else if (getSelectedAuto() == 5) {
+            Auto.preLoadDelayLeaveRight(red);
+        } else if (getSelectedAuto() == 6) {
+            Auto.preLoadDelayLeaveLeft(red);
+        } else if (getSelectedAuto() == 7) {
+            Auto.highRoller(red);
+        }
     }
-    }
+
     /**
      * Returns the selected alliance color.
      *
@@ -102,4 +103,18 @@ public class Misc {
         }
         return switched;
     }
+
+    public static double joystickCalc(double joystick) {
+        double deadband = 0.15;
+
+        // If within deadband, set output to zero
+        if (Math.abs(joystick) < deadband) {
+            return 0.0;
+        }
+
+        // Otherwise, linearly map the input onto 0% - 100%
+        return Math.signum(joystick)
+                * Math.max(Math.abs(joystick) / (1.0 - deadband) + (1.0 - 1.0 / (1.0 - deadband)), 0.0);
+    }
+
 }

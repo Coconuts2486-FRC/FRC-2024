@@ -1,14 +1,15 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-@SuppressWarnings("removal")
 public class Intake {
-
+    public static PositionDutyCycle intakeExtend = new PositionDutyCycle(48.8);
     public static boolean toggleScore = false;
     public static int trippleToggle = 1;
     public static int a = 0;
@@ -16,22 +17,23 @@ public class Intake {
     public static int positionIntake = 2;
     public static int positionFix = 3;
     public static int positionZero = 1;
+    public static Slot0Configs intakePID = new Slot0Configs();
 
     public static void init() {
         // toggleOut = false;
         a = 0;
         toggleScore = false;
 
-        Map.intakeExtend.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-
         Map.intakeTop.setInverted(false);
 
-        Map.intakeExtend.setSelectedSensorPosition(0);
-        Map.intakeExtend.setNeutralMode(NeutralMode.Brake);
+        Map.intakeExtend.setPosition(0);
+        Map.intakeExtend.getConfigurator().apply(Map.brake);
         trippleToggle = 1;
-        Map.intakeExtend.config_kP(0, 0.55);
-        Map.intakeExtend.config_kI(0, 0.0000);
-        Map.intakeExtend.config_kD(0, 0.000001);
+        intakePID.kP = 5.101;
+        intakePID.kI = .0;
+        intakePID.kD = .001;
+        Map.intakeExtend.getConfigurator().apply(intakePID);
+      
     }
 
     /**
@@ -45,9 +47,9 @@ public class Intake {
         trippleToggle = 1;
 
         if (button) {
-            Map.intakeExtend.setNeutralMode(NeutralMode.Coast);
+            Map.intakeExtend.getConfigurator().apply(Map.coast);
         } else {
-            Map.intakeExtend.setNeutralMode(NeutralMode.Brake);
+            Map.intakeExtend.getConfigurator().apply(Map.brake);
         }
     }
 
@@ -106,7 +108,8 @@ public class Intake {
         // Move to intake position & turn on the intake rollers (leftIntake &
         // rightIntake)
         if (trippleToggle == positionIntake) {
-            Map.intakeExtend.set(ControlMode.Position, 100000);
+            // needs to change for v6
+            Map.intakeExtend.setControl(intakeExtend);
 
             if (Map.lightStop.get()) {
                 Map.intakeBottom.set(ControlMode.PercentOutput, 0);
@@ -121,28 +124,29 @@ public class Intake {
         // If intaking (present tense), and the rezero button is pressed, then rezero
 
        else if (trippleToggle==positionFix){
-         Map.intakeExtend.set(ControlMode.Position, 100000);
+        intakeExtend.Slot = 0;
+         Map.intakeExtend.setControl(intakeExtend);
        } // Move the intake to the zero position
         else if (trippleToggle == positionZero) {
             if (Map.intakeStop.get()) {
-                Map.intakeExtend.set(ControlMode.PercentOutput, 0);
-                Map.intakeExtend.setSelectedSensorPosition(0);
+                Map.intakeExtend.setControl(new DutyCycleOut( 0));
+                Map.intakeExtend.setPosition(0);
             } else {
-                if (Map.intakeExtend.getSelectedSensorPosition() > 10000) {
-                    Map.intakeExtend.set(ControlMode.PercentOutput, -.8);
+                if (Map.intakeExtend.getPosition().getValueAsDouble() > 4.8) {
+                    Map.intakeExtend.setControl(new DutyCycleOut( -.8));
                 } else {
-                    Map.intakeExtend.set(ControlMode.PercentOutput, -.3);
+                    Map.intakeExtend.setControl(new DutyCycleOut( -.3));
                 }
             }
 
             // Move the intake to zero position
-            // Map.intakeExtend.set(ControlMode.PercentOutput, -.6);
+            // Map.intakeExtend.setControl(new DutyCycleOut( -.6);
             // Map.intakeExtend.set(ControlMode.Position, 0);
 
             // Re-zero intake if limit switch is pressed
             // if (Map.intakeStop.get()) {
-            // Map.intakeExtend.set(ControlMode.PercentOutput, 0);
-            // Map.intakeExtend.setSelectedSensorPosition(0);
+            // Map.intakeExtend.setControl(new DutyCycleOut( 0);
+            // Map.intakeExtend.setPosition(0)
             // }
 
             // If the elevator is UP, we are scoring in the AMP, so we OUTTAKE the
@@ -179,14 +183,14 @@ public class Intake {
             // the note into the shooter if the `launchNote` button is pressed
             // NOTE: At present, the `launchNote` button is the SAME as the Launcher.launch
             // button
-            else if (launchNote && Map.topLauncher.getSelectedSensorVelocity() > 14000) {
+            else if (launchNote && Map.topLauncher.getVelocity().getValueAsDouble() > 68.36) {
               a = 0;
                 Map.intakeBottom.set(ControlMode.PercentOutput, 1 + (intakeAxis - outtakeAxis));
                 Map.intakeTop.set(ControlMode.PercentOutput, 1 - (outtakeAxis - intakeAxis) * 1.4);
             }
             // If the shooter wheels are NOT up to speed, manually control the
             // intake/outtake
-            else if (Map.bottomLauncher.getSelectedSensorVelocity() < 3000) {
+            else if (Map.bottomLauncher.getVelocity().getValueAsDouble() < 14.65) {
               a = 0;
                 Map.intakeBottom.set(ControlMode.PercentOutput, (intakeAxis - outtakeAxis));
                 Map.intakeTop.set(ControlMode.PercentOutput, -(outtakeAxis - intakeAxis) * 1.4);

@@ -1,31 +1,31 @@
 package frc.robot;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
 
-import edu.wpi.first.wpilibj.XboxController;
+
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.hardware.Pigeon2;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Swerve {
 
     private static Module backRight;
     private static Module backLeft;
     private static Module frontRight;
     private static Module frontLeft;
-    private static double pi = Math.PI;
+    public static Pigeon2 gyro = new Pigeon2(14);
 
-    public static PigeonIMU gyro = new PigeonIMU(14);
-    public static PigeonIMU gyro2 = new PigeonIMU(30);
-    private XboxController driver = new XboxController(0);
     private int realign = 0;
     private int reinit = 1;
    // private int robotCentric = 2;
 
     private double speedMultiplier = 1;
 
-    public static double flOffset = (Math.toRadians(15.205));
+    public static double flOffset = (0);
   //  public static double flOffset = (3 * pi / 90);
-    public static double frOffset = (Math.toRadians(44.648));
-    public static double blOffset = (Math.toRadians(4.04));
-    public static double brOffset = (Math.toRadians(72.334));
+    public static double frOffset = (0);
+    public static double blOffset = (0);
+    public static double brOffset = (0);
 
     private double x0 = 0.0;
     private double y0 = 0.0;
@@ -46,7 +46,6 @@ public class Swerve {
 
     public void init() {
         gyro.setYaw(180);
-        gyro2.setYaw(180);
         backRight.init();
         backLeft.init();
         frontRight.init();
@@ -64,12 +63,11 @@ public class Swerve {
     public static void reinit(boolean reinit) {
         if (reinit) {
             gyro.setYaw(180);
-            gyro2.setYaw(180);
             backLeft.autoInit(blOffset);
             backRight.autoInit(brOffset);
             frontLeft.autoInit(flOffset);
             frontRight.autoInit(frOffset);
-            gyro.configFactoryDefault();
+            gyro.getConfigurator().apply(new Pigeon2Configuration());
         }
 
     }
@@ -102,7 +100,7 @@ public class Swerve {
      */
     public double getRobotAngle() {
 
-        double robotAngle = gyro.getYaw() * Math.PI / 180;
+        double robotAngle = gyro.getYaw().getValueAsDouble() * Math.PI / 180;
 
         return robotAngle;
     }
@@ -163,10 +161,10 @@ public class Swerve {
         // double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
 
         // NOTE: can change sqrt -> hypot as desired
-        double backRightSpeed = Math.sqrt((a0 * a0) + (c0 * c0));
+        double backRightSpeed = Math.sqrt((a * a) + (c * c));
         double backLeftSpeed = Math.sqrt((a * a) + (d * d));
         double frontRightSpeed = Math.sqrt((b * b) + (c * c));
-        double frontLeftSpeed = Math.sqrt((b0 * b0) + (d0 * d0));
+        double frontLeftSpeed = Math.sqrt((b * b) + (d * d));
 
         double maxBackSpeed = Math.max(backLeftSpeed, backRightSpeed);
         double maxFrontSpeed = Math.max(frontLeftSpeed, frontRightSpeed);
@@ -188,10 +186,10 @@ public class Swerve {
         double frontRightAngle = Math.atan2(a0, c0);
         double frontLeftAngle = Math.atan2(b, c);
 
-        backRight.drive(backRightSpeed, (backRightAngle + brOffset));
-        backLeft.drive(backLeftSpeed, (backLeftAngle + blOffset));
-        frontRight.drive(frontRightSpeed, (frontRightAngle + frOffset));
-        frontLeft.drive(frontLeftSpeed, (frontLeftAngle + flOffset));
+        backRight.drive(backRightSpeed, (backRightAngle ));
+        backLeft.drive(backLeftSpeed, (backLeftAngle ));
+        frontRight.drive(-frontRightSpeed, (frontRightAngle ));
+        frontLeft.drive(-frontLeftSpeed, (frontLeftAngle ));
     }
 
     /**
@@ -202,7 +200,6 @@ public class Swerve {
     public void realignToField(boolean button) {
         if (button) {
             gyro.setYaw(180);
-            gyro2.setYaw(180);
         }
     }
     /**
@@ -237,7 +234,7 @@ public class Swerve {
         }
         drive(x, y, z + twistAdjustment,false);
         realignToField(Map.driver.getRawButton(realign));
-        reinit(driver.getRawButton(reinit));
+        reinit(Map.driver.getRawButton(reinit));
     }
 
     /**
@@ -260,13 +257,13 @@ public class Swerve {
      * Telemetries the swerve drive.
      */
     public void telemetry() {
-        SmartDashboard.putNumber("BR Angle", backRight.getModuleAngle());
+        SmartDashboard.putNumber("BR Angle", backRight.currentAngleRadians());
         SmartDashboard.putNumber("BR Optimized", backRight.getOptimizedAngle());
-        SmartDashboard.putNumber("BL Angle", backLeft.getModuleAngle());
+        SmartDashboard.putNumber("BL Angle", backLeft.currentAngleRadians());
         SmartDashboard.putNumber("BL Optimized", backLeft.getOptimizedAngle());
-        SmartDashboard.putNumber("FR Angle", frontRight.getModuleAngle());
+        SmartDashboard.putNumber("FR Angle", frontRight.currentAngleRadians());
         SmartDashboard.putNumber("Fr Optimized", frontRight.getOptimizedAngle());
-        SmartDashboard.putNumber("FL Angle", frontLeft.getModuleAngle());
+        SmartDashboard.putNumber("FL Angle", frontLeft.currentAngleRadians());
         SmartDashboard.putNumber("FL Optimized", frontLeft.getOptimizedAngle());
 
         SmartDashboard.putNumber("BR Error", backRight.getError());
@@ -302,7 +299,7 @@ public class Swerve {
         double W = 17.5;
         double r = Math.sqrt((L * L) + (W * W));
 
-        if (driver.getRawButton(0)) {
+        if (Map.driver.getRawButton(0)) {
             x0 = x * speedMultiplier;
             y0 = y * speedMultiplier;
         } else {
@@ -348,9 +345,9 @@ public class Swerve {
      * @param button true if the swerve drive should be realigned, false otherwise
      */
     public static void reZeroPosition() {
-        Map.frontLeft.driveMotor.setSelectedSensorPosition(0);
-        Map.frontRight.driveMotor.setSelectedSensorPosition(0);
-        Map.backLeft.driveMotor.setSelectedSensorPosition(0);
-        Map.backRight.driveMotor.setSelectedSensorPosition(0);
+        Map.frontLeft.driveMotor.setPosition(0);
+        Map.frontRight.driveMotor.setPosition(0);
+        Map.backLeft.driveMotor.setPosition(0);
+        Map.backRight.driveMotor.setPosition(0);
     }
 }
