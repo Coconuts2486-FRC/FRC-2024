@@ -219,6 +219,9 @@ public class Launcher {
     public static void launch(boolean connorLaunch,boolean kateLaunch) {
         // change velocities for Phoenix v6
         if (connorLaunch) {
+
+            //change these Eugene
+
             Map.bottomLauncher.setControl(new VelocityDutyCycle(48.8));
             Map.topLauncher.setControl(new VelocityDutyCycle(78.125));
             SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getVelocity().getValueAsDouble());
