@@ -1,218 +1,160 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// Copyright 2021-2024 FRC 6328
+// http://github.com/Mechanical-Advantage
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// version 3 as published by the Free Software Foundation or
+// available in the root directory of this project.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the
- * name of this class or
- * the package after creating this project, you must also update the
- * build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the functions corresponding to
+ * each mode, as described in the TimedRobot documentation. If you change the name of this class or
+ * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
+public class Robot extends LoggedRobot {
+  private Command autonomousCommand;
+  private RobotContainer robotContainer;
 
-public class Robot extends TimedRobot {
-    /**
-     * This function is run when the robot is first started up and should be used
-     * for any
-     * initialization code.
-     */
-    static double driverZ;
-    static double driverX;
-    static double driverY;
-    static double time = Timer.getFPGATimestamp();
-    public static double autoStart;
-
-    @Override
-    public void robotInit() {
-        LED.init();
-      Map.init();
-        Misc.isRed();
-        Misc.selectAuto();
-        Map.swerve.init();
-        Launcher.init();
-        Intake.init();
-        Auto.init();
+  /**
+   * This function is run when the robot is first started up and should be used for any
+   * initialization code.
+   */
+  @Override
+  public void robotInit() {
+    // Record metadata
+    Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+    Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+    Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+    Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+    Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+    switch (BuildConstants.DIRTY) {
+      case 0:
+        Logger.recordMetadata("GitDirty", "All changes committed");
+        break;
+      case 1:
+        Logger.recordMetadata("GitDirty", "Uncomitted changes");
+        break;
+      default:
+        Logger.recordMetadata("GitDirty", "Unknown");
+        break;
     }
 
-    @Override
-    public void robotPeriodic() {
-        //LED.Animate();
-        SmartDashboard.putNumber("pivotEncoder", Launcher.pivotEncoder.getAbsolutePosition().getValueAsDouble());
-         SmartDashboard.putNumber("pivotAngle", Launcher.encoderAsDegrees());
-    //      SmartDashboard.putNumber("DriveFR", Map.frontRight.driveMotor.getPosition().getValueAsDouble());
-    //     SmartDashboard.putNumber("ampIndex", RaspberryPi.AmpIndex);
-    //     SmartDashboard.putNumber("ampTag", RaspberryPi.getAmpCenterX(Misc.getSelectedColor()));
-    //     SmartDashboard.putBoolean("elevator Bottom DIO", Map.elevatorBottom.get());
-    //     SmartDashboard.putBoolean("LightStop", Map.lightStop.get());
-    //     SmartDashboard.putNumber("extend", Map.intakeExtend.getPosition().getValueAsDouble());
-    //   SmartDashboard.putNumber("gyro", Swerve.gyro.getYaw().getValueAsDouble());
-    //     SmartDashboard.putNumber("Yval", Map.odometry.calculatePosition()[1]);
-    //     SmartDashboard.putNumber("note", RaspberryPi.gamePieceZ());
-    //     SmartDashboard.putNumber("calculated angle", Launcher.regressionForAngle(Misc.getSelectedColor()));
-    //     SmartDashboard.putNumber("encoder angle", Launcher.pivotEncoder.getAbsolutePosition().getValueAsDouble());
-    //     SmartDashboard.putNumber("distance from tag 4", RaspberryPi.getTagZ4());
-    //       SmartDashboard.putNumber("distance from tag 7", RaspberryPi.getTagZ4());
-    //     SmartDashboard.putNumber("Tag4X", RaspberryPi.getTagX4());
-    //             SmartDashboard.putNumber("Tag7X", RaspberryPi.getTagX7());
-    //     SmartDashboard.putNumber("noteAngle", RaspberryPi.gamePieceAngle());
-    //     SmartDashboard.putNumber("noteX", RaspberryPi.gamePieceX());
+    // Set up data receivers & replay source
+    switch (Constants.currentMode) {
+      case REAL:
+        // Running on a real robot, log to a USB stick ("/U/logs")
+        Logger.addDataReceiver(new WPILOGWriter());
+        Logger.addDataReceiver(new NT4Publisher());
+        break;
 
+      case SIM:
+        // Running a physics simulator, log to NT
+        Logger.addDataReceiver(new NT4Publisher());
+        break;
+
+      case REPLAY:
+        // Replaying a log, set up replay source
+        setUseTiming(false); // Run as fast as possible
+        String logPath = LogFileUtil.findReplayLog();
+        Logger.setReplaySource(new WPILOGReader(logPath));
+        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+        break;
     }
 
-    @Override
-    public void autonomousInit() {
-        Swerve.reZeroPosition();
-        Auto.init();
-        autoStart = Timer.getFPGATimestamp();
+    // See http://bit.ly/3YIzFZ6 for more information on timestamps in AdvantageKit.
+    // Logger.disableDeterministicTimestamps()
+
+    // Start AdvantageKit logger
+    Logger.start();
+
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our autonomous chooser on the dashboard.
+    robotContainer = new RobotContainer();
+  }
+
+  /** This function is called periodically during all modes. */
+  @Override
+  public void robotPeriodic() {
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled commands, running already-scheduled commands, removing
+    // finished or interrupted commands, and running subsystem periodic() methods.
+    // This must be called from the robot's periodic block in order for anything in
+    // the Command-based framework to work.
+    CommandScheduler.getInstance().run();
+  }
+
+  /** This function is called once when the robot is disabled. */
+  @Override
+  public void disabledInit() {}
+
+  /** This function is called periodically when disabled. */
+  @Override
+  public void disabledPeriodic() {}
+
+  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
+  @Override
+  public void autonomousInit() {
+    autonomousCommand = robotContainer.getAutonomousCommand();
+
+    // schedule the autonomous command (example)
+    if (autonomousCommand != null) {
+      autonomousCommand.schedule();
     }
+  }
 
-    @Override
-    public void autonomousPeriodic() {
-      SmartDashboard.putNumber("rightLaunchAuto", Map.topLauncher.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("a", Auto.a);
-        // Auto.threePieceCenterLine(Misc.getSelectedColor());
-       Misc.runSelectedAuto(Misc.getSelectedColor());
-        //Auto.fourPieceStraightFromSpeaker(Misc.getSelectedColor());
+  /** This function is called periodically during autonomous. */
+  @Override
+  public void autonomousPeriodic() {}
+
+  /** This function is called once when teleop is enabled. */
+  @Override
+  public void teleopInit() {
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
+  }
 
-    @Override
-    public void teleopInit() {
-        Map.frontRight.driveMotor.setPosition(0);
-        Map.swerve.init();
-        Elevator.init();
-        Map.odometry.init();
-    }
+  /** This function is called periodically during operator control. */
+  @Override
+  public void teleopPeriodic() {}
 
-    @Override
-    public void teleopPeriodic() {
-        LED.Animate();
+  /** This function is called once when test mode is enabled. */
+  @Override
+  public void testInit() {
+    // Cancels all running commands at the start of test mode.
+    CommandScheduler.getInstance().cancelAll();
+  }
 
-        // if (Map.driver.getRawButton(6) && Map.lightStop.get()) {
-        // Map.backLeft.autoInit(Swerve.blOffset);
-        // Map.backRight.autoInit(Swerve.brOffset);
-        // Map.frontLeft.autoInit(Swerve.flOffset);
-        // Map.frontRight.autoInit(Swerve.frOffset);
-        // }
-        // // Upon release of button 6 (intake/pickup), reset gyro to the value of gyro2
-        // if (Map.driver.getRawButtonReleased(6)) {
-        // Swerve.gyro.setYaw(Swerve.gyro2.getYaw());
-        // }
+  /** This function is called periodically during test mode. */
+  @Override
+  public void testPeriodic() {}
 
-        driverZ = Map.driver.getRawAxis(0) - (Math.signum(driverZ)*.05);
-        if (Math.abs(Map.driver.getRawAxis(0)) < .15) {
-            driverZ = 0;
-        }
-        
+  /** This function is called once when the robot is first started up. */
+  @Override
+  public void simulationInit() {}
 
-         driverX = Misc.joystickCalc(Map.driver.getRawAxis(4));
-        driverY = Misc.joystickCalc(Map.driver.getRawAxis(5));
-        // driverX = Map.driver.getRawAxis(4);
-        // if (Math.abs(driverX) < .15) {
-        //     driverX = 0;
-        // }
-    
-
-        // driverY = Map.driver.getRawAxis(5);
-        // if (Math.abs(driverY) < .15) {
-        //     driverY = 0;
-        // }
-
-        Launcher.run(Map.coDriver.getRawButtonPressed(9), Map.coDriver.getRawButton(7),Launcher.manualAngleTuner(Map.coDriver.getPOV()), 
-        false, Map.coDriver.getRawButton(3),Map.driver.getRawButton(8),Map.coDriver.getRawButton(5));
-        Launcher.launch(Map.coDriver.getRawButton(6),Map.driver.getRawButton(3));
-    
-        Map.swerve.reinit(Map.driver.getRawButton(4));
-
-        if (Map.driver.getRawButton(6) && Map.lightStop.get() == false) {
-            RaspberryPi.targetGamePiece(Map.driver.getRawButton(6), Map.driver.getAButtonReleased());
-        }
-        else if(Map.driver.getRawButton(5)){
-            RaspberryPi.targetAmp(Map.driver.getRawButton(5),Misc.getSelectedColor(),Map.driver.getRawButtonReleased(5));
-        }
-        // Otherwise, just drive
-        else {
-            RaspberryPi.AmpIndex=0;
-            Map.swerve.drive(driverX, driverY,
-                    RaspberryPi.targetAprilTag(Map.coDriver.getRawButton(5),-driverZ ,
-                            Misc.getSelectedColor()),
-                    false);
-        }
-
-        // Launcher.intake(Map.coDriver.getRawButton(5));
-         Elevator.run(Map.coDriver.getRawButtonPressed(1), Map.coDriver.getRawButtonPressed(2),
-        //         Map.coDriver.getRawAxis(3), Map.coDriver.getRawAxis(2),Map.driver.getRawButton(7));
-       // Elevator.manualRun(Map.coDriver.getRawButton(1), Map.coDriver.getRawButton(2),
-                 Map.coDriver.getRawAxis(3), Map.coDriver.getRawAxis(2),Map.driver.getRawButton(7));
-        if (Map.driver.getRawButton(6)) {
-            Intake.run(
-                    Map.driver.getRawButton(6),
-                    Map.coDriver.getRawButton(6),
-                    Map.driver.getRawButton(1),
-                    Map.driver.getRawAxis(3),
-                    Map.driver.getRawAxis(2),
-                    false,
-                    Misc.getSelectedColor(),
-                    Map.coDriver.getRawButton(4));
-        } else if(Map.driver.getRawButton(5)){}
-        else{
-            Intake.run(
-                    Map.driver.getRawButton(2),
-                    Map.coDriver.getRawButton(6),
-                    Map.driver.getRawButton(1),
-                    Map.driver.getRawAxis(3),
-                    Map.driver.getRawAxis(2),
-                    false,
-                    Misc.getSelectedColor(),
-                    Map.coDriver.getRawButton(4));
-
-        }
-                
-        if (Map.driver.getRawButton(8)){
-            Launcher.init();
-  
-        }
-        if (Map.driver.getRawButton(7)){
-            Elevator.init();
-  
-        }
-    }
-
-    @Override
-    public void disabledInit() {
-    }
-
-    @Override
-    public void disabledPeriodic() {
-        LED.disable();
-        LED.ledStrip.setData(LED.ledBuffer);
-        // button 10 is right joystick button
-        Elevator.disable(Map.coDriver.getRawButton(10));
-        Launcher.disable(Map.coDriver.getRawButton(10));
-        Intake.disable(Map.coDriver.getRawButton(10));
-        Map.swerve.disabled(Map.coDriver.getRawButton(10));
-    }
-
-    @Override
-    public void testInit() {
-    }
-
-    @Override
-    public void testPeriodic() {
-    }
-
-    @Override
-    public void simulationInit() {
-    }
-
-    @Override
-    public void simulationPeriodic() {
-    }
+  /** This function is called periodically whilst in simulation. */
+  @Override
+  public void simulationPeriodic() {}
 }
