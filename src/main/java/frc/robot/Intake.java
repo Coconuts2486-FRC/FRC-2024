@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 
@@ -190,7 +189,7 @@ public class Intake {
             }
             // If the shooter wheels are NOT up to speed, manually control the
             // intake/outtake
-            else if (Map.bottomLauncher.getVelocity().getValueAsDouble() < 14.65) {
+            else if (Map.bottomLauncher.getVelocity().getValueAsDouble() < 25.65) {
               a = 0;
                 Map.intakeBottom.set(ControlMode.PercentOutput, (intakeAxis - outtakeAxis));
                 Map.intakeTop.set(ControlMode.PercentOutput, -(outtakeAxis - intakeAxis) * 1.4);

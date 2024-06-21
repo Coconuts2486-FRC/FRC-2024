@@ -1,16 +1,12 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -40,20 +36,27 @@ public class Launcher {
         return pivotEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     }
     public static void init() {
+
+   
+        ramp.withDutyCycleOpenLoopRampPeriod(.1);
       
        // pivotPidUP.enableContinuousInput(0, 360);
         // rightIntake is what the pivot encoder is wired to. (Absolute encoder)
+
         Map.topLauncher.getConfigurator().apply(Map.coast);
         Map.bottomLauncher.getConfigurator().apply(Map.coast);
+            Map.topLauncher.getConfigurator().apply(ramp);
+        Map.bottomLauncher.getConfigurator().apply(ramp);
         pivot.getConfigurator().apply(Map.brake);
-        Map.bottomLauncher.setInverted(true);
-         Map.topLauncher.setInverted(true);
+        Map.bottomLauncher.setInverted(false);
+         Map.topLauncher.setInverted(false);
         goTo45 = false;
         angleTuner = 0;
 
-        shotPIDConfigs.kV = .1;
-        shotPIDConfigs.kP = 0.9;
-        shotPIDConfigs.kI = 0.0055;
+    //     shotPIDConfigs.kV = 0;
+       // shotPIDConfigs.kP = 0.05;
+    //    shotPIDConfigs.kI = 0.0;
+    //     shotPIDConfigs.kD = .0;
 
         Map.bottomLauncher.getConfigurator().apply(shotPIDConfigs);
         Map.topLauncher.getConfigurator().apply(shotPIDConfigs);
@@ -222,8 +225,22 @@ public class Launcher {
 
             //change these Eugene
 
-            Map.bottomLauncher.setControl(new VelocityDutyCycle(48.8));
-            Map.topLauncher.setControl(new VelocityDutyCycle(78.125));
+            Map.bottomLauncher.setControl(new DutyCycleOut(1));
+            Map.topLauncher.setControl(new DutyCycleOut(1));
+
+                 //Map.bottomLauncher.setControl(new );
+          //  Map.topLauncher.setControl(new DutyCycleOut(.7));
+             
+            // System.out.println("Top Stator = " + Map.topLauncher.getStatorCurrent().getValueAsDouble());
+            //    System.out.println("Top Supply = " + Map.topLauncher.getSupplyCurrent().getValueAsDouble());
+            //  System.out.println("Bottom Stator = " + Map.bottomLauncher.getStatorCurrent().getValueAsDouble());
+            //    System.out.println("Bottom Supply = " + Map.bottomLauncher.getSupplyCurrent().getValueAsDouble());
+                System.out.println("top acceleration " + Map.topLauncher.getAcceleration().getValueAsDouble());
+                      System.out.println("bottom acceleration " + Map.bottomLauncher.getAcceleration().getValueAsDouble());
+                       System.out.println("||");
+
+
+
             SmartDashboard.putNumber("rightLaunch", Map.topLauncher.getVelocity().getValueAsDouble());
             SmartDashboard.putNumber("leftLaunch", Map.bottomLauncher.getVelocity().getValueAsDouble());
         } else if (kateLaunch){

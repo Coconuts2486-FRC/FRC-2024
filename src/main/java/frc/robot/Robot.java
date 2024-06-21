@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * build.gradle file in the
  * project.
  */
-@SuppressWarnings("removal")
+
 public class Robot extends TimedRobot {
     /**
      * This function is run when the robot is first started up and should be used
