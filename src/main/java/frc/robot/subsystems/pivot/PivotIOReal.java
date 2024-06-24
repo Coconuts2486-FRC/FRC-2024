@@ -12,7 +12,6 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import edu.wpi.first.math.controller.PIDController;
 
 public class PivotIOReal implements PivotIO {
@@ -62,7 +61,7 @@ public class PivotIOReal implements PivotIO {
   }
 
   @Override
-  public void holdPosition(double angle){
+  public void holdPosition(double angle) {
     double calculate = pivotPID.calculate(PivotIOInputs.positionDeg, angle);
     pivot.setControl(new DutyCycleOut(calculate));
   }

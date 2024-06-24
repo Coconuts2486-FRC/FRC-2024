@@ -18,7 +18,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface PivotIO {
   @AutoLog
   public static class PivotIOInputs {
-    public static double  positionDeg = 0.0;
+    public static double positionDeg = 0.0;
     public double positionRad = 0.0;
     public double velocityRadPerSec = 0.0;
     public double appliedVolts = 0.0;
@@ -37,7 +37,7 @@ public interface PivotIO {
   /** Run open loop at the specified percent output. */
   public default void setDutyCycle(double percent) {}
 
-  public default void holdPosition (double holdAngle) {}
+  public default void holdPosition(double holdAngle) {}
 
   /** Stop in open loop. */
   public default void stop() {}
