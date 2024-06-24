@@ -70,6 +70,8 @@ public class ModuleIOTalonFX implements ModuleIO {
     switch (index) {
       case 0:
         driveTalon = new TalonFX(2, "drive");
+
+      
         turnTalon = new TalonFX(6, "drive");
         cancoder = new CANcoder(10, "drive");
         absoluteEncoderOffset = new Rotation2d(Math.toRadians(14.3)); // MUST BE CALIBRATED
@@ -101,6 +103,10 @@ public class ModuleIOTalonFX implements ModuleIO {
     driveConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     driveTalon.getConfigurator().apply(driveConfig);
     setDriveBrakeMode(true);
+
+    var brakeAll = new MotorOutputConfigs();
+    brakeAll.NeutralMode = NeutralModeValue.Brake;
+    driveTalon.getConfigurator().apply(brakeAll);
 
     var turnConfig = new TalonFXConfiguration();
     turnConfig.CurrentLimits.SupplyCurrentLimit = 30.0;
