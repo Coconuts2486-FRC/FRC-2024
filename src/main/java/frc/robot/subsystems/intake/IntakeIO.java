@@ -33,9 +33,9 @@ public interface IntakeIO {
   /** Run closed loop at the specified velocity. */
   public default void setVelocity(double velocityRadPerSec, double ffVolts) {}
 
-    public default void setDutyCycle(double velocityRadPerSec, double ffVolts) {}
+  public default void setDutyCycle(double velocityRadPerSec, double ffVolts) {}
 
-   public default void setExtendPosition(double position) {}
+  public default void setExtendPosition(double position) {}
 
   /** Stop in open loop. */
   public default void stop() {}

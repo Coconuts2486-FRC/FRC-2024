@@ -1,6 +1,6 @@
 package frc.robot.subsystems.pivot;
 
-import static frc.robot.subsystems.pivot.PivotIO.PivotIOInputs.positionDeg;
+// import static frc.robot.subsystems.pivot.PivotIO.PivotIOInputs.positionDeg;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
@@ -16,8 +16,8 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class PivotIOReal implements PivotIO {
 
-  private final TalonFX pivot = new TalonFX(0);
-  private final CANcoder pivotCANcoder = new CANcoder(1);
+  private final TalonFX pivot = new TalonFX(17);
+  private final CANcoder pivotCANcoder = new CANcoder(31);
   private final PIDController pivotPID = new PIDController(.056, 0.0000, 0.000001);
 
   private final StatusSignal<Double> pivotPosition = pivotCANcoder.getAbsolutePosition();
@@ -38,7 +38,7 @@ public class PivotIOReal implements PivotIO {
   @Override
   public void updateInputs(PivotIOInputs inputs) {
     BaseStatusSignal.refreshAll(pivotPosition, pivotAppliedVolts, pivotCurrent);
-    positionDeg = pivotPosition.getValueAsDouble() * 360;
+    PivotIOInputs.positionDeg = pivotPosition.getValueAsDouble() * 360;
     //   inputs.velocityRadPerSec =
     //       Units.rotationsToRadians(leaderVelocity.getValueAsDouble()) / GEAR_RATIO;
     inputs.appliedVolts = pivotAppliedVolts.getValueAsDouble();
@@ -68,7 +68,7 @@ public class PivotIOReal implements PivotIO {
 
   @Override
   public void stop() {
-    pivot.stopMotor();
+    pivot.setControl(new DutyCycleOut(0));
   }
 
   @Override

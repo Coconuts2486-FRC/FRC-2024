@@ -34,6 +34,8 @@ import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.flywheel.FlywheelIO;
 import frc.robot.subsystems.flywheel.FlywheelIOSim;
 import frc.robot.subsystems.flywheel.FlywheelIOTalonFX;
+import frc.robot.subsystems.pivot.Pivot;
+import frc.robot.subsystems.pivot.PivotIOReal;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
@@ -47,9 +49,11 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Flywheel flywheel;
+  private final Pivot pivot;
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController driver = new CommandXboxController(0);
+  private final CommandXboxController coDriver = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -77,6 +81,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(2),
                 new ModuleIOTalonFX(3));
         flywheel = new Flywheel(new FlywheelIOTalonFX());
+        pivot = new Pivot(new PivotIOReal());
         break;
 
       case SIM:
@@ -88,6 +93,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
+        pivot = new Pivot(new PivotIOReal());
         flywheel = new Flywheel(new FlywheelIOSim());
         break;
 
@@ -101,6 +107,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         flywheel = new Flywheel(new FlywheelIO() {});
+        pivot = new Pivot(new PivotIOReal());
         break;
     }
 
@@ -147,12 +154,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-    controller
+            drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> -driver.getRightX()));
+    driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    driver
         .b()
         .onTrue(
             Commands.runOnce(
@@ -161,11 +165,21 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-    controller
+    coDriver
         .a()
+        .onTrue(
+            Commands.startEnd(
+                //    () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
+                // flywheel));
+                () -> pivot.holdPosition(45), pivot::stop, pivot));
+
+    coDriver
+        .b()
         .whileTrue(
             Commands.startEnd(
-                () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
+                //    () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
+                // flywheel));
+                () -> pivot.holdPosition(30), pivot::stop, pivot));
   }
 
   /**
