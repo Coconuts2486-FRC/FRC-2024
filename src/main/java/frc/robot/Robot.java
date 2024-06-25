@@ -13,11 +13,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+// import org.littletonrobotics.conduit.schema.Joystick;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.units.Units.*;
+import edu.wpi.first.wpilibj.Joystick;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
@@ -29,8 +35,17 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  * project.
  */
 public class Robot extends LoggedRobot {
-  private Command autonomousCommand;
-  private RobotContainer robotContainer;
+  private static final String defaultAuto = "Default";
+  private static final String customAuto = "My Auto";
+  private String autoSelected;
+  private final LoggedDashboardChooser<String> chooser =
+      new LoggedDashboardChooser<>("Auto Choices");
+
+  static Joystick joy = new Joystick(0);
+  static TalonFX fl = new TalonFX(2, "drive");
+  static TalonFX fr = new TalonFX(3, "drive");
+  static TalonFX bl = new TalonFX(4, "drive");
+  static TalonFX br = new TalonFX(5, "drive");
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -84,20 +99,66 @@ public class Robot extends LoggedRobot {
     // Start AdvantageKit logger
     Logger.start();
 
-    // Instantiate our RobotContainer. This will perform all our button bindings,
-    // and put our autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer();
+    // Initialize auto chooser
+    chooser.addDefaultOption("Default Auto", defaultAuto);
+    chooser.addOption("My Auto", customAuto);
   }
 
   /** This function is called periodically during all modes. */
   @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler. This is responsible for polling buttons, adding
-    // newly-scheduled commands, running already-scheduled commands, removing
-    // finished or interrupted commands, and running subsystem periodic() methods.
-    // This must be called from the robot's periodic block in order for anything in
-    // the Command-based framework to work.
-    CommandScheduler.getInstance().run();
+  public void robotPeriodic() {}
+
+  /** This function is called once when autonomous is enabled. */
+  @Override
+  public void autonomousInit() {
+    autoSelected = chooser.get();
+    System.out.println("Auto selected: " + autoSelected);
+  }
+
+  /** This function is called periodically during autonomous. */
+  @Override
+  public void autonomousPeriodic() {
+    switch (autoSelected) {
+      case customAuto:
+        // Put custom auto code here
+        break;
+      case defaultAuto:
+      default:
+        // Put default auto code here
+        break;
+    }
+  }
+
+  /** This function is called once when teleop is enabled. */
+  @Override
+  public void teleopInit() {
+    var brake = new MotorOutputConfigs();
+    brake.NeutralMode = NeutralModeValue.Brake;
+    fr.getConfigurator().apply(brake);
+    fl.getConfigurator().apply(brake);
+    br.getConfigurator().apply(brake);
+    bl.getConfigurator().apply(brake);
+  }
+
+  /** This function is called periodically during operator control. */
+  @Override
+  public void teleopPeriodic() {
+    fr.setControl(new DutyCycleOut(joy.getRawAxis(3)));
+    fl.setControl(new DutyCycleOut(joy.getRawAxis(3)));
+    br.setControl(new DutyCycleOut(joy.getRawAxis(3)));
+    bl.setControl(new DutyCycleOut(joy.getRawAxis(3)));
+    // Try logging this!
+    Logger.recordOutput("FR Vel", fr.getVelocity().getValueAsDouble());
+    Logger.recordOutput("FL Vel", fl.getVelocity().getValueAsDouble());
+
+    Logger.recordOutput("FR DutyCycle", fr.getDutyCycle().getValueAsDouble());
+    Logger.recordOutput("FL DutyCycle", fl.getDutyCycle().getValueAsDouble());
+
+    Logger.recordOutput("FR Current", fr.getStatorCurrent().getValueAsDouble());
+    Logger.recordOutput("FL Current", fl.getStatorCurrent().getValueAsDouble());
+
+    Logger.recordOutput("FR Current", fr.getStatorCurrent().getValueAsDouble());
+    Logger.recordOutput("FL Current", fl.getStatorCurrent().getValueAsDouble());
   }
 
   /** This function is called once when the robot is disabled. */
@@ -108,43 +169,9 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledPeriodic() {}
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  @Override
-  public void autonomousInit() {
-    autonomousCommand = robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
-    }
-  }
-
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {}
-
-  /** This function is called once when teleop is enabled. */
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (autonomousCommand != null) {
-      autonomousCommand.cancel();
-    }
-  }
-
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {}
-
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
+  public void testInit() {}
 
   /** This function is called periodically during test mode. */
   @Override
