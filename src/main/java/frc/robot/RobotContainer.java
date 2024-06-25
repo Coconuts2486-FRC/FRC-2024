@@ -167,7 +167,7 @@ public class RobotContainer {
                 .ignoringDisable(true));
     coDriver
         .a()
-        .onTrue(
+        .whileTrue(
             Commands.startEnd(
                 //    () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
                 // flywheel));
