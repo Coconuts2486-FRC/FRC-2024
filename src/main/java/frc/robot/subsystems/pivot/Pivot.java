@@ -24,6 +24,9 @@ public class Pivot extends SubsystemBase {
     // separate robot with different tuning)
     switch (Constants.currentMode) {
       case REAL:
+        ffModel = new SimpleMotorFeedforward(0., 0.0);
+        io.configurePID(0.0, 0.0, 0.0);
+        break;
       case REPLAY:
         ffModel = new SimpleMotorFeedforward(0.1, 0.05);
         io.configurePID(1.0, 0.0, 0.0);

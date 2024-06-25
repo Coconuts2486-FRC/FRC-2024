@@ -179,7 +179,7 @@ public class RobotContainer {
             Commands.startEnd(
                 //    () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
                 // flywheel));
-                () -> pivot.holdPosition(30), pivot::stop, pivot));
+                () -> pivot.holdPosition(60), pivot::stop, pivot));
   }
 
   /**

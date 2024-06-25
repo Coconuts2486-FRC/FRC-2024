@@ -1,5 +1,7 @@
 package frc.robot.subsystems.pivot;
 
+import com.ctre.phoenix.Logger;
+
 // import static frc.robot.subsystems.pivot.PivotIO.PivotIOInputs.positionDeg;
 
 import com.ctre.phoenix6.BaseStatusSignal;
@@ -18,7 +20,7 @@ public class PivotIOReal implements PivotIO {
 
   private final TalonFX pivot = new TalonFX(17);
   private final CANcoder pivotCANcoder = new CANcoder(31);
-  private final PIDController pivotPID = new PIDController(.056, 0.0000, 0.000001);
+  private final PIDController pivotPID = new PIDController(.046, 0.0000, 0.000001);
 
   private final StatusSignal<Double> pivotPosition = pivotCANcoder.getAbsolutePosition();
   private final StatusSignal<Double> pivotAppliedVolts = pivot.getMotorVoltage();
@@ -39,6 +41,8 @@ public class PivotIOReal implements PivotIO {
   public void updateInputs(PivotIOInputs inputs) {
     BaseStatusSignal.refreshAll(pivotPosition, pivotAppliedVolts, pivotCurrent);
     PivotIOInputs.positionDeg = pivotPosition.getValueAsDouble() * 360;
+
+    Logger.processInputs("pos Deg", PivotIOInputs.positionDeg);
     //   inputs.velocityRadPerSec =
     //       Units.rotationsToRadians(leaderVelocity.getValueAsDouble()) / GEAR_RATIO;
     inputs.appliedVolts = pivotAppliedVolts.getValueAsDouble();
