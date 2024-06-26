@@ -73,7 +73,7 @@ public class ModuleIOTalonFX implements ModuleIO {
 
         turnTalon = new TalonFX(6, "drive");
         cancoder = new CANcoder(10, "drive");
-        absoluteEncoderOffset = new Rotation2d(Math.toRadians(14.3)); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(-164.79)); // MUST BE CALIBRATED
         break;
       case 1:
         driveTalon = new TalonFX(3, "drive");

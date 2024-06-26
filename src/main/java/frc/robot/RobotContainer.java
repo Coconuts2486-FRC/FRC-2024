@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.PivotCommand;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -154,8 +155,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> -driver.getRightX()));
+            drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> driver.getRightX()));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+
     driver
         .b()
         .onTrue(
@@ -165,21 +167,20 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-    coDriver
-        .a()
-        .whileTrue(
-            Commands.startEnd(
-                //    () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
-                // flywheel));
-                () -> pivot.holdPosition(45), pivot::stop, pivot));
 
-    coDriver
-        .b()
-        .whileTrue(
-            Commands.startEnd(
-                //    () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
-                // flywheel));
-                () -> pivot.holdPosition(60), pivot::stop, pivot));
+    driver.y().onTrue(Commands.runOnce(() -> drive.zero()));
+
+    coDriver.leftStick().toggleOnTrue(new PivotCommand(pivot, () -> 45));
+
+    coDriver.back().whileTrue(new PivotCommand(pivot, () -> 58));
+
+    // coDriver
+    //     .b()
+    //     .whileTrue(
+    //         Commands.startEnd(
+    //             //    () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
+    //             // flywheel));
+    //             () -> pivot.holdPosition(60), pivot::stop, pivot));
   }
 
   /**
