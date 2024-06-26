@@ -172,7 +172,7 @@ public class RobotContainer {
 
     coDriver.leftStick().toggleOnTrue(new PivotCommand(pivot, () -> 45));
 
-    coDriver.back().whileTrue(new PivotCommand(pivot, () -> 58));
+    coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
 
     // coDriver
     //     .b()
