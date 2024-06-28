@@ -25,7 +25,7 @@ public class IntakeRollerCommand extends Command {
   @Override
   public void execute() {
     intake.intakeRoller(
-        .2, mIntake.getAsDouble(), mOuttake.getAsDouble(), lightStop.getAsBoolean());
+        .3, .35, mIntake.getAsDouble(), mOuttake.getAsDouble(), lightStop.getAsBoolean());
     if (lightStop.getAsBoolean()) {}
   }
 

@@ -35,17 +35,21 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public void setExtendPosition(int position) {
+  public void setExtendPosition(double position) {
     extend.setControl(new PositionDutyCycle(position));
   }
 
   @Override
   public void setRollerDutyCycle(
-      double staticPercent, double manualIn, double manualOut, boolean lightStop) {
+      double staticPercentTop,
+      double staticPercentBottom,
+      double manualIn,
+      double manualOut,
+      boolean lightStop) {
     // System.out.println(lightStop);
     if (lightStop == false) {
-      intakeTop.set(ControlMode.PercentOutput, staticPercent);
-      intakeBottom.set(ControlMode.PercentOutput, staticPercent);
+      intakeTop.set(ControlMode.PercentOutput, staticPercentTop);
+      intakeBottom.set(ControlMode.PercentOutput, staticPercentBottom);
     } else {
       intakeTop.set(ControlMode.PercentOutput, manualIn - manualOut);
       intakeBottom.set(ControlMode.PercentOutput, manualIn - manualOut);
@@ -63,8 +67,10 @@ public class IntakeIOReal implements IntakeIO {
     if (limit) {
       extend.setControl(new DutyCycleOut(0));
       extend.setPosition(0);
+    } else if (extend.getPosition().getValueAsDouble() > 4.8) {
+      extend.setControl(new DutyCycleOut(-.8));
     } else {
-      extend.setControl(new DutyCycleOut(-.12));
+      extend.setControl(new DutyCycleOut(-.3));
     }
   }
 

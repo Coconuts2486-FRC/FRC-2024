@@ -83,11 +83,15 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeRoller(
-      double staticPercent, double manualIn, double manualOut, boolean lightStop) {
-    io.setRollerDutyCycle(staticPercent, manualIn, manualOut, lightStop);
+      double staticPercentTop,
+      double staticPercentBottom,
+      double manualIn,
+      double manualOut,
+      boolean lightStop) {
+    io.setRollerDutyCycle(staticPercentTop, staticPercentBottom, manualIn, manualOut, lightStop);
   }
 
-  public void setExtendPosition(int position) {
+  public void setExtendPosition(double position) {
     io.setExtendPosition(position);
   }
 

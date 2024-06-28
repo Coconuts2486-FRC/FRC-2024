@@ -34,9 +34,13 @@ public interface IntakeIO {
   public default void setVelocity(double velocityRadPerSec, double ffVolts) {}
 
   public default void setRollerDutyCycle(
-      double staticPercent, double manualIn, double manualOut, boolean lightStop) {}
+      double staticPercentTop,
+      double staticPercentBottom,
+      double manualIn,
+      double manualOut,
+      boolean lightStop) {}
 
-  public default void setExtendPosition(int position) {}
+  public default void setExtendPosition(double position) {}
 
   public default void retract(boolean limit) {}
 
