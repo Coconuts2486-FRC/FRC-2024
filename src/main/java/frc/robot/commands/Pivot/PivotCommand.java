@@ -1,16 +1,16 @@
-package frc.robot.commands;
+package frc.robot.commands.Pivot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.pivot.Pivot;
 import java.util.function.DoubleSupplier;
 
-public class IntakeCommand extends Command {
-  private final Intake intake;
+public class PivotCommand extends Command {
+  private final Pivot pivot;
   private final DoubleSupplier angle;
 
-  public IntakeCommand(Intake intake, DoubleSupplier angle) {
+  public PivotCommand(Pivot pivot, DoubleSupplier angle) {
     this.angle = angle;
-    this.intake = intake;
+    this.pivot = pivot;
   }
 
   @Override

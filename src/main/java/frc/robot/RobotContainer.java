@@ -17,14 +17,16 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.DriveCommands;
-import frc.robot.commands.PivotCommand;
+import frc.robot.commands.Drive.DriveCommands;
+import frc.robot.commands.Intake.IntakeExtendCommand;
+import frc.robot.commands.Pivot.PivotCommand;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -35,6 +37,8 @@ import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.flywheel.FlywheelIO;
 import frc.robot.subsystems.flywheel.FlywheelIOSim;
 import frc.robot.subsystems.flywheel.FlywheelIOTalonFX;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIOReal;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -51,6 +55,8 @@ public class RobotContainer {
   private final Drive drive;
   private final Flywheel flywheel;
   private final Pivot pivot;
+  private final Intake intake;
+  private final DigitalInput lightStop = new DigitalInput(2);
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -83,6 +89,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(3));
         flywheel = new Flywheel(new FlywheelIOTalonFX());
         pivot = new Pivot(new PivotIOReal());
+        intake = new Intake(new IntakeIOReal());
         break;
 
       case SIM:
@@ -96,6 +103,7 @@ public class RobotContainer {
                 new ModuleIOSim());
         pivot = new Pivot(new PivotIOReal());
         flywheel = new Flywheel(new FlywheelIOSim());
+        intake = new Intake(new IntakeIOReal());
         break;
 
       default:
@@ -109,6 +117,7 @@ public class RobotContainer {
                 new ModuleIO() {});
         flywheel = new Flywheel(new FlywheelIO() {});
         pivot = new Pivot(new PivotIOReal());
+        intake = new Intake(new IntakeIOReal());
         break;
     }
 
@@ -157,6 +166,15 @@ public class RobotContainer {
         DriveCommands.joystickDrive(
             drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> driver.getRightX()));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+
+    coDriver
+        .y()
+        .whileTrue(
+            new IntakeExtendCommand(
+                intake,
+                () -> coDriver.getLeftTriggerAxis(),
+                () -> coDriver.getRightTriggerAxis(),
+                lightStop::get));
 
     driver
         .b()
