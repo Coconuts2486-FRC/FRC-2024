@@ -23,7 +23,7 @@ public class IntakeExtendCommand extends Command {
     if (lightStop.getAsBoolean()) {
       intake.retract(intakeStop.getAsBoolean());
     } else {
-      intake.setExtendPosition(20);
+      intake.setExtendPosition(48.8);
     }
   }
 
