@@ -3,20 +3,16 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.intake.Intake;
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 
 public class IntakeExtendCommand extends Command {
   private final Intake intake;
-  private final DoubleSupplier mIntake;
-  private final DoubleSupplier mOuttake;
   private final BooleanSupplier lightStop;
+  private final BooleanSupplier intakeStop;
 
-  public IntakeExtendCommand(
-      Intake intake, DoubleSupplier mIntake, DoubleSupplier mOuttake, BooleanSupplier lightStop) {
-    this.mIntake = mIntake;
+  public IntakeExtendCommand(Intake intake, BooleanSupplier lightStop, BooleanSupplier intakeStop) {
     this.intake = intake;
-    this.mOuttake = mOuttake;
     this.lightStop = lightStop;
+    this.intakeStop = intakeStop;
   }
 
   @Override
@@ -24,8 +20,11 @@ public class IntakeExtendCommand extends Command {
 
   @Override
   public void execute() {
-    intake.intakeRoller(
-        .3, mIntake.getAsDouble(), mOuttake.getAsDouble(), lightStop.getAsBoolean());
+    if (lightStop.getAsBoolean()) {
+      intake.retract(intakeStop.getAsBoolean());
+    } else {
+      intake.setExtendPosition(20);
+    }
   }
 
   @Override

@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
     switch (Constants.currentMode) {
       case REAL:
         ffModel = new SimpleMotorFeedforward(0., 0.0);
-        io.configurePID(0.0, 0.0, 0.0);
+        io.configurePID(0.01, 0.0, 0.0);
         break;
       case REPLAY:
         ffModel = new SimpleMotorFeedforward(0.1, 0.05);
@@ -74,9 +74,21 @@ public class Intake extends SubsystemBase {
     io.stop();
   }
 
+  public void retract(boolean limit) {
+    io.retract(limit);
+  }
+
+  public void setPose(int position) {
+    io.setPose(position);
+  }
+
   public void intakeRoller(
       double staticPercent, double manualIn, double manualOut, boolean lightStop) {
     io.setRollerDutyCycle(staticPercent, manualIn, manualOut, lightStop);
+  }
+
+  public void setExtendPosition(int position) {
+    io.setExtendPosition(position);
   }
 
   /** Returns a command to run a quasistatic test in the specified direction. */

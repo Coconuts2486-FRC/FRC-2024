@@ -23,9 +23,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Intake.IntakeExtendCommand;
+import frc.robot.commands.Intake.IntakeRetractCommand;
+import frc.robot.commands.Intake.IntakeRollerCommand;
 import frc.robot.commands.Pivot.PivotCommand;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -57,6 +60,9 @@ public class RobotContainer {
   private final Pivot pivot;
   private final Intake intake;
   private final DigitalInput lightStop = new DigitalInput(2);
+  private final DigitalInput intakeStop = new DigitalInput(3);
+  private final Trigger lightTrigger = new Trigger(lightStop::get);
+  private final Trigger intakeLimitTrigger = new Trigger(intakeStop::get);
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -170,11 +176,14 @@ public class RobotContainer {
     coDriver
         .y()
         .whileTrue(
-            new IntakeExtendCommand(
+            new IntakeRollerCommand(
                 intake,
                 () -> coDriver.getLeftTriggerAxis(),
                 () -> coDriver.getRightTriggerAxis(),
                 lightStop::get));
+
+    coDriver.y().whileTrue(new IntakeExtendCommand(intake, lightStop::get, intakeStop::get));
+    coDriver.y().whileFalse(new IntakeRetractCommand(intake, intakeStop::get));
 
     driver
         .b()
