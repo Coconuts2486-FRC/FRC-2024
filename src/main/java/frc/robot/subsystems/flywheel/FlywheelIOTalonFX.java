@@ -15,8 +15,10 @@ package frc.robot.subsystems.flywheel;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -27,8 +29,8 @@ import edu.wpi.first.math.util.Units;
 public class FlywheelIOTalonFX implements FlywheelIO {
   private static final double GEAR_RATIO = 1.5;
 
-  private final TalonFX leader = new TalonFX(0);
-  private final TalonFX follower = new TalonFX(1);
+  public final TalonFX leader = new TalonFX(15); //Top
+  public final TalonFX follower = new TalonFX(16); //Bottom
 
   private final StatusSignal<Double> leaderPosition = leader.getPosition();
   private final StatusSignal<Double> leaderVelocity = leader.getVelocity();
@@ -37,12 +39,20 @@ public class FlywheelIOTalonFX implements FlywheelIO {
   private final StatusSignal<Double> followerCurrent = follower.getSupplyCurrent();
 
   public FlywheelIOTalonFX() {
+
+    var ramp = new OpenLoopRampsConfigs();
+    ramp.withDutyCycleOpenLoopRampPeriod(.1);
     var config = new TalonFXConfiguration();
     config.CurrentLimits.SupplyCurrentLimit = 30.0;
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+
     leader.getConfigurator().apply(config);
     follower.getConfigurator().apply(config);
+      leader.getConfigurator().apply(ramp);
+    follower.getConfigurator().apply(ramp);
+
+
     follower.setControl(new Follower(leader.getDeviceID(), false));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
@@ -85,6 +95,12 @@ public class FlywheelIOTalonFX implements FlywheelIO {
   @Override
   public void stop() {
     leader.stopMotor();
+  }
+
+  @Override
+  public void setDutyCycle(double percent) {
+     leader.setControl(new DutyCycleOut(percent));
+     follower.setControl(new DutyCycleOut(percent));
   }
 
   @Override

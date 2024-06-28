@@ -87,6 +87,10 @@ public class Flywheel extends SubsystemBase {
     io.stop();
   }
 
+  public void setDutyCycle (double percent){
+    io.setDutyCycle(percent);
+  }
+
   /** Returns a command to run a quasistatic test in the specified direction. */
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return sysId.quasistatic(direction);
