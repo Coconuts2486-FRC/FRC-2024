@@ -2,31 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.2983524068899992,
-      "y": 5.525241300482602
+      "x": 0.4232642122691655,
+      "y": 2.6353599281272646
     },
-    "rotation": 0
+    "rotation": 1.731221331614901
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": null
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "1B C3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
+            "pathName": "2B Preload"
           }
         },
         {
@@ -38,31 +26,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1B C2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "1B C1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
+            "pathName": "2B F5 Note"
           }
         },
         {
@@ -74,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1B F1 Note"
+            "pathName": "2B F5 Shoot"
           }
         },
         {
@@ -86,7 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1B F1 Shoot"
+            "pathName": "2B F4 Note"
           }
         },
         {
@@ -98,7 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1B F2 Note"
+            "pathName": "2B F4 Shoot"
           }
         },
         {
@@ -110,7 +74,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1B F2 Shoot"
+            "pathName": "2B F3 Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
           }
         }
       ]

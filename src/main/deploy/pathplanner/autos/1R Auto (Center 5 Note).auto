@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1R Close Source"
+            "pathName": "1R C3"
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1R Close Middle"
+            "pathName": "1R C2"
           }
         },
         {
@@ -56,7 +56,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1R Close Amp"
+            "pathName": "1R C1"
           }
         },
         {
@@ -74,7 +74,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1R Far Source Note"
+            "pathName": "1R F1 Note"
           }
         },
         {
@@ -86,7 +86,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1R Far Source Shoot"
+            "pathName": "1R F2 Shoot"
           }
         },
         {

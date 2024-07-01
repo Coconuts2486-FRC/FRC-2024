@@ -5,16 +5,19 @@
   "pathFolders": [
     "1B Auto",
     "1R Auto",
-    "Making sure paths works"
+    "2B Auto",
+    "ZMaking sure paths works",
+    "3B Auto"
   ],
   "autoFolders": [
+    "Auto Building",
     "Blue Autos",
     "Making sure autos work",
     "Red Autos"
   ],
-  "defaultMaxVel": 3.0,
+  "defaultMaxVel": 5.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
-  "maxModuleSpeed": 4.5
+  "maxModuleSpeed": 5.0
 }
