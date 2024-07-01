@@ -1,0 +1,65 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.5057820393418566,
+        "y": 5.84752032004064
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.498397209757383,
+        "y": 5.236923089586919
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4722298657560282,
+        "y": 4.359347806658577
+      },
+      "prevControl": {
+        "x": 1.4683698811842074,
+        "y": 4.622004910676488
+      },
+      "nextControl": {
+        "x": 1.4729597715514693,
+        "y": 4.309680524608787
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.495389773186954,
+        "y": 5.179446067225468
+      },
+      "prevControl": {
+        "x": 1.4899264104083765,
+        "y": 5.056104714061281
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 1.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Making sure paths works",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}
