@@ -30,6 +30,7 @@ import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
 import frc.robot.commands.Pivot.PivotCommand;
+import frc.robot.commands.ShotCommand;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -200,6 +201,8 @@ public class RobotContainer {
     coDriver.leftStick().toggleOnTrue(new PivotCommand(pivot, () -> 45));
 
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
+
+    coDriver.rightBumper().whileTrue(new ShotCommand(intake, flywheel));
 
     // coDriver
     //     .b()

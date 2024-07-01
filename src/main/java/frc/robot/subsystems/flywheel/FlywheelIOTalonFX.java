@@ -29,8 +29,8 @@ import edu.wpi.first.math.util.Units;
 public class FlywheelIOTalonFX implements FlywheelIO {
   private static final double GEAR_RATIO = 1.5;
 
-  public final TalonFX leader = new TalonFX(15); //Top
-  public final TalonFX follower = new TalonFX(16); //Bottom
+  public final TalonFX leader = new TalonFX(15); // Top
+  public final TalonFX follower = new TalonFX(16); // Bottom
 
   private final StatusSignal<Double> leaderPosition = leader.getPosition();
   private final StatusSignal<Double> leaderVelocity = leader.getVelocity();
@@ -49,9 +49,8 @@ public class FlywheelIOTalonFX implements FlywheelIO {
 
     leader.getConfigurator().apply(config);
     follower.getConfigurator().apply(config);
-      leader.getConfigurator().apply(ramp);
+    leader.getConfigurator().apply(ramp);
     follower.getConfigurator().apply(ramp);
-
 
     follower.setControl(new Follower(leader.getDeviceID(), false));
 
@@ -66,6 +65,7 @@ public class FlywheelIOTalonFX implements FlywheelIO {
     BaseStatusSignal.refreshAll(
         leaderPosition, leaderVelocity, leaderAppliedVolts, leaderCurrent, followerCurrent);
     inputs.positionRad = Units.rotationsToRadians(leaderPosition.getValueAsDouble()) / GEAR_RATIO;
+    inputs.velocityRaw = leaderVelocity.getValueAsDouble();
     inputs.velocityRadPerSec =
         Units.rotationsToRadians(leaderVelocity.getValueAsDouble()) / GEAR_RATIO;
     inputs.appliedVolts = leaderAppliedVolts.getValueAsDouble();
@@ -95,12 +95,13 @@ public class FlywheelIOTalonFX implements FlywheelIO {
   @Override
   public void stop() {
     leader.stopMotor();
+    follower.stopMotor();
   }
 
   @Override
   public void setDutyCycle(double percent) {
-     leader.setControl(new DutyCycleOut(percent));
-     follower.setControl(new DutyCycleOut(percent));
+    leader.setControl(new DutyCycleOut(percent));
+    follower.setControl(new DutyCycleOut(percent));
   }
 
   @Override
