@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Drive.DriveCommands;
+import frc.robot.commands.Elevator.ElevatorCommands;
 import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
@@ -37,6 +38,8 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIOReal;
 import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.flywheel.FlywheelIO;
 import frc.robot.subsystems.flywheel.FlywheelIOSim;
@@ -60,10 +63,14 @@ public class RobotContainer {
   private final Flywheel flywheel;
   private final Pivot pivot;
   private final Intake intake;
+  private final Elevator elevator;
   private final DigitalInput lightStop = new DigitalInput(2);
   private final DigitalInput intakeStop = new DigitalInput(3);
+  private final DigitalInput elevatorBottom = new DigitalInput(0); // change this
+  private final DigitalInput elevatorTop = new DigitalInput(1);
   private final Trigger lightTrigger = new Trigger(lightStop::get);
   private final Trigger intakeLimitTrigger = new Trigger(intakeStop::get);
+  private final Trigger elevatorBottomTrigger = new Trigger(elevatorBottom::get);
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -97,6 +104,7 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOTalonFX());
         pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());
+        elevator = new Elevator(new ElevatorIOReal());
         break;
 
       case SIM:
@@ -111,6 +119,7 @@ public class RobotContainer {
         pivot = new Pivot(new PivotIOReal());
         flywheel = new Flywheel(new FlywheelIOSim());
         intake = new Intake(new IntakeIOReal());
+        elevator = new Elevator(new ElevatorIOReal());
         break;
 
       default:
@@ -125,6 +134,7 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIO() {});
         pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());
+        elevator = new Elevator(new ElevatorIOReal());
         break;
     }
 
@@ -174,6 +184,14 @@ public class RobotContainer {
             drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> driver.getRightX()));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
+    elevator.setDefaultCommand(
+        ElevatorCommands.manualElevator(
+            elevator,
+            () -> coDriver.getRightTriggerAxis(),
+            () -> coDriver.getLeftTriggerAxis(),
+            elevatorBottom::get,
+            elevatorTop::get));
+
     coDriver
         .y()
         .whileTrue(
@@ -203,6 +221,8 @@ public class RobotContainer {
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
 
     coDriver.rightBumper().whileTrue(new ShotCommand(intake, flywheel));
+
+    // coDriver.a().whileTrue(new ClimbCommand(elevator, elevatorTop::get, () -> 0, () -> 0));
 
     // coDriver
     //     .b()
