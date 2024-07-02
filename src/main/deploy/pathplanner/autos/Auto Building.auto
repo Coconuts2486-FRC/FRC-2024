@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.285881687504116,
+      "y": 5.472270435281612
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1B C3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Auto Building",
+  "choreoAuto": false
+}

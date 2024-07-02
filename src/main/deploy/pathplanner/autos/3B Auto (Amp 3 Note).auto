@@ -1,0 +1,97 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.762824085833357,
+      "y": 6.549027977685585
+    },
+    "rotation": 59.84104784002879
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3B F1 Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3B F1 Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3B F2 Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3B F2 Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3B F3 Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3B F3 Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Blue Autos",
+  "choreoAuto": false
+}

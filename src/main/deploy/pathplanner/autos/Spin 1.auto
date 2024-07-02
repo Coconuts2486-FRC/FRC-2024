@@ -20,12 +20,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Example Path"
+            "pathName": "Spin 1"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Making sure autos work",
   "choreoAuto": false
 }

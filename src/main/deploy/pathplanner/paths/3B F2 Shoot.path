@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.592918324725538,
+        "y": 5.849539388893593
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.718186436372872,
+        "y": 5.972761973301724
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.15,
+        "y": 6.25
+      },
+      "prevControl": {
+        "x": 6.097560301602084,
+        "y": 6.078347397435536
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 7.312789966779551,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "3B Auto",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

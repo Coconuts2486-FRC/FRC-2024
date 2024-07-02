@@ -1,0 +1,91 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.4232642122691655,
+      "y": 2.6353599281272646
+    },
+    "rotation": 1.731221331614901
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2B Preload"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2B F5 Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2B F5 Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2B F4 Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2B F4 Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2B F3 Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Blue Autos",
+  "choreoAuto": false
+}
