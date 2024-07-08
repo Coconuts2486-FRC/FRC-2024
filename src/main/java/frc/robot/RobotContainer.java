@@ -139,11 +139,17 @@ public class RobotContainer {
     }
 
     // Set up auto routines
-    NamedCommands.registerCommand(
-        "Run Flywheel",
-        Commands.startEnd(
-                () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
-            .withTimeout(5.0));
+
+    //this is example code don't run motor does wierd things
+    //NamedCommands.registerCommand(
+    //    "Run Flywheel",
+    //   Commands.startEnd(
+    //            () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
+    //        .withTimeout(5.0));
+
+    //Can be added to auto path to tell robot to shoot during auto
+    NamedCommands.registerCommand("autoshoot", new ShotCommand(intake, flywheel));
+
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up SysId routines
