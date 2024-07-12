@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 7.0
+      "x": 1.2653940770844507,
+      "y": 5.535039722857224
     },
-    "rotation": 180.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -15,12 +15,6 @@
           "type": "named",
           "data": {
             "name": "autoShoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Spin 1"
           }
         }
       ]
