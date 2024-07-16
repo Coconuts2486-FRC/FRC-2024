@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.ElevatorCommands;
 import frc.robot.commands.Intake.IntakeExtendCommand;
@@ -149,8 +150,10 @@ public class RobotContainer {
 
     // Can be added to auto path to tell robot to shoot during auto
     NamedCommands.registerCommand("autoShoot", new ShotCommand(intake, flywheel));
-    //
-    // NamedCommands.registerCommand("autoIntake", );
+    // Should Extend then activate rollers during auto... Maybe
+    NamedCommands.registerCommand("autoIntake", new AutoIntakeCommand(intake, lightStop::get, intakeStop::get));
+
+    //NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake, intakeStop::get));
 
     // idk path planner stuff
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
