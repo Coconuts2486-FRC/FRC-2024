@@ -151,9 +151,11 @@ public class RobotContainer {
     // Can be added to auto path to tell robot to shoot during auto
     NamedCommands.registerCommand("autoShoot", new ShotCommand(intake, flywheel));
     // Should Extend then activate rollers during auto... Maybe
-    NamedCommands.registerCommand("autoIntake", new AutoIntakeCommand(intake, lightStop::get, intakeStop::get));
+    NamedCommands.registerCommand(
+        "autoIntake", new AutoIntakeCommand(intake, lightStop::get, intakeStop::get));
 
-    //NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake, intakeStop::get));
+    // NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake,
+    // intakeStop::get));
 
     // idk path planner stuff
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());

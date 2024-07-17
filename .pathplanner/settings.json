@@ -3,14 +3,10 @@
   "robotLength": 0.66,
   "holonomicMode": true,
   "pathFolders": [
-    "1B Auto",
-    "1R Auto",
-    "2B Auto",
-    "ZMaking sure paths works",
-    "3B Auto"
+    "Blue Path",
+    "ZMaking sure paths works"
   ],
   "autoFolders": [
-    "Auto Building",
     "Blue Autos",
     "Making sure autos work",
     "Red Autos"
