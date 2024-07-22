@@ -237,7 +237,7 @@ public class RobotContainer {
     // Pivot Commands
     coDriver.leftStick().toggleOnTrue(new PivotCommand(pivot, () -> 45));
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
-    coDriver.x().whileTrue(new PivotCommand(pivot, ()-> angle + 1));
+    coDriver.x().whileTrue(new PivotCommand(pivot, () -> angle + 1));
     // shot command
     coDriver.rightBumper().whileTrue(new ShotCommand(intake, intakeRollers, flywheel));
     // climb command
