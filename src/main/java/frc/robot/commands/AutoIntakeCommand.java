@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeRollers;
-
 import java.util.function.BooleanSupplier;
 
 public class AutoIntakeCommand extends Command {
@@ -12,7 +11,11 @@ public class AutoIntakeCommand extends Command {
   private final BooleanSupplier lightStop;
   private final BooleanSupplier intakeStop;
 
-  public AutoIntakeCommand(IntakeRollers intakeRollers, Intake intake, BooleanSupplier lightStop, BooleanSupplier intakeStop) {
+  public AutoIntakeCommand(
+      IntakeRollers intakeRollers,
+      Intake intake,
+      BooleanSupplier lightStop,
+      BooleanSupplier intakeStop) {
     this.intake = intake;
     this.lightStop = lightStop;
     this.intakeStop = intakeStop;

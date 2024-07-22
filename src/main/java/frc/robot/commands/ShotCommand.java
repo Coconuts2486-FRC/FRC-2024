@@ -8,7 +8,7 @@ import frc.robot.subsystems.intake.IntakeRollers;
 public class ShotCommand extends Command {
   private final Flywheel flywheel;
   private final IntakeRollers intakeRollers;
-    private final Intake intake;
+  private final Intake intake;
 
   public ShotCommand(Intake intake, IntakeRollers intakeRollers, Flywheel flywheel) {
     this.flywheel = flywheel;

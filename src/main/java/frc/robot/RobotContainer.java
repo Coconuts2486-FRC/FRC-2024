@@ -66,7 +66,7 @@ public class RobotContainer {
   private final Flywheel flywheel;
   private final Pivot pivot;
   private final Intake intake;
-    private final IntakeRollers intakeRollers = new IntakeRollers(new IntakeRollersIOReal());
+  private final IntakeRollers intakeRollers = new IntakeRollers(new IntakeRollersIOReal());
   private final Elevator elevator;
   private final DigitalInput lightStop = new DigitalInput(2);
   private final DigitalInput intakeStop = new DigitalInput(3);
@@ -155,7 +155,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("autoShoot", new ShotCommand(intake, intakeRollers, flywheel));
     // Should Extend then activate rollers during auto... Maybe
     NamedCommands.registerCommand(
-        "autoIntake", new AutoIntakeCommand(intakeRollers, intake, lightStop::get, intakeStop::get));
+        "autoIntake",
+        new AutoIntakeCommand(intakeRollers, intake, lightStop::get, intakeStop::get));
 
     // NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake,
     // intakeStop::get));
@@ -213,7 +214,8 @@ public class RobotContainer {
         .y()
         .whileTrue(
             new IntakeRollerCommand(
-               intakeRollers, intake,
+                intakeRollers,
+                intake,
                 () -> coDriver.getLeftTriggerAxis(),
                 () -> coDriver.getRightTriggerAxis(),
                 lightStop::get));
@@ -236,7 +238,7 @@ public class RobotContainer {
     coDriver.leftStick().toggleOnTrue(new PivotCommand(pivot, () -> 45));
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
     // shot command
-    coDriver.rightBumper().whileTrue(new ShotCommand(intake,  intakeRollers, flywheel));
+    coDriver.rightBumper().whileTrue(new ShotCommand(intake, intakeRollers, flywheel));
     // climb command
     //   coDriver.b().whileTrue(new ClimbCommand(elevator, elevatorTop::get, -.90));
     //  coDriver.b().toggleOnFalse(new ClimbCommand(elevator, elevatorBottom::get, .40));

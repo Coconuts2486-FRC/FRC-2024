@@ -1,8 +1,5 @@
 package frc.robot.subsystems.intake;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -12,7 +9,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class IntakeIOReal implements IntakeIO {
   private final TalonFX extend = new TalonFX(18);
- 
+
   // public static DigitalInput lightStop = new DigitalInput(2);
   // public static DigitalInput intakeStop = new DigitalInput(3);
   // private final double leaderVelocity = intakeTop.getVelocity();

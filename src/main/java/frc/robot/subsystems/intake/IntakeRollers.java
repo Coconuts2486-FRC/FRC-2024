@@ -2,20 +2,16 @@ package frc.robot.subsystems.intake;
 
 import static edu.wpi.first.units.Units.*;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Constants;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class IntakeRollers extends SubsystemBase {
   private final IntakeRollersIO io;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
- // private final SimpleMotorFeedforward ffModel;
-  //private final SysIdRoutine sysId;
+  // private final SimpleMotorFeedforward ffModel;
+  // private final SysIdRoutine sysId;
 
   public IntakeRollers(IntakeRollersIO io) {
     this.io = io;
@@ -38,17 +34,17 @@ public class IntakeRollers extends SubsystemBase {
     //   default:
     //     ffModel = new SimpleMotorFeedforward(0.0, 0.0);
     //     break;
- }
+  }
 
-//     sysId =
-//         new SysIdRoutine(
-//             new SysIdRoutine.Config(
-//                 null,
-//                 null,
-//                 null,
-//                 (state) -> Logger.recordOutput("Pivot/SysIdState", state.toString())),
-//             new SysIdRoutine.Mechanism((voltage) -> runVolts(voltage.in(Volts)), null, this));
-//   }
+  //     sysId =
+  //         new SysIdRoutine(
+  //             new SysIdRoutine.Config(
+  //                 null,
+  //                 null,
+  //                 null,
+  //                 (state) -> Logger.recordOutput("Pivot/SysIdState", state.toString())),
+  //             new SysIdRoutine.Mechanism((voltage) -> runVolts(voltage.in(Volts)), null, this));
+  //   }
 
   @Override
   public void periodic() {
@@ -65,19 +61,24 @@ public class IntakeRollers extends SubsystemBase {
     io.stop();
   }
 
-    public void setRollers(double staticPercentTop,double staticPercentBottom,double manualIn,double manualOut,boolean lightstop) {
-    io.setRollerDutyCycle(staticPercentTop,staticPercentBottom,manualIn,manualOut,lightstop);
+  public void setRollers(
+      double staticPercentTop,
+      double staticPercentBottom,
+      double manualIn,
+      double manualOut,
+      boolean lightstop) {
+    io.setRollerDutyCycle(staticPercentTop, staticPercentBottom, manualIn, manualOut, lightstop);
   }
 
   /** Returns a command to run a quasistatic test in the specified direction. */
-//   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-//     return sysId.quasistatic(direction);
-//   }
+  //   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+  //     return sysId.quasistatic(direction);
+  //   }
 
   /** Returns a command to run a dynamic test in the specified direction. */
-//   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-//     return sysId.dynamic(direction);
-//   }
+  //   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+  //     return sysId.dynamic(direction);
+  //   }
 
   /** Returns the current velocity in RPM. */
   @AutoLogOutput

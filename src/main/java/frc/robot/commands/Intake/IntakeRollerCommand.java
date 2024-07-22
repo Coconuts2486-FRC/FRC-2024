@@ -3,7 +3,6 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeRollers;
-
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -14,8 +13,12 @@ public class IntakeRollerCommand extends Command {
   private final DoubleSupplier mOuttake;
   private final BooleanSupplier lightStop;
 
-  public IntakeRollerCommand(IntakeRollers intakeRollers,
-      Intake intake, DoubleSupplier mIntake, DoubleSupplier mOuttake, BooleanSupplier lightStop) {
+  public IntakeRollerCommand(
+      IntakeRollers intakeRollers,
+      Intake intake,
+      DoubleSupplier mIntake,
+      DoubleSupplier mOuttake,
+      BooleanSupplier lightStop) {
     this.mIntake = mIntake;
     this.intake = intake;
     this.mOuttake = mOuttake;

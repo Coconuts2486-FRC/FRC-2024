@@ -6,8 +6,6 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import frc.robot.RobotContainer;
-import java.util.function.BooleanSupplier;
 
 public class ElevatorIOReal implements ElevatorIO {
   private final TalonFX elevatorMotor = new TalonFX(22, "drive");

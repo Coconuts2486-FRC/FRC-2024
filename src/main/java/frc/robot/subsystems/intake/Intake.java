@@ -82,8 +82,6 @@ public class Intake extends SubsystemBase {
     io.setPose(position);
   }
 
-
-
   public void setExtendPosition(double position) {
     io.setExtendPosition(position);
   }
