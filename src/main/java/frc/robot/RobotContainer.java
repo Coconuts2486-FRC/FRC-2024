@@ -67,7 +67,7 @@ public class RobotContainer {
   private final DigitalInput lightStop = new DigitalInput(2);
   private final DigitalInput intakeStop = new DigitalInput(3);
   private final DigitalInput elevatorBottom = new DigitalInput(0); // change this
-  private final DigitalInput elevatorTop = new DigitalInput(1);
+  public static final DigitalInput elevatorTop = new DigitalInput(1);
   private final Trigger lightTrigger = new Trigger(lightStop::get);
   private final Trigger intakeLimitTrigger = new Trigger(intakeStop::get);
   private final Trigger elevatorBottomTrigger = new Trigger(elevatorBottom::get);
@@ -215,22 +215,14 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     driver.y().onTrue(Commands.runOnce(() -> drive.zero()));
-
+    // Pivot Commands
     coDriver.leftStick().toggleOnTrue(new PivotCommand(pivot, () -> 45));
-
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
-
+    // shot command
     coDriver.rightBumper().whileTrue(new ShotCommand(intake, flywheel));
-
-    // coDriver.a().whileTrue(new ClimbCommand(elevator, elevatorTop::get, () -> 0, () -> 0));
-
-    // coDriver
-    //     .b()
-    //     .whileTrue(
-    //         Commands.startEnd(
-    //             //    () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
-    //             // flywheel));
-    //             () -> pivot.holdPosition(60), pivot::stop, pivot));
+    // climb command
+    //   coDriver.b().whileTrue(new ClimbCommand(elevator, elevatorTop::get, -.90));
+    //  coDriver.b().toggleOnFalse(new ClimbCommand(elevator, elevatorBottom::get, .40));
   }
 
   /**
