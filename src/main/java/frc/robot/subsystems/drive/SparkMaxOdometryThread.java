@@ -95,6 +95,7 @@ public class SparkMaxOdometryThread {
       if (isValid) {
         for (int i = 0; i < queues.size(); i++) {
           queues.get(i).offer(values[i]);
+          // making network tables not work :(
         }
         for (int i = 0; i < timestampQueues.size(); i++) {
           timestampQueues.get(i).offer(timestamp);

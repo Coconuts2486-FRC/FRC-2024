@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.8,
-        "y": 4.6
+        "x": 1.146150246004196,
+        "y": 5.54264092324481
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.7361469769235836,
-        "y": 4.346520781004525
+        "x": 1.646150246004196,
+        "y": 5.54264092324481
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.637575377002606,
-        "y": 4.093424561849124
+        "x": 2.6097970112606896,
+        "y": 5.543353535781145
       },
       "prevControl": {
-        "x": 6.869557215966283,
-        "y": 4.214746846160359
+        "x": 2.1097970112606896,
+        "y": 5.543353535781145
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
+    "maxVelocity": 5.5,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "2B Auto",
+  "folder": "ZMaking sure paths works",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

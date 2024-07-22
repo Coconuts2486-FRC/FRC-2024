@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.ElevatorCommands;
 import frc.robot.commands.Intake.IntakeExtendCommand;
@@ -139,11 +140,24 @@ public class RobotContainer {
     }
 
     // Set up auto routines
+
+    // this is example code don't run motor does wierd things
+    /*NamedCommands.registerCommand(
+    "Run Flywheel",
+    Commands.startEnd(
+            () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
+        .withTimeout(5.0)); */
+
+    // Can be added to auto path to tell robot to shoot during auto
+    NamedCommands.registerCommand("autoShoot", new ShotCommand(intake, flywheel));
+    // Should Extend then activate rollers during auto... Maybe
     NamedCommands.registerCommand(
-        "Run Flywheel",
-        Commands.startEnd(
-                () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
-            .withTimeout(5.0));
+        "autoIntake", new AutoIntakeCommand(intake, lightStop::get, intakeStop::get));
+
+    // NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake,
+    // intakeStop::get));
+
+    // idk path planner stuff
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up SysId routines
