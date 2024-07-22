@@ -47,6 +47,8 @@ import frc.robot.subsystems.flywheel.FlywheelIOSim;
 import frc.robot.subsystems.flywheel.FlywheelIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOReal;
+import frc.robot.subsystems.intake.IntakeRollers;
+import frc.robot.subsystems.intake.IntakeRollersIOReal;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -64,6 +66,7 @@ public class RobotContainer {
   private final Flywheel flywheel;
   private final Pivot pivot;
   private final Intake intake;
+    private final IntakeRollers intakeRollers = new IntakeRollers(new IntakeRollersIOReal());
   private final Elevator elevator;
   private final DigitalInput lightStop = new DigitalInput(2);
   private final DigitalInput intakeStop = new DigitalInput(3);
@@ -141,7 +144,7 @@ public class RobotContainer {
 
     // Set up auto routines
 
-    // this is example code don't run motor does wierd things
+    // this is example code. don't run. motor does wierd things
     /*NamedCommands.registerCommand(
     "Run Flywheel",
     Commands.startEnd(
@@ -149,10 +152,10 @@ public class RobotContainer {
         .withTimeout(5.0)); */
 
     // Can be added to auto path to tell robot to shoot during auto
-    NamedCommands.registerCommand("autoShoot", new ShotCommand(intake, flywheel));
+    NamedCommands.registerCommand("autoShoot", new ShotCommand(intake, intakeRollers, flywheel));
     // Should Extend then activate rollers during auto... Maybe
     NamedCommands.registerCommand(
-        "autoIntake", new AutoIntakeCommand(intake, lightStop::get, intakeStop::get));
+        "autoIntake", new AutoIntakeCommand(intakeRollers, intake, lightStop::get, intakeStop::get));
 
     // NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake,
     // intakeStop::get));
@@ -210,7 +213,7 @@ public class RobotContainer {
         .y()
         .whileTrue(
             new IntakeRollerCommand(
-                intake,
+               intakeRollers, intake,
                 () -> coDriver.getLeftTriggerAxis(),
                 () -> coDriver.getRightTriggerAxis(),
                 lightStop::get));
@@ -233,7 +236,7 @@ public class RobotContainer {
     coDriver.leftStick().toggleOnTrue(new PivotCommand(pivot, () -> 45));
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
     // shot command
-    coDriver.rightBumper().whileTrue(new ShotCommand(intake, flywheel));
+    coDriver.rightBumper().whileTrue(new ShotCommand(intake,  intakeRollers, flywheel));
     // climb command
     //   coDriver.b().whileTrue(new ClimbCommand(elevator, elevatorTop::get, -.90));
     //  coDriver.b().toggleOnFalse(new ClimbCommand(elevator, elevatorBottom::get, .40));

@@ -37,11 +37,7 @@ public class ElevatorIOReal implements ElevatorIO {
 
   @Override
   public void setDutyCycle(double percent) {
-    BooleanSupplier hi = RobotContainer.elevatorTop::get;
-    System.out.println(hi.getAsBoolean());
-    if (hi.getAsBoolean()) {
-      elevatorMotor.setControl(new DutyCycleOut(0));
-    }
+
     elevatorMotor.setControl(new DutyCycleOut(percent));
   }
 
