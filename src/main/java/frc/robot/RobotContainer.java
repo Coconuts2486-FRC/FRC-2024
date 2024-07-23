@@ -31,6 +31,9 @@ import frc.robot.commands.Elevator.ElevatorCommands;
 import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
+import frc.robot.commands.Pivot.PivotChangerDownCommand;
+import frc.robot.commands.Pivot.PivotChangerResetCommand;
+import frc.robot.commands.Pivot.PivotChangerUpCommand;
 import frc.robot.commands.Pivot.PivotCommand;
 import frc.robot.commands.ShotCommand;
 import frc.robot.subsystems.drive.Drive;
@@ -235,9 +238,17 @@ public class RobotContainer {
 
     driver.y().onTrue(Commands.runOnce(() -> drive.zero()));
     // Pivot Commands
-    coDriver.leftStick().toggleOnTrue(new PivotCommand(pivot, () -> 45));
-    coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
+    coDriver.povUp().whileTrue(new PivotChangerUpCommand());
 
+    coDriver.povDown().whileTrue(new PivotChangerDownCommand());
+
+    coDriver.povLeft().whileTrue(new PivotChangerResetCommand());
+    // coDriver.povDown().whileTrue(new PivotChangerCommand(0));
+    coDriver
+        .leftStick()
+        .toggleOnTrue(new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler));
+    coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
+    // (angler = angler+1);
     // shot command
     coDriver.rightBumper().whileTrue(new ShotCommand(intake, intakeRollers, flywheel));
     // climb command
