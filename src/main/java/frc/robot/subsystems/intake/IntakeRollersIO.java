@@ -22,4 +22,8 @@ public interface IntakeRollersIO {
       boolean lightStop) {}
 
   public default void stop() {}
+
+  public default void setVoltage(double volts){}
+  /** Set velocity PID constants. */
+  public default void configurePID(double kP, double kI, double kD) {}
 }

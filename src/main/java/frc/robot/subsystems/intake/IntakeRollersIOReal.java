@@ -3,6 +3,7 @@ package frc.robot.subsystems.intake;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
 
 public class IntakeRollersIOReal implements IntakeRollersIO {
@@ -17,10 +18,7 @@ public class IntakeRollersIOReal implements IntakeRollersIO {
   }
 
   @Override
-  public void updateInputs(IntakeIOInputs inputs) {
-   
-
-  }
+  public void updateInputs(IntakeIOInputs inputs) {}
 
   @Override
   public void stop() {
@@ -42,5 +40,17 @@ public class IntakeRollersIOReal implements IntakeRollersIO {
       intakeTop.set(ControlMode.PercentOutput, manualIn - manualOut);
       intakeBottom.set(ControlMode.PercentOutput, manualIn - manualOut);
     }
+  }
+  @Override
+  public void setVoltage(double volts) {
+     // intakeTop.set(ControlMod)
+  }
+
+  public void configurePID(double kP, double kI, double kD) {
+    var config = new Slot0Configs();
+    config.kP = kP;
+    config.kI = kI;
+    config.kD = kD;
+    // extend.getConfigurator().apply(config);
   }
 }
