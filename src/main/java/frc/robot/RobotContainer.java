@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.Drive.DriveCommands;
+import frc.robot.commands.Elevator.AmpCommand;
+import frc.robot.commands.Elevator.ClimbCommand;
 import frc.robot.commands.Elevator.ElevatorCommands;
 import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
@@ -252,18 +254,21 @@ public class RobotContainer {
     coDriver.povLeft().whileTrue(new PivotChangerResetCommand());
     // >
     // Go to 45
+        // Adding the manual angle and the amp angle changer
     coDriver
         .leftStick()
-        .toggleOnTrue(new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler));
+        .toggleOnTrue(new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
     // **
     // Shot
     coDriver.rightBumper().whileTrue(new ShotCommand(intakeRollers, flywheel));
+    //Amp command
+    coDriver.b().toggleOnTrue(new AmpCommand(intakeRollers, elevator, lightStop::get, elevatorTop::get));
+    coDriver.b().toggleOnFalse(new ClimbCommand(elevator, elevatorBottom::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(), .45).until(elevatorBottom::get));
     // climb command
-    // coDriver.b().whileTrue(new ClimbCommand(elevator, elevatorTop::get, -.90));
-    // coDriver.b().toggleOnFalse(new ClimbCommand(elevator, elevatorBottom::get,
-    // .40));
+    coDriver.a().toggleOnTrue(new ClimbCommand(elevator,elevatorTop::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(), -.90));
+    coDriver.a().toggleOnFalse(new ClimbCommand(elevator,elevatorBottom::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(),.40));
   }
 
   /**

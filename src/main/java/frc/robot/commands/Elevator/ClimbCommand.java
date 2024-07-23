@@ -10,13 +10,15 @@ public class ClimbCommand extends Command {
   private final BooleanSupplier stop;
   private final DoubleSupplier upAxis;
   private final DoubleSupplier downAxis;
+  private final double speed;
 
   public ClimbCommand(
-      Elevator elevator, BooleanSupplier stop, DoubleSupplier upAxis, DoubleSupplier downAxis) {
+      Elevator elevator, BooleanSupplier stop, DoubleSupplier upAxis, DoubleSupplier downAxis, double speed) {
     this.elevator = elevator;
     this.stop = stop;
     this.upAxis = upAxis;
     this.downAxis = downAxis;
+    this.speed = speed;
   }
 
   @Override
@@ -42,7 +44,7 @@ public class ClimbCommand extends Command {
     if (stop.getAsBoolean() == true) {
       elevator.stop();
     } else {
-      elevator.runDutyCycle(-.5 - fixUpAxis + fixDownAxis);
+      elevator.runDutyCycle(speed - fixUpAxis + fixDownAxis);
     }
   }
 
