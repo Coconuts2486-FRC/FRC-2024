@@ -24,6 +24,7 @@ public class IntakeRollersIOReal implements IntakeRollersIO {
     // TODO Auto-generated method stub
     IntakeRollersIO.super.updateInputs(inputs);
   }
+
   @Override
   public void setRollers(double topSpeed, double bottomSpeed) {
     topIntake.set(ControlMode.PercentOutput, topSpeed);

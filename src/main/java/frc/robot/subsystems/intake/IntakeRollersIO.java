@@ -33,7 +33,7 @@ public interface IntakeRollersIO {
   /** Run closed loop at the specified velocity. */
   public default void setVelocity(double velocityRadPerSec, double ffVolts) {}
 
-  public default void setRollers(double topSpeed, double bottomSpeed){}
+  public default void setRollers(double topSpeed, double bottomSpeed) {}
 
   /** Stop in open loop. */
   public default void stop() {}

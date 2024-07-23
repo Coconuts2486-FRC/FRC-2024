@@ -28,7 +28,7 @@ public class AutoIntakeCommand extends Command {
   @Override
   public void execute() {
     if (lightStop.getAsBoolean()) {
-            intakeRollers.setRollers(0, 0);
+      intakeRollers.setRollers(0, 0);
       intake.retract(intakeStop.getAsBoolean());
 
     } else {

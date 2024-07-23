@@ -38,6 +38,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+    LED.init();
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -106,7 +107,10 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically when disabled. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    LED.disable();
+    LED.ledStrip.setData(LED.ledBuffer);
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -137,7 +141,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    LED.Animate();
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override

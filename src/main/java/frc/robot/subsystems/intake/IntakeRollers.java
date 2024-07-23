@@ -61,8 +61,8 @@ public class IntakeRollers extends SubsystemBase {
     io.setVoltage(volts);
   }
 
-  public void setRollers(double topSpeed, double bottomSpeed){
-    io.setRollers(topSpeed,bottomSpeed);
+  public void setRollers(double topSpeed, double bottomSpeed) {
+    io.setRollers(topSpeed, bottomSpeed);
   }
   /** Run closed loop at the specified velocity. */
   public void runVelocity(double velocityRPM) {
