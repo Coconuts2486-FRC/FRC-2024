@@ -17,10 +17,7 @@ public class IntakeRollersIOReal implements IntakeRollersIO {
   }
 
   @Override
-  public void updateInputs(IntakeIOInputs inputs) {
-   
-
-  }
+  public void updateInputs(IntakeIOInputs inputs) {}
 
   @Override
   public void stop() {

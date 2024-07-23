@@ -45,7 +45,7 @@ public class IntakeRollers extends SubsystemBase {
 
   @Override
   public void periodic() {
-    io.updateInputs(inputs);
+    //io.updateInputs(inputs);
     // Logger.processInputs("Flywheel", inputs);
   }
 
