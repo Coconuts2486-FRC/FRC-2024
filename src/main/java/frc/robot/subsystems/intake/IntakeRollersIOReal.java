@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
+
 
 public class IntakeRollersIOReal implements IntakeRollersIO {
   private final TalonSRX intakeTop = new TalonSRX(20);
@@ -18,7 +18,7 @@ public class IntakeRollersIOReal implements IntakeRollersIO {
   }
 
   @Override
-  public void updateInputs(IntakeIOInputs inputs) {}
+  public void updateInputs(IntakeRollersIOInputs inputs) {}
 
   @Override
   public void stop() {

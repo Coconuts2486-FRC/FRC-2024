@@ -16,7 +16,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class IntakeRollers extends SubsystemBase {
   private final IntakeRollersIO io;
-  private final IntakeIORollersInputsAutoLogged inputs = new IntakeIORollersInputsAutoLogged();
+  private final IntakeRollersIOInputsAutoLogged inputs = new IntakeRollersIOInputsAutoLogged();
   private final SimpleMotorFeedforward ffModel;
   private final SysIdRoutine sysId;
 
@@ -56,7 +56,7 @@ public class IntakeRollers extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    // Logger.processInputs("Flywheel", inputs);
+     Logger.processInputs("Flywheel", inputs);
   }
 
   /** Run open loop at the specified voltage. */
