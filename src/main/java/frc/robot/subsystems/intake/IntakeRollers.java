@@ -2,14 +2,11 @@ package frc.robot.subsystems.intake;
 
 import static edu.wpi.first.units.Units.*;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.Logger;
 
 public class IntakeRollers extends SubsystemBase {
   private final IntakeRollersIO io;
-  private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
+  private final IntakeIORollersInputsAutoLogged inputs = new IntakeIORollersInputsAutoLogged();
   // private final SimpleMotorFeedforward ffModel;
   // private final SysIdRoutine sysId;
 
@@ -49,7 +46,7 @@ public class IntakeRollers extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Flywheel", inputs);
+    // Logger.processInputs("Flywheel", inputs);
   }
 
   /** Run open loop at the specified voltage. */
@@ -81,13 +78,13 @@ public class IntakeRollers extends SubsystemBase {
   //   }
 
   /** Returns the current velocity in RPM. */
-  @AutoLogOutput
-  public double getVelocityRPM() {
-    return Units.radiansPerSecondToRotationsPerMinute(inputs.velocityRadPerSec);
-  }
+  //   @AutoLogOutput
+  //   public double getVelocityRPM() {
+  //     return Units.radiansPerSecondToRotationsPerMinute(inputs.velocityRadPerSec);
+  //   }
 
   /** Returns the current velocity in radians per second. */
-  public double getCharacterizationVelocity() {
-    return inputs.velocityRadPerSec;
-  }
+  //   public double getCharacterizationVelocity() {
+  //     return inputs.velocityRadPerSec;
+  //   }
 }
