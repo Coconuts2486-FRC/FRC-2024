@@ -18,7 +18,11 @@ public class IntakeRetractCommand extends Command {
 
   @Override
   public void execute() {
-    intake.retract(intakeLimit.getAsBoolean());
+    if (intakeLimit.getAsBoolean()) {
+      intake.stop();
+    } else {
+      intake.retract();
+    }
   }
 
   @Override

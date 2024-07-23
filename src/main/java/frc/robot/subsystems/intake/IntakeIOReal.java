@@ -38,11 +38,12 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public void retract(boolean limit) {
-    if (limit) {
-      extend.setControl(new DutyCycleOut(0));
-      extend.setPosition(0);
-    } else if (extend.getPosition().getValueAsDouble() > 4.8) {
+  public void retract() {
+    // if (limit) {
+    //   extend.setControl(new DutyCycleOut(0));
+    //   extend.setPosition(0);
+    // } else
+    if (extend.getPosition().getValueAsDouble() > 4.8) {
       extend.setControl(new DutyCycleOut(-.8));
     } else {
       extend.setControl(new DutyCycleOut(-.3));

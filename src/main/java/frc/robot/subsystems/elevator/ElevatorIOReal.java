@@ -41,6 +41,6 @@ public class ElevatorIOReal implements ElevatorIO {
 
   @Override
   public void stop() {
-    elevatorMotor.setControl(new DutyCycleOut(0));
+    elevatorMotor.stopMotor();
   }
 }

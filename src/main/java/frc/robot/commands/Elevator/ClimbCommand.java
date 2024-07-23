@@ -24,11 +24,25 @@ public class ClimbCommand extends Command {
 
   @Override
   public void execute() {
+    // Manual DeadBand
+    double fixUpAxis;
+    double fixDownAxis;
+    if (Math.abs(upAxis.getAsDouble()) < .1) {
+      fixUpAxis = 0;
+    } else {
+      fixUpAxis = upAxis.getAsDouble();
+    }
+    if (Math.abs(downAxis.getAsDouble()) < .1) {
+      fixDownAxis = 0;
+    } else {
+      fixDownAxis = downAxis.getAsDouble();
+    }
 
+    // actual command
     if (stop.getAsBoolean() == true) {
       elevator.stop();
     } else {
-      elevator.runDutyCycle(-.5);
+      elevator.runDutyCycle(-.5 - fixUpAxis + fixDownAxis);
     }
   }
 

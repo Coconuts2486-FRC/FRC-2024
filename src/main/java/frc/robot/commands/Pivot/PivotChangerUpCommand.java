@@ -17,7 +17,5 @@ public class PivotChangerUpCommand extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {
-    angler = angler;
-  }
+  public void end(boolean interrupted) {}
 }

@@ -16,7 +16,5 @@ public class PivotChangerResetCommand extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {
-    PivotChangerUpCommand.angler = PivotChangerUpCommand.angler;
-  }
+  public void end(boolean interrupted) {}
 }

@@ -35,7 +35,7 @@ public interface IntakeIO {
 
   public default void setExtendPosition(double position) {}
 
-  public default void retract(boolean limit) {}
+  public default void retract() {}
 
   public default void setPose(int position) {}
 

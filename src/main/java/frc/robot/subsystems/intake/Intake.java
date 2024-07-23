@@ -74,8 +74,8 @@ public class Intake extends SubsystemBase {
     io.stop();
   }
 
-  public void retract(boolean limit) {
-    io.retract(limit);
+  public void retract() {
+    io.retract();
   }
 
   public void setPose(int position) {

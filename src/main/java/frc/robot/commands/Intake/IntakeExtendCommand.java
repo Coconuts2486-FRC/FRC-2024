@@ -21,7 +21,11 @@ public class IntakeExtendCommand extends Command {
   @Override
   public void execute() {
     if (lightStop.getAsBoolean()) {
-      intake.retract(intakeStop.getAsBoolean());
+      if (intakeStop.getAsBoolean()) {
+        intake.stop();
+      } else {
+        intake.retract();
+      }
     } else {
       intake.setExtendPosition(48.8);
     }

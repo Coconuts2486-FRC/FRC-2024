@@ -18,8 +18,8 @@ public class AutoIntakeCommand extends Command {
       BooleanSupplier intakeStop) {
     this.intake = intake;
     this.lightStop = lightStop;
-    this.intakeStop = intakeStop;
     this.intakeRollers = intakeRollers;
+    this.intakeStop = intakeStop;
   }
 
   @Override
@@ -29,8 +29,11 @@ public class AutoIntakeCommand extends Command {
   public void execute() {
     if (lightStop.getAsBoolean()) {
       intakeRollers.setRollers(0, 0);
-      intake.retract(intakeStop.getAsBoolean());
-
+      if (intakeStop.getAsBoolean()) {
+        intake.stop();
+      } else {
+        intake.retract();
+      }
     } else {
       intake.setExtendPosition(48.8);
       intakeRollers.setRollers(.3, 0.35);
