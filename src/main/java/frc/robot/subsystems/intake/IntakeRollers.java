@@ -53,11 +53,11 @@ public class IntakeRollers extends SubsystemBase {
             new SysIdRoutine.Mechanism((voltage) -> runVolts(voltage.in(Volts)), null, this));
   }
 
-  // @Override
-  // public void periodic() {
-  //   io.updateInputs(inputs);
-  //    Logger.processInputs("Intake Rollers", inputs);
-  // }
+  @Override
+  public void periodic() {
+    io.updateInputs(inputs);
+    // Logger.processInputs("Flywheel", inputs);
+  }
 
   /** Run open loop at the specified voltage. */
 
