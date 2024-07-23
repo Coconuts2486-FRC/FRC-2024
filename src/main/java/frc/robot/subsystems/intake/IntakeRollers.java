@@ -2,14 +2,11 @@ package frc.robot.subsystems.intake;
 
 import static edu.wpi.first.units.Units.*;
 
-//import com.ctre.phoenix.Logger;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-//import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-//import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -49,34 +46,36 @@ public class IntakeRollers extends SubsystemBase {
                 null,
                 null,
                 null,
-                (state) -> Logger.recordOutput("IntakeRollers/SysIdState", state.toString())),
+                (state) -> Logger.recordOutput("Pivot/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism((voltage) -> runVolts(voltage.in(Volts)), null, this));
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-     Logger.processInputs("Flywheel", inputs);
+    Logger.processInputs("Flywheel", inputs);
   }
 
   /** Run open loop at the specified voltage. */
+  public void runVolts(double volts) {
+    io.setVoltage(volts);
+  }
 
+  public void setRollers(double topSpeed, double bottomSpeed){
+    io.setRollers(topSpeed,bottomSpeed);
+  }
   /** Run closed loop at the specified velocity. */
+  public void runVelocity(double velocityRPM) {
+    var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(velocityRPM);
+    io.setVelocity(velocityRadPerSec, ffModel.calculate(velocityRadPerSec));
+
+    // Log flywheel setpoint
+    Logger.recordOutput("Pivot/SetpointRPM", velocityRPM);
+  }
 
   /** Stops the flywheel. */
   public void stop() {
     io.stop();
-  }
-  public void runVolts(double volts) {
-    io.setVoltage(volts);
-  }
-  public void setRollers(
-      double staticPercentTop,
-      double staticPercentBottom,
-      double manualIn,
-      double manualOut,
-      boolean lightstop) {
-    io.setRollerDutyCycle(staticPercentTop, staticPercentBottom, manualIn, manualOut, lightstop);
   }
 
   /** Returns a command to run a quasistatic test in the specified direction. */

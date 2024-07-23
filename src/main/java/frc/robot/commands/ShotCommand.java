@@ -24,7 +24,7 @@ public class ShotCommand extends Command {
     flywheel.setDutyCycle(1);
 
     if (flywheel.getVelocity() > 68.36) {
-      intakeRollers.setRollers(0, 0, 1, 0, true);
+      intakeRollers.setRollers(0, 0);
     }
   }
 

@@ -31,7 +31,7 @@ public class AutoIntakeCommand extends Command {
       intake.retract(intakeStop.getAsBoolean());
     } else {
       intake.setExtendPosition(48.8);
-      intakeRollers.setRollers(.3, 0.35, 0, 0, true);
+      intakeRollers.setRollers(.3, 0.35);
     }
   }
 

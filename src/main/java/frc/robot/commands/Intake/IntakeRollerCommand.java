@@ -3,6 +3,7 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeRollers;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -31,9 +32,7 @@ public class IntakeRollerCommand extends Command {
 
   @Override
   public void execute() {
-    intakeRollers.setRollers(
-        .3, .35, mIntake.getAsDouble(), mOuttake.getAsDouble(), lightStop.getAsBoolean());
-    if (lightStop.getAsBoolean()) {}
+    intakeRollers.setRollers(.3, .35);
   }
 
   @Override
