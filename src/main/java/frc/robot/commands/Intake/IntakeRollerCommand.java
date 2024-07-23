@@ -32,7 +32,12 @@ public class IntakeRollerCommand extends Command {
 
   @Override
   public void execute() {
-    intakeRollers.setRollers(.3, .35);
+    if(lightStop.getAsBoolean()){
+ intakeRollers.setRollers(mOuttake.getAsDouble()-mIntake.getAsDouble(), mOuttake.getAsDouble()-mIntake.getAsDouble());
+    }else{
+ intakeRollers.setRollers(.3+mOuttake.getAsDouble()-mIntake.getAsDouble(), .35+mOuttake.getAsDouble()-mIntake.getAsDouble());
+    }
+   
   }
 
   @Override
