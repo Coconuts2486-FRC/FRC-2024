@@ -13,7 +13,11 @@ public class ClimbCommand extends Command {
   private final double speed;
 
   public ClimbCommand(
-      Elevator elevator, BooleanSupplier stop, DoubleSupplier upAxis, DoubleSupplier downAxis, double speed) {
+      Elevator elevator,
+      BooleanSupplier stop,
+      DoubleSupplier upAxis,
+      DoubleSupplier downAxis,
+      double speed) {
     this.elevator = elevator;
     this.stop = stop;
     this.upAxis = upAxis;

@@ -29,7 +29,6 @@ import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
-import frc.robot.commands.Elevator.ElevatorCommands;
 import frc.robot.commands.Elevator.ManualElevatorCommand;
 import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
@@ -286,8 +285,15 @@ public class RobotContainer {
                     .45)
                 .until(elevatorBottom::get));
     // climb command
-    coDriverRight.whileTrue(new ManualElevatorCommand(elevator, elevatorTop::get, elevatorTop::get, () -> coDriver.getLeftTriggerAxis(),() -> coDriver.getRightTriggerAxis()));
-    coDriverLeft.whileTrue(new ManualElevatorCommand(elevator, coDriverRight, coDriverLeft, null, null));
+    coDriverRight.whileTrue(
+        new ManualElevatorCommand(
+            elevator,
+            elevatorTop::get,
+            elevatorTop::get,
+            () -> coDriver.getLeftTriggerAxis(),
+            () -> coDriver.getRightTriggerAxis()));
+    coDriverLeft.whileTrue(
+        new ManualElevatorCommand(elevator, coDriverRight, coDriverLeft, null, null));
 
     coDriver
         .a()
