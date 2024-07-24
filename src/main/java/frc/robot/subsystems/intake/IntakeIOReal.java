@@ -1,8 +1,5 @@
 package frc.robot.subsystems.intake;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -11,10 +8,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class IntakeIOReal implements IntakeIO {
-  private final TalonSRX intakeTop = new TalonSRX(20);
-  private final TalonSRX intakeBottom = new TalonSRX(19);
   private final TalonFX extend = new TalonFX(18);
-  private final double leaderPosition = intakeTop.getSelectedSensorPosition();
+
   // public static DigitalInput lightStop = new DigitalInput(2);
   // public static DigitalInput intakeStop = new DigitalInput(3);
   // private final double leaderVelocity = intakeTop.getVelocity();
@@ -23,8 +18,6 @@ public class IntakeIOReal implements IntakeIO {
   public IntakeIOReal() {
     var brake = new MotorOutputConfigs();
     brake.NeutralMode = NeutralModeValue.Brake;
-    intakeTop.setNeutralMode(NeutralMode.Brake);
-    intakeBottom.setNeutralMode(NeutralMode.Brake);
     extend.getConfigurator().apply(brake);
   }
 
@@ -40,34 +33,17 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public void setRollerDutyCycle(
-      double staticPercentTop,
-      double staticPercentBottom,
-      double manualIn,
-      double manualOut,
-      boolean lightStop) {
-    // System.out.println(lightStop);
-    if (lightStop == false) {
-      intakeTop.set(ControlMode.PercentOutput, staticPercentTop);
-      intakeBottom.set(ControlMode.PercentOutput, staticPercentBottom);
-    } else {
-      intakeTop.set(ControlMode.PercentOutput, manualIn - manualOut);
-      intakeBottom.set(ControlMode.PercentOutput, manualIn - manualOut);
-    }
-  }
-
-  @Override
   public void stop() {
-    intakeTop.set(ControlMode.PercentOutput, 0);
-    intakeBottom.set(ControlMode.PercentOutput, 0);
+    extend.setControl(new DutyCycleOut(0));
   }
 
   @Override
-  public void retract(boolean limit) {
-    if (limit) {
-      extend.setControl(new DutyCycleOut(0));
-      extend.setPosition(0);
-    } else if (extend.getPosition().getValueAsDouble() > 4.8) {
+  public void retract() {
+    // if (limit) {
+    //   extend.setControl(new DutyCycleOut(0));
+    //   extend.setPosition(0);
+    // } else
+    if (extend.getPosition().getValueAsDouble() > 4.8) {
       extend.setControl(new DutyCycleOut(-.8));
     } else {
       extend.setControl(new DutyCycleOut(-.3));

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.660214348206474,
-        "y": 6.8172672132381305
+        "x": 1.25,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.680200425215665,
-        "y": 6.946725157339205
+        "x": 1.2466457869750311,
+        "y": 5.5
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.616731460314772,
-        "y": 7.460934486683788
+        "x": 1.25,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 6.998005625640881,
-        "y": 7.400659342985353
+        "x": 1.2479343111879893,
+        "y": 5.5
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.5,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "1B Auto",
+  "folder": "1 Auto Subwoofer",
   "previewStartingState": null,
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

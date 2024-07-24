@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.8,
-        "y": 4.6
+        "x": 5.35,
+        "y": 6.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.7361469769235836,
-        "y": 4.346520781004525
+        "x": 5.347421733003185,
+        "y": 6.3
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.637575377002606,
-        "y": 4.093424561849124
+        "x": 5.35,
+        "y": 6.3
       },
       "prevControl": {
-        "x": 6.869557215966283,
-        "y": 4.214746846160359
+        "x": 5.354148414305059,
+        "y": 6.3
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,17 +33,17 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 13.843146946481923,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "2B Auto",
+  "folder": "1 Auto Subwoofer",
   "previewStartingState": null,
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

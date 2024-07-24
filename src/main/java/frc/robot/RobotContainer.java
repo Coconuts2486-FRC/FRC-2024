@@ -23,14 +23,19 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.Drive.DriveCommands;
+import frc.robot.commands.Elevator.AmpCommand;
+import frc.robot.commands.Elevator.ClimbCommand;
 import frc.robot.commands.Elevator.ElevatorCommands;
 import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
+import frc.robot.commands.Intake.ManualRollerCmd;
+import frc.robot.commands.Pivot.PivotChangerDownCommand;
+import frc.robot.commands.Pivot.PivotChangerResetCommand;
+import frc.robot.commands.Pivot.PivotChangerUpCommand;
 import frc.robot.commands.Pivot.PivotCommand;
 import frc.robot.commands.ShotCommand;
 import frc.robot.subsystems.drive.Drive;
@@ -47,10 +52,11 @@ import frc.robot.subsystems.flywheel.FlywheelIOSim;
 import frc.robot.subsystems.flywheel.FlywheelIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOReal;
+import frc.robot.subsystems.intake.IntakeRollers;
+import frc.robot.subsystems.intake.IntakeRollersIOReal;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -64,14 +70,12 @@ public class RobotContainer {
   private final Flywheel flywheel;
   private final Pivot pivot;
   private final Intake intake;
+  private final IntakeRollers intakeRollers = new IntakeRollers(new IntakeRollersIOReal());
   private final Elevator elevator;
   private final DigitalInput lightStop = new DigitalInput(2);
   private final DigitalInput intakeStop = new DigitalInput(3);
   private final DigitalInput elevatorBottom = new DigitalInput(0); // change this
-  private final DigitalInput elevatorTop = new DigitalInput(1);
-  private final Trigger lightTrigger = new Trigger(lightStop::get);
-  private final Trigger intakeLimitTrigger = new Trigger(intakeStop::get);
-  private final Trigger elevatorBottomTrigger = new Trigger(elevatorBottom::get);
+  public static final DigitalInput elevatorTop = new DigitalInput(1);
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -79,8 +83,8 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
-  private final LoggedDashboardNumber flywheelSpeedInput =
-      new LoggedDashboardNumber("Flywheel Speed", 1500.0);
+  // private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel
+  // Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -88,12 +92,12 @@ public class RobotContainer {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         // drive =
-        //     new Drive(
-        //         new GyroIOPigeon2(false),
-        //         new ModuleIOSparkMax(0),
-        //         new ModuleIOSparkMax(1),
-        //         new ModuleIOSparkMax(2),
-        //         new ModuleIOSparkMax(3));
+        // new Drive(
+        // new GyroIOPigeon2(false),
+        // new ModuleIOSparkMax(0),
+        // new ModuleIOSparkMax(1),
+        // new ModuleIOSparkMax(2),
+        // new ModuleIOSparkMax(3));
         // flywheel = new Flywheel(new FlywheelIOSparkMax());
         drive =
             new Drive(
@@ -141,19 +145,25 @@ public class RobotContainer {
 
     // Set up auto routines
 
-    // this is example code don't run motor does wierd things
-    /*NamedCommands.registerCommand(
-    "Run Flywheel",
-    Commands.startEnd(
-            () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
-        .withTimeout(5.0)); */
+    // this is example code. don't run. motor does wierd things
+    /*
+     * NamedCommands.registerCommand(
+     * "Run Flywheel",
+     * Commands.startEnd(
+     * () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
+     * flywheel)
+     * .withTimeout(5.0));
+     */
 
     // Can be added to auto path to tell robot to shoot during auto
-    NamedCommands.registerCommand("autoShoot", new ShotCommand(intake, flywheel));
+    NamedCommands.registerCommand("autoShoot", new ShotCommand(intakeRollers, flywheel));
     // Should Extend then activate rollers during auto... Maybe
-    NamedCommands.registerCommand("autoIntake", new AutoIntakeCommand(intake, lightStop::get, intakeStop::get));
+    NamedCommands.registerCommand(
+        "autoIntake",
+        new AutoIntakeCommand(intakeRollers, intake, lightStop::get, intakeStop::get));
 
-    //NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake, intakeStop::get));
+    // NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake,
+    // intakeStop::get));
 
     // idk path planner stuff
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -191,11 +201,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // Drive Command
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> driver.getRightX()));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-
+    // Manual Elevator
     elevator.setDefaultCommand(
         ElevatorCommands.manualElevator(
             elevator,
@@ -203,19 +214,26 @@ public class RobotContainer {
             () -> coDriver.getLeftTriggerAxis(),
             elevatorBottom::get,
             elevatorTop::get));
-
+    // Manual Intake
+    intakeRollers.setDefaultCommand(
+        ManualRollerCmd.manualRoller(
+            intakeRollers, () -> driver.getRightTriggerAxis(), () -> driver.getLeftTriggerAxis()));
+    // ** Normal Intake
+    // - Rollers
     coDriver
         .y()
         .whileTrue(
             new IntakeRollerCommand(
-                intake,
+                intakeRollers,
                 () -> coDriver.getLeftTriggerAxis(),
                 () -> coDriver.getRightTriggerAxis(),
                 lightStop::get));
-
+    // - Extend
     coDriver.y().whileTrue(new IntakeExtendCommand(intake, lightStop::get, intakeStop::get));
+    // - Retract
     coDriver.y().whileFalse(new IntakeRetractCommand(intake, intakeStop::get));
-
+    // **
+    // I Actually Don't know
     driver
         .b()
         .onTrue(
@@ -225,24 +243,32 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-
+    // Re-Zero Gyro
     driver.y().onTrue(Commands.runOnce(() -> drive.zero()));
+    // ** Pivot Commands
+    // > These three are the manual angle changer
+    coDriver.povUp().whileTrue(new PivotChangerUpCommand());
 
-    coDriver.leftStick().toggleOnTrue(new PivotCommand(pivot, () -> 45));
+    coDriver.povDown().whileTrue(new PivotChangerDownCommand());
 
+    coDriver.povLeft().whileTrue(new PivotChangerResetCommand());
+    // >
+    // Go to 45
+        // Adding the manual angle and the amp angle changer
+    coDriver
+        .leftStick()
+        .toggleOnTrue(new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
+    // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
-
-    coDriver.rightBumper().whileTrue(new ShotCommand(intake, flywheel));
-
-    // coDriver.a().whileTrue(new ClimbCommand(elevator, elevatorTop::get, () -> 0, () -> 0));
-
-    // coDriver
-    //     .b()
-    //     .whileTrue(
-    //         Commands.startEnd(
-    //             //    () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
-    //             // flywheel));
-    //             () -> pivot.holdPosition(60), pivot::stop, pivot));
+    // **
+    // Shot
+    coDriver.rightBumper().whileTrue(new ShotCommand(intakeRollers, flywheel));
+    //Amp command
+    coDriver.b().toggleOnTrue(new AmpCommand(intakeRollers, elevator, lightStop::get, elevatorTop::get));
+    coDriver.b().toggleOnFalse(new ClimbCommand(elevator, elevatorBottom::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(), .45).until(elevatorBottom::get));
+    // climb command
+    coDriver.a().toggleOnTrue(new ClimbCommand(elevator,elevatorTop::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(), -.90));
+    coDriver.a().toggleOnFalse(new ClimbCommand(elevator,elevatorBottom::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(),.40));
   }
 
   /**

@@ -15,17 +15,17 @@ package frc.robot.subsystems.intake;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface IntakeIO {
+public interface IntakeRollersIO {
   @AutoLog
-  public static class IntakeIOInputs {
+  public static class IntakeRollersIOInputs {
     public double positionRad = 0.0;
     public double velocityRadPerSec = 0.0;
     public double appliedVolts = 0.0;
     public double[] currentAmps = new double[] {};
   }
-
+  // just so sam can pull
   /** Updates the set of loggable inputs. */
-  public default void updateInputs(IntakeIOInputs inputs) {}
+  public default void updateInputs(IntakeRollersIOInputs inputs) {}
 
   /** Run open loop at the specified voltage. */
   public default void setVoltage(double volts) {}
@@ -33,11 +33,7 @@ public interface IntakeIO {
   /** Run closed loop at the specified velocity. */
   public default void setVelocity(double velocityRadPerSec, double ffVolts) {}
 
-  public default void setExtendPosition(double position) {}
-
-  public default void retract() {}
-
-  public default void setPose(int position) {}
+  public default void setRollers(double topSpeed, double bottomSpeed) {}
 
   /** Stop in open loop. */
   public default void stop() {}

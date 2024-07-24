@@ -7,6 +7,7 @@ import java.util.function.DoubleSupplier;
 public class PivotCommand extends Command {
   private final Pivot pivot;
   private final DoubleSupplier angle;
+  double anglee = 0;
 
   public PivotCommand(Pivot pivot, DoubleSupplier angle) {
     this.angle = angle;
@@ -18,6 +19,7 @@ public class PivotCommand extends Command {
 
   @Override
   public void execute() {
+
     pivot.holdPosition(angle.getAsDouble());
   }
 

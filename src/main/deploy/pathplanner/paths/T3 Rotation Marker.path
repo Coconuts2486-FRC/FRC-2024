@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.8211395450568681,
-        "y": 6.552591040367266
+        "x": 1.1963894298158968,
+        "y": 5.54323476702509
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1634311000103494,
-        "y": 7.032951274235882
+        "x": 2.3144234185657897,
+        "y": 5.54323476702509
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7302285299015043,
-        "y": 7.719909759263964
+        "x": 4.241442181958438,
+        "y": 4.849862769169983
       },
       "prevControl": {
-        "x": 1.316014967528412,
-        "y": 7.719909759263964
+        "x": 3.241442181958438,
+        "y": 5.849862769169983
       },
       "nextControl": {
-        "x": 4.144442092274599,
-        "y": 7.719909759263964
+        "x": 5.241442181958437,
+        "y": 3.8498627691699827
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.598559840638201,
-        "y": 7.45
+        "x": 7.3,
+        "y": 4.13
       },
       "prevControl": {
-        "x": 6.880303775362413,
-        "y": 7.45
+        "x": 6.319812768895433,
+        "y": 3.9319268014607665
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,9 +46,9 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.75,
-      "rotationDegrees": 0,
-      "rotateFast": false
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": 180.0,
+      "rotateFast": true
     }
   ],
   "constraintZones": [],
@@ -65,7 +65,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3B Auto",
+  "folder": "Teaching",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

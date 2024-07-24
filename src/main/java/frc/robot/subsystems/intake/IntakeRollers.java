@@ -11,13 +11,13 @@ import frc.robot.Constants;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
-public class Intake extends SubsystemBase {
-  private final IntakeIO io;
-  private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
+public class IntakeRollers extends SubsystemBase {
+  private final IntakeRollersIO io;
+  private final IntakeRollersIOInputsAutoLogged inputs = new IntakeRollersIOInputsAutoLogged();
   private final SimpleMotorFeedforward ffModel;
   private final SysIdRoutine sysId;
 
-  public Intake(IntakeIO io) {
+  public IntakeRollers(IntakeRollersIO io) {
     this.io = io;
 
     // Switch constants based on mode (the physics simulator is treated as a
@@ -60,6 +60,10 @@ public class Intake extends SubsystemBase {
   public void runVolts(double volts) {
     io.setVoltage(volts);
   }
+
+  public void setRollers(double topSpeed, double bottomSpeed) {
+    io.setRollers(topSpeed, bottomSpeed);
+  }
   /** Run closed loop at the specified velocity. */
   public void runVelocity(double velocityRPM) {
     var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(velocityRPM);
@@ -72,18 +76,6 @@ public class Intake extends SubsystemBase {
   /** Stops the flywheel. */
   public void stop() {
     io.stop();
-  }
-
-  public void retract() {
-    io.retract();
-  }
-
-  public void setPose(int position) {
-    io.setPose(position);
-  }
-
-  public void setExtendPosition(double position) {
-    io.setExtendPosition(position);
   }
 
   /** Returns a command to run a quasistatic test in the specified direction. */
