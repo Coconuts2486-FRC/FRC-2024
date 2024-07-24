@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.7,
-        "y": 7.23
+        "x": 7.3,
+        "y": 4.13
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.702172995397528,
-        "y": 7.230582252361924
+        "x": 7.8000000000000025,
+        "y": 4.13
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.698681901993433,
-        "y": 7.234680006397051
+        "x": 7.88,
+        "y": 4.13
       },
       "prevControl": {
-        "x": 7.694265112353451,
-        "y": 7.233496531179879
+        "x": 7.38,
+        "y": 4.13
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,17 +33,20 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 15.787770460841665,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "1 Auto Subwoofer",
-  "previewStartingState": null,
-  "useDefaultConstraints": true
+  "folder": "Teaching",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 2.0
+  },
+  "useDefaultConstraints": false
 }
