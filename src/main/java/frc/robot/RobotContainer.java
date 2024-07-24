@@ -23,12 +23,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
 import frc.robot.commands.Elevator.ElevatorCommands;
+import frc.robot.commands.Elevator.ManualElevatorCommand;
 import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
@@ -80,6 +82,11 @@ public class RobotContainer {
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
   private final CommandXboxController coDriver = new CommandXboxController(1);
+
+  private final Trigger coDriverLeft = new Trigger(() -> coDriver.getLeftTriggerAxis() >= .1);
+  private final Trigger coDriverRight = new Trigger(() -> coDriver.getRightTriggerAxis() >= .1);
+  private final Trigger driverLeft = new Trigger(() -> driver.getLeftTriggerAxis() >= .1);
+  private final Trigger driverRight = new Trigger(() -> driver.getRightTriggerAxis() >= .1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -207,13 +214,13 @@ public class RobotContainer {
             drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> driver.getRightX()));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     // Manual Elevator
-    elevator.setDefaultCommand(
-        ElevatorCommands.manualElevator(
-            elevator,
-            () -> coDriver.getRightTriggerAxis(),
-            () -> coDriver.getLeftTriggerAxis(),
-            elevatorBottom::get,
-            elevatorTop::get));
+    // elevator.setDefaultCommand(
+    //     ElevatorCommands.manualElevator(
+    //         elevator,
+    //         () -> coDriver.getRightTriggerAxis(),
+    //         () -> coDriver.getLeftTriggerAxis(),
+    //         elevatorBottom::get,
+    //         elevatorTop::get));
     // Manual Intake
     intakeRollers.setDefaultCommand(
         ManualRollerCmd.manualRoller(
@@ -254,21 +261,52 @@ public class RobotContainer {
     coDriver.povLeft().whileTrue(new PivotChangerResetCommand());
     // >
     // Go to 45
-        // Adding the manual angle and the amp angle changer
+    // Adding the manual angle and the amp angle changer
     coDriver
         .leftStick()
-        .toggleOnTrue(new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
+        .toggleOnTrue(
+            new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
     // **
     // Shot
     coDriver.rightBumper().whileTrue(new ShotCommand(intakeRollers, flywheel));
-    //Amp command
-    coDriver.b().toggleOnTrue(new AmpCommand(intakeRollers, elevator, lightStop::get, elevatorTop::get));
-    coDriver.b().toggleOnFalse(new ClimbCommand(elevator, elevatorBottom::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(), .45).until(elevatorBottom::get));
+    // Amp command
+    coDriver
+        .b()
+        .toggleOnTrue(new AmpCommand(intakeRollers, elevator, lightStop::get, elevatorTop::get));
+    coDriver
+        .b()
+        .toggleOnFalse(
+            new ClimbCommand(
+                    elevator,
+                    elevatorBottom::get,
+                    () -> coDriver.getRightTriggerAxis(),
+                    () -> coDriver.getLeftTriggerAxis(),
+                    .45)
+                .until(elevatorBottom::get));
     // climb command
-    coDriver.a().toggleOnTrue(new ClimbCommand(elevator,elevatorTop::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(), -.90));
-    coDriver.a().toggleOnFalse(new ClimbCommand(elevator,elevatorBottom::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(),.40));
+    coDriverRight.whileTrue(new ManualElevatorCommand(elevator, elevatorTop::get, elevatorTop::get, () -> coDriver.getLeftTriggerAxis(),() -> coDriver.getRightTriggerAxis()));
+    coDriverLeft.whileTrue(new ManualElevatorCommand(elevator, coDriverRight, coDriverLeft, null, null));
+
+    coDriver
+        .a()
+        .toggleOnTrue(
+            new ClimbCommand(
+                elevator,
+                elevatorTop::get,
+                () -> coDriver.getRightTriggerAxis(),
+                () -> coDriver.getLeftTriggerAxis(),
+                -.50));
+    coDriver
+        .a()
+        .toggleOnFalse(
+            new ClimbCommand(
+                elevator,
+                elevatorBottom::get,
+                () -> coDriver.getRightTriggerAxis(),
+                () -> coDriver.getLeftTriggerAxis(),
+                .40));
   }
 
   /**
