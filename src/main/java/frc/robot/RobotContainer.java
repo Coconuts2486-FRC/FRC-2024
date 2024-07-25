@@ -13,17 +13,13 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
@@ -32,7 +28,8 @@ import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
 import frc.robot.commands.Intake.ManualRollerCmd;
-import frc.robot.commands.Pivot.PivotChangerTrueCommand;
+import frc.robot.commands.Pivot.PivotChangerDownCommand;
+import frc.robot.commands.Pivot.PivotChangerResetCommand;
 import frc.robot.commands.Pivot.PivotChangerUpCommand;
 import frc.robot.commands.Pivot.PivotCommand;
 import frc.robot.commands.ShotCommand;
@@ -54,7 +51,6 @@ import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.intake.IntakeRollersIOReal;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -80,7 +76,6 @@ public class RobotContainer {
   private final CommandXboxController coDriver = new CommandXboxController(1);
 
   // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
   // private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel
   // Speed", 1500.0);
 
@@ -142,51 +137,6 @@ public class RobotContainer {
     }
 
     // Set up auto routines
-
-    // this is example code. don't run. motor does wierd things
-    /*
-     * NamedCommands.registerCommand(
-     * "Run Flywheel",
-     * Commands.startEnd(
-     * () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
-     * flywheel)
-     * .withTimeout(5.0));
-     */
-
-    // Can be added to auto path to tell robot to shoot during auto
-    NamedCommands.registerCommand("autoShoot", new ShotCommand(intakeRollers, flywheel));
-    // Should Extend then activate rollers during auto... Maybe
-    // temporary fix
-    NamedCommands.registerCommand("autoIntake", new ShotCommand(intakeRollers, flywheel));
-
-    // NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake,
-    // intakeStop::get));
-
-    // idk path planner stuff
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-
-    // Set up SysId routines
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Flywheel SysId (Quasistatic Forward)",
-        flywheel.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Flywheel SysId (Quasistatic Reverse)",
-        flywheel.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Flywheel SysId (Dynamic Forward)", flywheel.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Flywheel SysId (Dynamic Reverse)", flywheel.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -244,17 +194,12 @@ public class RobotContainer {
     driver.y().onTrue(Commands.runOnce(() -> drive.zero()));
     // ** Pivot Commands
     // > These three are the manual angle changer
-    // coDriver.povUp().whileTrue(new PivotChangerUpCommand());
+    coDriver.povUp().whileTrue(new PivotChangerUpCommand());
 
-    // coDriver.povDown().whileTrue(new PivotChangerDownCommand());
+    coDriver.povDown().whileTrue(new PivotChangerDownCommand());
 
-    // coDriver.povUpLeft().whileTrue(new PivotChangerResetCommand());
+    coDriver.povUpLeft().whileTrue(new PivotChangerResetCommand());
 
-    coDriver.povUp().whileTrue(new PivotChangerTrueCommand(1));
-
-    coDriver.povDown().whileTrue(new PivotChangerTrueCommand(2));
-
-    coDriver.povLeft().whileTrue(new PivotChangerTrueCommand(3));
     // >
     // Go to 45
     // Adding the manual angle and the amp angle changer
@@ -300,14 +245,5 @@ public class RobotContainer {
                 () -> coDriver.getRightTriggerAxis(),
                 () -> coDriver.getLeftTriggerAxis(),
                 .40));
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
   }
 }
