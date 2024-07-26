@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "T6 Constraint Zones"
+            "pathName": "T4 Event Marker"
           }
         },
         {
@@ -31,25 +31,6 @@
                 "type": "named",
                 "data": {
                   "name": "autoIntake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": null
                 }
               }
             ]
