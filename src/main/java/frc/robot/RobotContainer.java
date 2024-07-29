@@ -24,7 +24,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.AutoIntakeCommand;
+import frc.robot.commands.Auto.AutoIntakeCommand;
+import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
@@ -156,7 +157,8 @@ public class RobotContainer {
      */
 
     // Can be added to auto path to tell robot to shoot during auto
-    NamedCommands.registerCommand("autoShoot", new ShotCommand(intakeRollers, flywheel));
+    NamedCommands.registerCommand(
+        "autoShoot", new AutoShotCommand(intakeRollers, flywheel).withTimeout(2));
     // Should Extend then activate rollers during auto... Maybe
     NamedCommands.registerCommand(
         "autoIntake",
@@ -254,21 +256,49 @@ public class RobotContainer {
     coDriver.povLeft().whileTrue(new PivotChangerResetCommand());
     // >
     // Go to 45
-        // Adding the manual angle and the amp angle changer
+    // Adding the manual angle and the amp angle changer
     coDriver
         .leftStick()
-        .toggleOnTrue(new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
+        .toggleOnTrue(
+            new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
     // **
     // Shot
     coDriver.rightBumper().whileTrue(new ShotCommand(intakeRollers, flywheel));
-    //Amp command
-    coDriver.b().toggleOnTrue(new AmpCommand(intakeRollers, elevator, lightStop::get, elevatorTop::get));
-    coDriver.b().toggleOnFalse(new ClimbCommand(elevator, elevatorBottom::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(), .45).until(elevatorBottom::get));
+    // Amp command
+    coDriver
+        .b()
+        .toggleOnTrue(new AmpCommand(intakeRollers, elevator, lightStop::get, elevatorTop::get));
+    coDriver
+        .b()
+        .toggleOnFalse(
+            new ClimbCommand(
+                    elevator,
+                    elevatorBottom::get,
+                    () -> coDriver.getRightTriggerAxis(),
+                    () -> coDriver.getLeftTriggerAxis(),
+                    .45)
+                .until(elevatorBottom::get));
     // climb command
-    coDriver.a().toggleOnTrue(new ClimbCommand(elevator,elevatorTop::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(), -.90));
-    coDriver.a().toggleOnFalse(new ClimbCommand(elevator,elevatorBottom::get,() -> coDriver.getRightTriggerAxis(),() -> coDriver.getLeftTriggerAxis(),.40));
+    coDriver
+        .a()
+        .toggleOnTrue(
+            new ClimbCommand(
+                elevator,
+                elevatorTop::get,
+                () -> coDriver.getRightTriggerAxis(),
+                () -> coDriver.getLeftTriggerAxis(),
+                -.90));
+    coDriver
+        .a()
+        .toggleOnFalse(
+            new ClimbCommand(
+                elevator,
+                elevatorBottom::get,
+                () -> coDriver.getRightTriggerAxis(),
+                () -> coDriver.getLeftTriggerAxis(),
+                .40));
   }
 
   /**
