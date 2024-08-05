@@ -24,8 +24,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Auto.AutoIntakeCommand;
+// import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
@@ -166,40 +166,21 @@ public class RobotContainer {
 
     // Can be added to auto path to tell robot to shoot during auto
     NamedCommands.registerCommand(
-        "autoShoot",
-        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.2));
+        "autoShoot", new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(1));
     // Should Extend then activate rollers during auto... Maybe
     NamedCommands.registerCommand(
         "autoIntake",
-        new AutoIntakeCommand(intakeRollers, intake, lightStop::get, intakeStop::get));
-
-    // NamedCommands.registerCommand("autoIntake", new IntakeRetractCommand(intake,
-    // intakeStop::get));
+        new AutoIntakeCommand(
+            intakeRollers,
+            smaIntakeRollers,
+            intake,
+            lightStop::get,
+            intakeStop::get,
+            pivot,
+            () -> 45));
 
     // idk path planner stuff
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-
-    // Set up SysId routines
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Flywheel SysId (Quasistatic Forward)",
-        flywheel.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Flywheel SysId (Quasistatic Reverse)",
-        flywheel.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Flywheel SysId (Dynamic Forward)", flywheel.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Flywheel SysId (Dynamic Reverse)", flywheel.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -270,7 +251,6 @@ public class RobotContainer {
     coDriver
         .leftStick()
         .toggleOnTrue(
-            
             new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));

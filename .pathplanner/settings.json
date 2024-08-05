@@ -11,7 +11,7 @@
     "Making sure autos work",
     "Teaching"
   ],
-  "defaultMaxVel": 5.54,
+  "defaultMaxVel": 5.5,
   "defaultMaxAccel": 3.8,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
