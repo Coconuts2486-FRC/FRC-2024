@@ -60,6 +60,7 @@ public class Intake extends SubsystemBase {
   public void runVolts(double volts) {
     io.setVoltage(volts);
   }
+
   /** Run closed loop at the specified velocity. */
   public void runVelocity(double velocityRPM) {
     var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(velocityRPM);

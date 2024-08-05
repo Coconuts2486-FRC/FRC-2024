@@ -262,7 +262,7 @@ public class RobotContainer {
                     elevatorBottom::get,
                     () -> coDriver.getRightTriggerAxis(),
                     () -> coDriver.getLeftTriggerAxis(),
-                    .45,
+                    .6,
                     true)
                 .until(elevatorBottom::get));
     // climb command
@@ -290,7 +290,7 @@ public class RobotContainer {
                 elevatorTop::get,
                 () -> coDriver.getRightTriggerAxis(),
                 () -> coDriver.getLeftTriggerAxis(),
-                -.50,
+                -.90,
                 false));
     coDriver
         .a()
@@ -300,7 +300,7 @@ public class RobotContainer {
                     elevatorBottom::get,
                     () -> coDriver.getRightTriggerAxis(),
                     () -> coDriver.getLeftTriggerAxis(),
-                    .40,
+                    .60,
                     true)
                 .until(elevatorBottom::get));
   }

@@ -35,7 +35,7 @@ public class AmpCommand extends Command {
       elevator.stop();
       intakeRollers.setRollers(-1, -1);
     } else {
-      elevator.runDutyCycleAuto(-.5, false);
+      elevator.runDutyCycleAuto(-.9, false);
       if (index == 0) {
         intakeRollers.setRollers(.2, .2);
         if (lightStop.getAsBoolean() == false) {
