@@ -21,7 +21,7 @@ public class IntakeRollersIOReal implements IntakeRollersIO {
 
   @Override
   public void updateInputs(IntakeRollersIOInputs inputs) {
-    // TODO Auto-generated method stub
+
     IntakeRollersIO.super.updateInputs(inputs);
   }
 

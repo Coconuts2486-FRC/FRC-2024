@@ -59,6 +59,10 @@ public class Elevator extends SubsystemBase {
   public void runVolts(double volts) {
     io.setVoltage(volts);
   }
+
+  public void setPose(double pose) {
+    io.setPose(0);
+  }
   /** Run closed loop at the specified velocity. */
   public void runVelocity(double velocityRPM) {
     var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(velocityRPM);
@@ -66,6 +70,14 @@ public class Elevator extends SubsystemBase {
 
     // Log flywheel setpoint
     Logger.recordOutput("Pivot/SetpointRPM", velocityRPM);
+  }
+
+  public void runDutyCycleAuto(double percent, boolean down) {
+    if (down) {
+      io.setDutyCycleDown(percent);
+    } else {
+      io.setDutyCycleUp(percent);
+    }
   }
 
   public void runDutyCycle(double percent) {

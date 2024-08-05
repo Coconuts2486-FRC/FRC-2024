@@ -23,7 +23,6 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
-    // TODO Auto-generated method stub
     IntakeIO.super.updateInputs(inputs);
   }
 

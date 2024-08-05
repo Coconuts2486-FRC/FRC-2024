@@ -48,6 +48,7 @@ public class ManualElevatorCommand extends Command {
     if (topStop.getAsBoolean() == true) {
       elevator.runDutyCycle(fixDownAxis);
     } else if (bottomStop.getAsBoolean() == true) {
+      elevator.setPose(0);
       elevator.runDutyCycle(-fixUpAxis);
     } else {
       elevator.runDutyCycle(-fixUpAxis + fixDownAxis);
