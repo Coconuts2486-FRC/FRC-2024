@@ -25,7 +25,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.AutoIntakeCommand;
+import frc.robot.commands.Auto.AutoIntakeCommand;
+import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
@@ -57,6 +58,7 @@ import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.intake.IntakeRollersIOReal;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
+import frc.robot.subsystems.sma.SmaIntakeRollers;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -77,6 +79,7 @@ public class RobotContainer {
   private final DigitalInput intakeStop = new DigitalInput(3);
   private final DigitalInput elevatorBottom = new DigitalInput(0); // change this
   public static final DigitalInput elevatorTop = new DigitalInput(1);
+  private final SmaIntakeRollers smaIntakeRollers = new SmaIntakeRollers();
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -162,7 +165,9 @@ public class RobotContainer {
      */
 
     // Can be added to auto path to tell robot to shoot during auto
-    NamedCommands.registerCommand("autoShoot", new ShotCommand(intakeRollers, flywheel));
+    NamedCommands.registerCommand(
+        "autoShoot",
+        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.2));
     // Should Extend then activate rollers during auto... Maybe
     NamedCommands.registerCommand(
         "autoIntake",
@@ -261,15 +266,31 @@ public class RobotContainer {
     // >
     // Go to 45
     // Adding the manual angle and the amp angle changer
+    // Adding the manual angle and the amp angle changer
     coDriver
         .leftStick()
         .toggleOnTrue(
+            
             new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
     // **
     // Shot
     coDriver.rightBumper().whileTrue(new ShotCommand(intakeRollers, flywheel));
+    // Amp command
+    coDriver
+        .b()
+        .toggleOnTrue(new AmpCommand(intakeRollers, elevator, lightStop::get, elevatorTop::get));
+    coDriver
+        .b()
+        .toggleOnFalse(
+            new ClimbCommand(
+                    elevator,
+                    elevatorBottom::get,
+                    () -> coDriver.getRightTriggerAxis(),
+                    () -> coDriver.getLeftTriggerAxis(),
+                    .45)
+                .until(elevatorBottom::get));
     // Amp command
     coDriver
         .b()
