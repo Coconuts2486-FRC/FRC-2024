@@ -57,6 +57,7 @@ import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.intake.IntakeRollersIOReal;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
+import frc.robot.subsystems.sma.SmaIntakeRollers;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -77,6 +78,7 @@ public class RobotContainer {
   private final DigitalInput intakeStop = new DigitalInput(3);
   private final DigitalInput elevatorBottom = new DigitalInput(0); // change this
   public static final DigitalInput elevatorTop = new DigitalInput(1);
+  private final SmaIntakeRollers smaIntakeRollers = new SmaIntakeRollers();
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -158,7 +160,8 @@ public class RobotContainer {
 
     // Can be added to auto path to tell robot to shoot during auto
     NamedCommands.registerCommand(
-        "autoShoot", new AutoShotCommand(intakeRollers, flywheel).withTimeout(2));
+        "autoShoot",
+        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.2));
     // Should Extend then activate rollers during auto... Maybe
     NamedCommands.registerCommand(
         "autoIntake",
