@@ -202,7 +202,10 @@ public class RobotContainer {
     // Manual Intake
     intakeRollers.setDefaultCommand(
         ManualRollerCmd.manualRoller(
-            intakeRollers, () -> driver.getRightTriggerAxis(), () -> driver.getLeftTriggerAxis()));
+            intakeRollers,
+            () -> driver.getRightTriggerAxis(),
+            () -> driver.getLeftTriggerAxis(),
+            lightStop::get));
     // ** Normal Intake
     // - Rollers
     coDriver
