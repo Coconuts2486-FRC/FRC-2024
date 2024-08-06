@@ -31,7 +31,7 @@ public class GyroIOPigeon2 implements GyroIO {
   private final StatusSignal<Double> yawVelocity = pigeon.getAngularVelocityZWorld();
 
   public GyroIOPigeon2(boolean phoenixDrive) {
-    // pigeon.getConfigurator().apply(new Pigeon2Configuration());
+   // pigeon.getConfigurator().apply(new Pigeon2Configuration());
     pigeon.getConfigurator().setYaw(0.0);
     yaw.setUpdateFrequency(Module.ODOMETRY_FREQUENCY);
     yawVelocity.setUpdateFrequency(100.0);
@@ -74,7 +74,7 @@ public class GyroIOPigeon2 implements GyroIO {
 
   @Override
   public void zero() {
-    // With the Pigeon facing forward, forward is zero.
+// With the Pigeon facing forward, forward is zero.
     pigeon.setYaw(0);
   }
 }
