@@ -42,10 +42,10 @@ import frc.robot.commands.Pivot.PivotCommand;
 import frc.robot.commands.ShotCommand;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.GyroIOPigeon2Basic;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.drive.ModuleIOTalonFXBasic;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOReal;
 import frc.robot.subsystems.flywheel.Flywheel;
@@ -110,11 +110,11 @@ public class RobotContainer {
         // flywheel = new Flywheel(new FlywheelIOSparkMax());
         drive =
             new Drive(
-                new GyroIOPigeon2(true),
-                new ModuleIOTalonFX(0),
-                new ModuleIOTalonFX(1),
-                new ModuleIOTalonFX(2),
-                new ModuleIOTalonFX(3));
+                new GyroIOPigeon2Basic(),
+                new ModuleIOTalonFXBasic(0),
+                new ModuleIOTalonFXBasic(1),
+                new ModuleIOTalonFXBasic(2),
+                new ModuleIOTalonFXBasic(3));
         flywheel = new Flywheel(new FlywheelIOTalonFX());
         pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());
