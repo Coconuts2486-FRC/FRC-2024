@@ -197,7 +197,7 @@ public class RobotContainer {
     // Drive Command
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive, () -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX()));
+            drive, () -> driver.getRightY(), () -> driver.getRightX(), () -> -driver.getLeftX()));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Manual Intake
