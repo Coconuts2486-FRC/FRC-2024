@@ -178,6 +178,7 @@ public class RobotContainer {
             intakeStop::get,
             pivot,
             () -> 45));
+    NamedCommands.registerCommand("PivotAmp1", new PivotCommand(pivot, () -> 45));
 
     // idk path planner stuff
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -196,7 +197,7 @@ public class RobotContainer {
     // Drive Command
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> driver.getRightX()));
+            drive, () -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX()));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Manual Intake

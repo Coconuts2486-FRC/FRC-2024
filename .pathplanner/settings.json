@@ -3,6 +3,7 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
+    "Amp Side",
     "Teaching",
     "ZMaking sure paths works"
   ],
