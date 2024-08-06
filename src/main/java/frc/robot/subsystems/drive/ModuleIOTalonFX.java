@@ -45,6 +45,7 @@ public class ModuleIOTalonFX implements ModuleIO {
   private final TalonFX driveTalon;
   private final TalonFX turnTalon;
   private final CANcoder cancoder;
+  private final double pi = Math.PI;
 
   private final Queue<Double> timestampQueue;
 
@@ -75,25 +76,25 @@ public class ModuleIOTalonFX implements ModuleIO {
 
         turnTalon = new TalonFX(6, "drive");
         cancoder = new CANcoder(10, "drive");
-        absoluteEncoderOffset = new Rotation2d(Math.toRadians(-164.79)); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(-164.79) + pi); // MUST BE CALIBRATED
         break;
       case 1:
         driveTalon = new TalonFX(3, "drive");
         turnTalon = new TalonFX(7, "drive");
         cancoder = new CANcoder(11, "drive");
-        absoluteEncoderOffset = new Rotation2d(Math.toRadians(46.7)); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(46.7) + pi); // MUST BE CALIBRATED
         break;
       case 2:
         driveTalon = new TalonFX(4, "drive");
         turnTalon = new TalonFX(8, "drive");
         cancoder = new CANcoder(12, "drive");
-        absoluteEncoderOffset = new Rotation2d(Math.toRadians(5.19)); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(5.19) + pi); // MUST BE CALIBRATED
         break;
       case 3:
         driveTalon = new TalonFX(5, "drive");
         turnTalon = new TalonFX(9, "drive");
         cancoder = new CANcoder(13, "drive");
-        absoluteEncoderOffset = new Rotation2d(Math.toRadians(-106.5)); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(-106.5) + pi); // MUST BE CALIBRATED
         break;
       default:
         throw new RuntimeException("Invalid module index");

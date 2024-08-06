@@ -34,9 +34,31 @@ public class ElevatorIOReal implements ElevatorIO {
   }
 
   @Override
-  public void setDutyCycle(double percent) {
+  public void setDutyCycleUp(double percent) {
+    if (elevatorMotor.getPosition().getValueAsDouble() <= -82) {
+      elevatorMotor.setControl(new DutyCycleOut(-.3));
+    } else {
+      elevatorMotor.setControl(new DutyCycleOut(percent));
+    }
+  }
 
+  @Override
+  public void setDutyCycleDown(double percent) {
+    if (elevatorMotor.getPosition().getValueAsDouble() >= -10) {
+      elevatorMotor.setControl(new DutyCycleOut(.3));
+    } else {
+      elevatorMotor.setControl(new DutyCycleOut(percent));
+    }
+  }
+
+  @Override
+  public void setDutyCycle(double percent) {
     elevatorMotor.setControl(new DutyCycleOut(percent));
+  }
+
+  @Override
+  public void setPose(double pose) {
+    elevatorMotor.setPosition(pose);
   }
 
   @Override

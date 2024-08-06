@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.7,
-        "y": 7.23
+        "x": 1.289801056453965,
+        "y": 5.56479129624926
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.702172995397528,
-        "y": 7.230582252361924
+        "x": 1.8591180339678932,
+        "y": 5.588155069953607
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.698681901993433,
-        "y": 7.234680006397051
+        "x": 2.8820743845191394,
+        "y": 5.56479129624926
       },
       "prevControl": {
-        "x": 7.694265112353451,
-        "y": 7.233496531179879
+        "x": 2.046298648152852,
+        "y": 5.548638745425639
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,18 +32,21 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 15.787770460841665,
+    "rotation": -89.1310247414065,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "1 Auto Subwoofer",
-  "previewStartingState": null,
-  "useDefaultConstraints": true
+  "folder": "ZMaking sure paths works",
+  "previewStartingState": {
+    "rotation": 0.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
 }

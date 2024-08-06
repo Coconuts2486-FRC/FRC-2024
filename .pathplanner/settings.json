@@ -1,23 +1,20 @@
 {
-  "robotWidth": 0.66,
-  "robotLength": 0.66,
+  "robotWidth": 0.81,
+  "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
-    "1 Auto Subwoofer",
-    "2 Auto Notwoofer",
-    "3 Auto",
+    "Amp Side",
     "Teaching",
     "ZMaking sure paths works"
   ],
   "autoFolders": [
     "Auto Building",
-    "Center Autos",
     "Making sure autos work",
     "Teaching"
   ],
-  "defaultMaxVel": 5.0,
-  "defaultMaxAccel": 4.0,
+  "defaultMaxVel": 5.5,
+  "defaultMaxAccel": 3.8,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
-  "maxModuleSpeed": 5.0
+  "maxModuleSpeed": 5.5
 }

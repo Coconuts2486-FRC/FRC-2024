@@ -22,7 +22,13 @@ public interface ElevatorIO {
   /** Run closed loop at the specified velocity. */
   public default void setVelocity(double velocityRadPerSec, double ffVolts) {}
 
+  public default void setDutyCycleUp(double percent) {}
+
+  public default void setDutyCycleDown(double percent) {}
+
   public default void setDutyCycle(double percent) {}
+
+  public default void setPose(double pose) {}
 
   /** Stop in open loop. */
   public default void stop() {}

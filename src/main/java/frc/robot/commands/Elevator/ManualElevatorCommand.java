@@ -5,27 +5,24 @@ import frc.robot.subsystems.elevator.Elevator;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-public class ClimbCommand extends Command {
+public class ManualElevatorCommand extends Command {
   private final Elevator elevator;
-  private final BooleanSupplier stop;
+  private final BooleanSupplier topStop;
+  private final BooleanSupplier bottomStop;
   private final DoubleSupplier upAxis;
   private final DoubleSupplier downAxis;
-  private final double speed;
-  private boolean down;
 
-  public ClimbCommand(
+  public ManualElevatorCommand(
       Elevator elevator,
-      BooleanSupplier stop,
+      BooleanSupplier topStop,
+      BooleanSupplier bottomStop,
       DoubleSupplier upAxis,
-      DoubleSupplier downAxis,
-      double speed,
-      boolean down) {
+      DoubleSupplier downAxis) {
     this.elevator = elevator;
-    this.stop = stop;
+    this.topStop = topStop;
     this.upAxis = upAxis;
     this.downAxis = downAxis;
-    this.speed = speed;
-    this.down = down;
+    this.bottomStop = bottomStop;
   }
 
   @Override
@@ -48,18 +45,18 @@ public class ClimbCommand extends Command {
     }
 
     // actual command
-    if (stop.getAsBoolean() == true) {
-      elevator.stop();
+    if (topStop.getAsBoolean() == true) {
+      elevator.runDutyCycle(fixDownAxis);
+    } else if (bottomStop.getAsBoolean() == true) {
+      elevator.setPose(0);
+      elevator.runDutyCycle(-fixUpAxis);
     } else {
-      elevator.runDutyCycleAuto(speed - fixUpAxis + fixDownAxis, down);
+      elevator.runDutyCycle(-fixUpAxis + fixDownAxis);
     }
   }
 
   @Override
   public void end(boolean interrupted) {
     elevator.stop();
-    if (down == true) {
-      elevator.setPose(0);
-    }
   }
 }

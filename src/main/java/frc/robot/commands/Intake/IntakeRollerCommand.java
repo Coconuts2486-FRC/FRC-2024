@@ -1,5 +1,6 @@
 package frc.robot.commands.Intake;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.intake.IntakeRollers;
 import java.util.function.BooleanSupplier;
@@ -27,6 +28,7 @@ public class IntakeRollerCommand extends Command {
 
   @Override
   public void execute() {
+    SmartDashboard.putBoolean("note", lightStop.getAsBoolean());
     if (lightStop.getAsBoolean()) {
       intakeRollers.setRollers(
           mOuttake.getAsDouble() - mIntake.getAsDouble(),
