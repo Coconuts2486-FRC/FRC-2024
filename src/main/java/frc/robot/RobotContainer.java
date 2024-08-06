@@ -195,9 +195,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Drive Command
+    // NOTE: The negative signs in the joystick input are required to align the joystick
+    //       motion with the forward-facing drive of the robot and with AdvantageKit logging
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive, () -> driver.getRightY(), () -> driver.getRightX(), () -> -driver.getLeftX()));
+            drive, () -> -driver.getRightY(), () -> -driver.getRightX(), () -> -driver.getLeftX()));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Manual Intake

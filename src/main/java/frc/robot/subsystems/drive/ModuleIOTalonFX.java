@@ -71,30 +71,30 @@ public class ModuleIOTalonFX implements ModuleIO {
   // FL, FR, BL, BR
   public ModuleIOTalonFX(int index) {
     switch (index) {
+        // NOTE: The absolute encoder offset values have been updated to reflect "front is front"
       case 0:
         driveTalon = new TalonFX(2, "drive");
-
         turnTalon = new TalonFX(6, "drive");
         cancoder = new CANcoder(10, "drive");
-        absoluteEncoderOffset = new Rotation2d(Math.toRadians(-164.79) + pi); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(15.21));
         break;
       case 1:
         driveTalon = new TalonFX(3, "drive");
         turnTalon = new TalonFX(7, "drive");
         cancoder = new CANcoder(11, "drive");
-        absoluteEncoderOffset = new Rotation2d(Math.toRadians(46.7) + pi); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(226.7));
         break;
       case 2:
         driveTalon = new TalonFX(4, "drive");
         turnTalon = new TalonFX(8, "drive");
         cancoder = new CANcoder(12, "drive");
-        absoluteEncoderOffset = new Rotation2d(Math.toRadians(5.19) + pi); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(185.19));
         break;
       case 3:
         driveTalon = new TalonFX(5, "drive");
         turnTalon = new TalonFX(9, "drive");
         cancoder = new CANcoder(13, "drive");
-        absoluteEncoderOffset = new Rotation2d(Math.toRadians(-106.5) + pi); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(73.5));
         break;
       default:
         throw new RuntimeException("Invalid module index");
