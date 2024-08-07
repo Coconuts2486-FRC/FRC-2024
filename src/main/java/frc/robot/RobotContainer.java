@@ -145,6 +145,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+
         flywheel = new Flywheel(new FlywheelIO() {});
         pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());

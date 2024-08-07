@@ -10,7 +10,7 @@ import edu.wpi.first.math.util.Units;
 
 /** IO implementation for Pigeon2 */
 public class GyroIOPigeon2Basic implements GyroIO {
-  private final Pigeon2 pigeon = new Pigeon2(20);
+  private final Pigeon2 pigeon = new Pigeon2(14);
   private final StatusSignal<Double> yaw = pigeon.getYaw();
   private final StatusSignal<Double> yawVelocity = pigeon.getAngularVelocityZWorld();
 
