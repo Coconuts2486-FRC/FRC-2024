@@ -268,6 +268,10 @@ public class Drive extends SubsystemBase {
     return MAX_ANGULAR_SPEED;
   }
 
+  public void zero(){
+    gyroIO.zero();
+  }
+
   /** Returns an array of module translations. */
   public static Translation2d[] getModuleTranslations() {
     return new Translation2d[] {
