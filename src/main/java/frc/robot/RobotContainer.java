@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auto.AutoIntakeCommand;
-// import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
@@ -42,10 +41,10 @@ import frc.robot.commands.Pivot.PivotCommand;
 import frc.robot.commands.ShotCommand;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2Basic;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOTalonFXBasic;
+import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOReal;
 import frc.robot.subsystems.flywheel.Flywheel;
@@ -60,6 +59,7 @@ import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -69,8 +69,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
   // Subsystems
-  private final Drive drive;
-  private final Flywheel flywheel;
+
   private final Pivot pivot;
   private final Intake intake;
   private final IntakeRollers intakeRollers = new IntakeRollers(new IntakeRollersIOReal());
@@ -80,6 +79,9 @@ public class RobotContainer {
   private final DigitalInput elevatorBottom = new DigitalInput(0); // change this
   public static final DigitalInput elevatorTop = new DigitalInput(1);
   private final SmaIntakeRollers smaIntakeRollers = new SmaIntakeRollers();
+
+  private final Drive drive;
+  private final Flywheel flywheel;
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -92,29 +94,22 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
-  // private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel
-  // Speed", 1500.0);
+  private final LoggedDashboardNumber flywheelSpeedInput =
+      new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-        // drive =
-        // new Drive(
-        // new GyroIOPigeon2(false),
-        // new ModuleIOSparkMax(0),
-        // new ModuleIOSparkMax(1),
-        // new ModuleIOSparkMax(2),
-        // new ModuleIOSparkMax(3));
-        // flywheel = new Flywheel(new FlywheelIOSparkMax());
+
         drive =
             new Drive(
-                new GyroIOPigeon2Basic(),
-                new ModuleIOTalonFXBasic(0),
-                new ModuleIOTalonFXBasic(1),
-                new ModuleIOTalonFXBasic(2),
-                new ModuleIOTalonFXBasic(3));
+                new GyroIOPigeon2(),
+                new ModuleIOTalonFX(0),
+                new ModuleIOTalonFX(1),
+                new ModuleIOTalonFX(2),
+                new ModuleIOTalonFX(3));
         flywheel = new Flywheel(new FlywheelIOTalonFX());
         pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());
@@ -130,8 +125,8 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
-        pivot = new Pivot(new PivotIOReal());
         flywheel = new Flywheel(new FlywheelIOSim());
+        pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());
         elevator = new Elevator(new ElevatorIOReal());
         break;
@@ -145,7 +140,6 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-
         flywheel = new Flywheel(new FlywheelIO() {});
         pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());
@@ -154,21 +148,9 @@ public class RobotContainer {
     }
 
     // Set up auto routines
-
-    // this is example code. don't run. motor does wierd things
-    /*
-     * NamedCommands.registerCommand(
-     * "Run Flywheel",
-     * Commands.startEnd(
-     * () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop,
-     * flywheel)
-     * .withTimeout(5.0));
-     */
-
-    // Can be added to auto path to tell robot to shoot during auto
     NamedCommands.registerCommand(
         "autoShoot", new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(1));
-    // Should Extend then activate rollers during auto... Maybe
+
     NamedCommands.registerCommand(
         "autoIntake",
         new AutoIntakeCommand(
@@ -181,8 +163,10 @@ public class RobotContainer {
             () -> 45));
     NamedCommands.registerCommand("PivotAmp1", new PivotCommand(pivot, () -> 45));
 
-    // idk path planner stuff
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+    // Configure the button bindings
+    configureButtonBindings();
 
     // Configure the button bindings
     configureButtonBindings();
@@ -195,9 +179,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Drive Command
-    // NOTE: The negative signs in the joystick input are required to align the joystick
-    //       motion with the forward-facing drive of the robot and with AdvantageKit logging
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive, () -> -driver.getRightY(), () -> -driver.getRightX(), () -> -driver.getLeftX()));
@@ -210,6 +191,7 @@ public class RobotContainer {
             () -> driver.getRightTriggerAxis(),
             () -> driver.getLeftTriggerAxis(),
             lightStop::get));
+
     // ** Normal Intake
     // - Rollers
     coDriver
@@ -235,6 +217,13 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
+
+    // controller
+    //     .a()
+    //     .whileTrue(
+    //         Commands.startEnd(
+    //             () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
+
     // Re-Zero Gyro
     driver.y().onTrue(Commands.runOnce(() -> drive.zero()));
     // ** Pivot Commands
@@ -246,7 +235,6 @@ public class RobotContainer {
     coDriver.povLeft().whileTrue(new PivotChangerResetCommand());
     // >
     // Go to 45
-    // Adding the manual angle and the amp angle changer
     // Adding the manual angle and the amp angle changer
     coDriver
         .leftStick()

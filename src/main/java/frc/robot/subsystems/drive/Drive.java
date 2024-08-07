@@ -18,7 +18,6 @@ import static edu.wpi.first.units.Units.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -37,20 +36,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.util.LocalADStarAK;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
   private static final double MAX_LINEAR_SPEED = Units.feetToMeters(14.5);
-  private static final double TRACK_WIDTH_X = Units.inchesToMeters(20.75);
-  private static final double TRACK_WIDTH_Y = Units.inchesToMeters(20.75);
+  private static final double TRACK_WIDTH_X = Units.inchesToMeters(25.0);
+  private static final double TRACK_WIDTH_Y = Units.inchesToMeters(25.0);
   private static final double DRIVE_BASE_RADIUS =
       Math.hypot(TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0);
   private static final double MAX_ANGULAR_SPEED = MAX_LINEAR_SPEED / DRIVE_BASE_RADIUS;
 
-  static final Lock odometryLock = new ReentrantLock();
   private final GyroIO gyroIO;
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
@@ -80,10 +76,6 @@ public class Drive extends SubsystemBase {
     modules[2] = new Module(blModuleIO, 2);
     modules[3] = new Module(brModuleIO, 3);
 
-    // Start threads (no-op for each if no signals have been created)
-    // PhoenixOdometryThread.getInstance().start();
-    // SparkMaxOdometryThread.getInstance().start();
-
     // Configure AutoBuilder for PathPlanner
     AutoBuilder.configureHolonomic(
         this::getPose,
@@ -91,12 +83,7 @@ public class Drive extends SubsystemBase {
         () -> kinematics.toChassisSpeeds(getModuleStates()),
         this::runVelocity,
         new HolonomicPathFollowerConfig(
-            // new PIDConstants(0.018, 0.0005, 0.0),
-            new PIDConstants(0.018, 0.0005, 0),
-            new PIDConstants(1.0, 1.4, 0.0),
-            MAX_LINEAR_SPEED,
-            DRIVE_BASE_RADIUS,
-            new ReplanningConfig()),
+            MAX_LINEAR_SPEED, DRIVE_BASE_RADIUS, new ReplanningConfig()),
         () ->
             DriverStation.getAlliance().isPresent()
                 && DriverStation.getAlliance().get() == Alliance.Red,
@@ -131,12 +118,7 @@ public class Drive extends SubsystemBase {
   }
 
   public void periodic() {
-    odometryLock.lock(); // Prevents odometry updates while reading data
     gyroIO.updateInputs(gyroInputs);
-    for (var module : modules) {
-      module.updateInputs();
-    }
-    odometryLock.unlock();
     Logger.processInputs("Drive/Gyro", gyroInputs);
     for (var module : modules) {
       module.periodic();
@@ -154,37 +136,30 @@ public class Drive extends SubsystemBase {
       Logger.recordOutput("SwerveStates/SetpointsOptimized", new SwerveModuleState[] {});
     }
 
-    // Update odometry
-    double[] sampleTimestamps =
-        modules[0].getOdometryTimestamps(); // All signals are sampled together
-    int sampleCount = sampleTimestamps.length;
-    for (int i = 0; i < sampleCount; i++) {
-      // Read wheel positions and deltas from each module
-      SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
-      SwerveModulePosition[] moduleDeltas = new SwerveModulePosition[4];
-      for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
-        modulePositions[moduleIndex] = modules[moduleIndex].getOdometryPositions()[i];
-        moduleDeltas[moduleIndex] =
-            new SwerveModulePosition(
-                modulePositions[moduleIndex].distanceMeters
-                    - lastModulePositions[moduleIndex].distanceMeters,
-                modulePositions[moduleIndex].angle);
-        lastModulePositions[moduleIndex] = modulePositions[moduleIndex];
-      }
-
-      // Update gyro angle
-      if (gyroInputs.connected) {
-        // Use the real gyro angle
-        rawGyroRotation = gyroInputs.odometryYawPositions[i];
-      } else {
-        // Use the angle delta from the kinematics and module deltas
-        Twist2d twist = kinematics.toTwist2d(moduleDeltas);
-        rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
-      }
-
-      // Apply update
-      poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+    // Read wheel positions and deltas from each module
+    SwerveModulePosition[] modulePositions = getModulePositions();
+    SwerveModulePosition[] moduleDeltas = new SwerveModulePosition[4];
+    for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
+      moduleDeltas[moduleIndex] =
+          new SwerveModulePosition(
+              modulePositions[moduleIndex].distanceMeters
+                  - lastModulePositions[moduleIndex].distanceMeters,
+              modulePositions[moduleIndex].angle);
+      lastModulePositions[moduleIndex] = modulePositions[moduleIndex];
     }
+
+    // Update gyro angle
+    if (gyroInputs.connected) {
+      // Use the real gyro angle
+      rawGyroRotation = gyroInputs.yawPosition;
+    } else {
+      // Use the angle delta from the kinematics and module deltas
+      Twist2d twist = kinematics.toTwist2d(moduleDeltas);
+      rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
+    }
+
+    // Apply odometry update
+    poseEstimator.update(rawGyroRotation, modulePositions);
   }
 
   /**
@@ -268,13 +243,7 @@ public class Drive extends SubsystemBase {
     return getPose().getRotation();
   }
 
-  /**
-   * Resets the current odometry pose.
-   *
-   * <p>This method is called from PathPlanner's AutoBuilder class if a starting pose is defined in
-   * the auto path. It is unclear *when* the pose is reset (i.e., at initialization of the robot or
-   * start of autonomous or simply whenever the auto path is selected in the Dashboard).
-   */
+  /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
@@ -297,10 +266,6 @@ public class Drive extends SubsystemBase {
   /** Returns the maximum angular speed in radians per sec. */
   public double getMaxAngularSpeedRadPerSec() {
     return MAX_ANGULAR_SPEED;
-  }
-
-  public void zero() {
-    gyroIO.zero();
   }
 
   /** Returns an array of module translations. */
