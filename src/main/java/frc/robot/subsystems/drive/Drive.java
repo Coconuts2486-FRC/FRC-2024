@@ -268,7 +268,7 @@ public class Drive extends SubsystemBase {
     return MAX_ANGULAR_SPEED;
   }
 
-  public void zero(){
+  public void zero() {
     gyroIO.zero();
   }
 

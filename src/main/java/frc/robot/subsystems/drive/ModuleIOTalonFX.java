@@ -64,29 +64,29 @@ public class ModuleIOTalonFX implements ModuleIO {
   public ModuleIOTalonFX(int index) {
     switch (index) {
       case 0:
-      driveTalon = new TalonFX(2, "drive");
-      turnTalon = new TalonFX(6, "drive");
-      cancoder = new CANcoder(10, "drive");
-      absoluteEncoderOffset = new Rotation2d(Math.toRadians(15.21));
-      break;
-    case 1:
-      driveTalon = new TalonFX(3, "drive");
-      turnTalon = new TalonFX(7, "drive");
-      cancoder = new CANcoder(11, "drive");
-      absoluteEncoderOffset = new Rotation2d(Math.toRadians(226.7));
-      break;
-    case 2:
-      driveTalon = new TalonFX(4, "drive");
-      turnTalon = new TalonFX(8, "drive");
-      cancoder = new CANcoder(12, "drive");
-      absoluteEncoderOffset = new Rotation2d(Math.toRadians(185.19));
-      break;
-    case 3:
-      driveTalon = new TalonFX(5, "drive");
-      turnTalon = new TalonFX(9, "drive");
-      cancoder = new CANcoder(13, "drive");
-      absoluteEncoderOffset = new Rotation2d(Math.toRadians(73.5));
-      break;
+        driveTalon = new TalonFX(2, "drive");
+        turnTalon = new TalonFX(6, "drive");
+        cancoder = new CANcoder(10, "drive");
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(15.21));
+        break;
+      case 1:
+        driveTalon = new TalonFX(3, "drive");
+        turnTalon = new TalonFX(7, "drive");
+        cancoder = new CANcoder(11, "drive");
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(226.7));
+        break;
+      case 2:
+        driveTalon = new TalonFX(4, "drive");
+        turnTalon = new TalonFX(8, "drive");
+        cancoder = new CANcoder(12, "drive");
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(185.19));
+        break;
+      case 3:
+        driveTalon = new TalonFX(5, "drive");
+        turnTalon = new TalonFX(9, "drive");
+        cancoder = new CANcoder(13, "drive");
+        absoluteEncoderOffset = new Rotation2d(Math.toRadians(73.5));
+        break;
       default:
         throw new RuntimeException("Invalid module index");
     }
