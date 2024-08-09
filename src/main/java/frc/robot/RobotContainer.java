@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
+import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
@@ -149,7 +150,9 @@ public class RobotContainer {
 
     // Set up auto routines
     NamedCommands.registerCommand(
-        "autoShoot", new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.5));
+        "autoShoot",
+        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.4));
+    NamedCommands.registerCommand("autoSpinUp", new AutoSpinUpCommand(flywheel));
 
     NamedCommands.registerCommand(
         "autoIntake",
@@ -161,8 +164,11 @@ public class RobotContainer {
             intakeStop::get,
             pivot,
             () -> 45));
-    NamedCommands.registerCommand("PivotAmp45", new PivotCommand(pivot, () -> 45));
+    NamedCommands.registerCommand("PivotAmp45", new PivotCommand(pivot, () -> 60));
     NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.6));
+    NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
+    NamedCommands.registerCommand("PivotAmp24", new PivotCommand(pivot, () -> 24));
+    NamedCommands.registerCommand("PivotAmp23.7", new PivotCommand(pivot, () -> 23.7));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
