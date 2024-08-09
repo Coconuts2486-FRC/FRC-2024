@@ -149,7 +149,7 @@ public class RobotContainer {
 
     // Set up auto routines
     NamedCommands.registerCommand(
-        "autoShoot", new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(1));
+        "autoShoot", new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.5));
 
     NamedCommands.registerCommand(
         "autoIntake",
@@ -161,7 +161,8 @@ public class RobotContainer {
             intakeStop::get,
             pivot,
             () -> 45));
-    NamedCommands.registerCommand("PivotAmp1", new PivotCommand(pivot, () -> 45));
+    NamedCommands.registerCommand("PivotAmp45", new PivotCommand(pivot, () -> 45));
+    NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.6));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 

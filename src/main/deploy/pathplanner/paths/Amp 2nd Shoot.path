@@ -3,49 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.289801056453965,
-        "y": 5.56479129624926
+        "x": 7.728849166031665,
+        "y": 5.9386159559356155
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8591180339678932,
-        "y": 5.588155069953607
+        "x": 6.699302204159964,
+        "y": 6.367371165297887
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8820743845191394,
-        "y": 5.56479129624926
+        "x": 4.4,
+        "y": 5.640268840722867
       },
       "prevControl": {
-        "x": 2.046298648152852,
-        "y": 5.548638745425639
+        "x": 5.117719592846594,
+        "y": 6.568565438056802
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.3,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 5.5,
+    "maxAcceleration": 3.9,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -89.13,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "ZMaking sure paths works",
+  "folder": "Amp Side",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": -18.120000000000005,
     "velocity": 0
   },
   "useDefaultConstraints": false

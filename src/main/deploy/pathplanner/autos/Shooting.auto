@@ -12,9 +12,22 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "autoShoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": null
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShoot"
+                }
+              }
+            ]
           }
         }
       ]

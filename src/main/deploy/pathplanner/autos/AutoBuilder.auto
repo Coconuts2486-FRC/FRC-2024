@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4564336212005762,
-      "y": 7.347035249626055
+      "x": 1.4556022399081838,
+      "y": 7.3178775200143
     },
-    "rotation": 180.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Far Note"
+            "pathName": "Amp Start Shoot"
           }
         },
         {
@@ -24,7 +24,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotAmp1"
+                  "name": "PivotAmp23.6"
                 }
               },
               {
@@ -35,10 +35,16 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp 1st Note"
+          }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Auto Building",
   "choreoAuto": false
 }

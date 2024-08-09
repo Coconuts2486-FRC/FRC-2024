@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4283448103933247,
-      "y": 5.530348356993011
+      "x": 1.416646087921806,
+      "y": 7.313008001016002
     },
-    "rotation": 180.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Spin 1"
+            "pathName": "PID1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of PID1"
           }
         }
       ]

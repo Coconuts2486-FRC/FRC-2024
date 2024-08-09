@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.289801056453965,
-        "y": 5.56479129624926
+        "x": 7.75,
+        "y": 7.18
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8591180339678932,
-        "y": 5.588155069953607
+        "x": 6.694264527417944,
+        "y": 7.034910958710807
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8820743845191394,
-        "y": 5.56479129624926
+        "x": 4.8,
+        "y": 6.7948793027215695
       },
       "prevControl": {
-        "x": 2.046298648152852,
-        "y": 5.548638745425639
+        "x": 5.870403413954977,
+        "y": 6.943874707193859
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,20 +32,20 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 5.5,
+    "maxAcceleration": 3.9,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -89.13,
+    "rotation": 21.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "ZMaking sure paths works",
+  "folder": "Amp Side",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 22.0,
     "velocity": 0
   },
   "useDefaultConstraints": false
