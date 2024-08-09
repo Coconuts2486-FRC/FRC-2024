@@ -13,14 +13,25 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import java.util.List;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -31,6 +42,31 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+
+  // PhotoVision Camera Definitions
+  PhotonCamera camera1 = new PhotonCamera("Photon_BW1");
+  PhotonCamera camera2 = new PhotonCamera("Photon_BW2");
+
+  // The field from AprilTagFields will be different depending on the game.
+  AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+
+  // Cam1 mounted facing backward-ish, on the right of center facing leftward
+  double camX = Units.inchesToMeters(-2.0);
+  double camY = Units.inchesToMeters(9.0);
+  double camZ = Units.inchesToMeters(12.0);
+  Transform3d robotToCam1 =
+      new Transform3d(new Translation3d(camX, -camY, camZ), new Rotation3d(0, -20, 147.5));
+  // Cam2 mounted facing backward-ish, on the left of center facing rightward
+  Transform3d robotToCam2 =
+      new Transform3d(new Translation3d(camX, camY, camZ), new Rotation3d(0, -20, 212.5));
+
+  // Construct PhotonPoseEstimators
+  PhotonPoseEstimator photonPoseEstimator1 =
+      new PhotonPoseEstimator(
+          aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera1, robotToCam1);
+  PhotonPoseEstimator photonPoseEstimator2 =
+      new PhotonPoseEstimator(
+          aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera2, robotToCam2);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -92,6 +128,24 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
+    // Every time though the robotPeriodic (no matter which mode), Query the latest result from
+    // PhotonVision
+    var result1 = camera1.getLatestResult();
+    var result2 = camera2.getLatestResult();
+
+    // Check if the latest result has any targets.
+    boolean hasTargets1 = result1.hasTargets();
+    boolean hasTargets2 = result2.hasTargets();
+
+    List<PhotonTrackedTarget> targets1 = result1.getTargets();
+    List<PhotonTrackedTarget> targets2 = result2.getTargets();
+    if (hasTargets1) {
+      Logger.recordOutput("PhotonVision/Targets 1", result1.getBestTarget().getFiducialId());
+    }
+    if (hasTargets2) {
+      Logger.recordOutput("PhotonVision/Targets 2", result2.getBestTarget().getFiducialId());
+    }
+
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
     // finished or interrupted commands, and running subsystem periodic() methods.
