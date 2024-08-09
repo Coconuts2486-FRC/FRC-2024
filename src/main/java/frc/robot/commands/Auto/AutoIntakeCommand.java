@@ -48,9 +48,12 @@ public class AutoIntakeCommand extends Command {
       if (intakeStop.getAsBoolean()) {
         intake.stop();
         smaIntakeRollers.autoShot(0);
+        pivot.holdPosition(angle.getAsDouble());
+        end(true);
       } else {
         intake.retract();
         smaIntakeRollers.autoShot(0);
+        pivot.holdPosition(angle.getAsDouble());
       }
     } else {
       intake.setExtendPosition(48.8);

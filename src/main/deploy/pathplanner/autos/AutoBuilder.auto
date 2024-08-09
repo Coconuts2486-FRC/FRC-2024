@@ -18,13 +18,57 @@
           }
         },
         {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotAmp23.6"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Note 1"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotAmp23.7"
+                  "name": "autoIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp Shoot 1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotAmp23"
                 }
               },
               {
