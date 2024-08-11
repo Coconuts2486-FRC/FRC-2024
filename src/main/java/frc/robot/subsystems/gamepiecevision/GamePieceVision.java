@@ -1,5 +1,3 @@
 package frc.robot.subsystems.gamepiecevision;
 
-public class GamePieceVision {
-    
-}
+public class GamePieceVision {}
