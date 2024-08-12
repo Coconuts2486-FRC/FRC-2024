@@ -12,8 +12,11 @@
 // GNU General Public License for more details.
 
 package frc.robot;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -23,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.FieldConstants.AprilTagLayoutType;
+import frc.robot.commands.ShotCommand;
 import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
@@ -38,7 +43,9 @@ import frc.robot.commands.Pivot.PivotChangerDownCommand;
 import frc.robot.commands.Pivot.PivotChangerResetCommand;
 import frc.robot.commands.Pivot.PivotChangerUpCommand;
 import frc.robot.commands.Pivot.PivotCommand;
-import frc.robot.commands.ShotCommand;
+import frc.robot.subsystems.apriltagvision.AprilTagVision;
+import frc.robot.subsystems.apriltagvision.AprilTagVisionIO;
+import frc.robot.subsystems.apriltagvision.AprilTagVisionIOPhotonVision;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -58,8 +65,9 @@ import frc.robot.subsystems.intake.IntakeRollersIOReal;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
+import frc.robot.util.Alert;
+import frc.robot.util.Alert.AlertType;
+import frc.robot.util.OverrideSwitches;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -68,6 +76,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // Subsystems
 
   private final Pivot pivot;
@@ -82,27 +91,39 @@ public class RobotContainer {
 
   private final Drive drive;
   private final Flywheel flywheel;
+  private final AprilTagVision aprilTagVision;
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
   private final CommandXboxController coDriver = new CommandXboxController(1);
+  private final OverrideSwitches overrides = new OverrideSwitches(2);
 
   private final Trigger coDriverLeft = new Trigger(() -> coDriver.getLeftTriggerAxis() >= .1);
   private final Trigger coDriverRight = new Trigger(() -> coDriver.getRightTriggerAxis() >= .1);
   private final Trigger driverLeft = new Trigger(() -> driver.getLeftTriggerAxis() >= .1);
   private final Trigger driverRight = new Trigger(() -> driver.getRightTriggerAxis() >= .1);
 
+  // Override Switches
+  private final Trigger aprilTagsTargetOnly = overrides.operatorSwitch(0);
+
+  // Alerts
+  private final Alert aprilTagLayoutAlert = new Alert("", AlertType.INFO);
+
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
-  private final LoggedDashboardNumber flywheelSpeedInput =
-      new LoggedDashboardNumber("Flywheel Speed", 1500.0);
+  // private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel
+  // Speed", 1500.0);
+
+  /** Returns the current AprilTag layout type. */
+  public AprilTagLayoutType getAprilTagLayoutType() {
+    return FieldConstants.defaultAprilTagType;
+  }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     switch (Constants.getMode()) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-
         drive =
             new Drive(
                 new GyroIOPigeon2(),
@@ -114,6 +135,11 @@ public class RobotContainer {
         pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());
         elevator = new Elevator(new ElevatorIOReal());
+        aprilTagVision =
+            new AprilTagVision(
+                this::getAprilTagLayoutType,
+                new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, 0),
+                new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, 1));
         break;
 
       case SIM:
@@ -129,6 +155,7 @@ public class RobotContainer {
         pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());
         elevator = new Elevator(new ElevatorIOReal());
+        aprilTagVision = new AprilTagVision(this::getAprilTagLayoutType);
         break;
 
       default:
@@ -144,6 +171,9 @@ public class RobotContainer {
         pivot = new Pivot(new PivotIOReal());
         intake = new Intake(new IntakeIOReal());
         elevator = new Elevator(new ElevatorIOReal());
+        aprilTagVision =
+            new AprilTagVision(
+                this::getAprilTagLayoutType, new AprilTagVisionIO() {}, new AprilTagVisionIO() {});
         break;
     }
 
@@ -312,5 +342,16 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  /** Updates the alerts. */
+  public void updateAlerts() {
+    // AprilTag layout alert
+    boolean aprilTagAlertActive = getAprilTagLayoutType() != AprilTagLayoutType.OFFICIAL;
+    aprilTagLayoutAlert.set(aprilTagAlertActive);
+    if (aprilTagAlertActive) {
+      aprilTagLayoutAlert.setText(
+          "Non-official AprilTag layout in use (" + getAprilTagLayoutType().toString() + ").");
+    }
   }
 }

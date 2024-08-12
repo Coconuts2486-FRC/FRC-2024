@@ -3,47 +3,69 @@
 // Copyright (c) 2024 FRC 2486
 // http://github.com/Coconuts2486-FRC
 //
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file at
-// the root directory of this project.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// version 3 as published by the Free Software Foundation or
+// available in the root directory of this project.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 
 package frc.robot.subsystems.apriltagvision;
 
-import static frc.robot.RobotState.VisionObservation;
 import static frc.robot.subsystems.apriltagvision.AprilTagVisionConstants.*;
-import static frc.robot.subsystems.apriltagvision.AprilTagVisionIO.AprilTagVisionIOInputs;
 
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Quaternion;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.FieldConstants;
 import frc.robot.FieldConstants.AprilTagLayoutType;
 import frc.robot.RobotState;
+import frc.robot.RobotState.VisionObservation;
+import frc.robot.subsystems.apriltagvision.AprilTagVisionIO.AprilTagVisionIOInputs;
 import frc.robot.util.GeomUtil;
 import frc.robot.util.LoggedTunableNumber;
 import frc.robot.util.VirtualSubsystem;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 import lombok.experimental.ExtensionMethod;
 import org.littletonrobotics.junction.Logger;
 
-/** Vision subsystem for AprilTag vision. */
+/** Vision subsystem for AprilTag vision (built upon a virtual subsystem) */
 @ExtensionMethod({GeomUtil.class})
 public class AprilTagVision extends VirtualSubsystem {
+
   private static final LoggedTunableNumber timestampOffset =
       new LoggedTunableNumber("AprilTagVision/TimestampOffset", -(1.0 / 50.0));
   private static final double demoTagPosePersistenceSecs = 0.5;
 
+  // Tag sources and layout
   private final Supplier<AprilTagLayoutType> aprilTagTypeSupplier;
   private final AprilTagVisionIO[] io;
   private final AprilTagVisionIOInputs[] inputs;
 
+  // Bookkeeping for last frame exposure and last tag detection
   private final Map<Integer, Double> lastFrameTimes = new HashMap<>();
   private final Map<Integer, Double> lastTagDetectionTimes = new HashMap<>();
 
+  // Something to do with demo?
   private Pose3d demoTagPose = null;
   private double lastDemoTagPoseTimestamp = 0.0;
 
+  // Class method definition, including inputs
   public AprilTagVision(Supplier<AprilTagLayoutType> aprilTagTypeSupplier, AprilTagVisionIO... io) {
     this.aprilTagTypeSupplier = aprilTagTypeSupplier;
     this.io = io;
