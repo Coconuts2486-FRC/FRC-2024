@@ -19,15 +19,11 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.subsystems.drive.DriveConstants;
-import frc.robot.subsystems.superstructure.arm.ArmConstants;
+import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.GeomUtil;
 import frc.robot.util.LoggedTunableNumber;
-import frc.robot.util.NoteVisualizer;
-import frc.robot.util.swerve.ModuleLimits;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import lombok.Getter;
 import lombok.Setter;
@@ -149,13 +145,13 @@ public class RobotState {
   @Setter private BooleanSupplier lookaheadDisable = () -> false;
 
   private RobotState() {
-    for (int i = 0; i < 3; ++i) {
-      qStdDevs.set(i, 0, Math.pow(DriveConstants.odometryStateStdDevs.get(i, 0), 2));
-    }
-    kinematics = DriveConstants.kinematics;
+    // for (int i = 0; i < 3; ++i) {
+    //   qStdDevs.set(i, 0, Math.pow(DriveConstants.odometryStateStdDevs.get(i, 0), 2));
+    // }
+    kinematics = Drive.kinematics;
 
-    // Setup NoteVisualizer
-    NoteVisualizer.setRobotPoseSupplier(this::getEstimatedPose);
+    // // Setup NoteVisualizer
+    // NoteVisualizer.setRobotPoseSupplier(this::getEstimatedPose);
   }
 
   /** Add odometry observation */
@@ -345,43 +341,43 @@ public class RobotState {
   private static final LoggedTunableNumber demoTargetDistance =
       new LoggedTunableNumber("RobotState/DemoTargetDistance", 2.0);
 
-  public Optional<DemoFollowParameters> getDemoTagParameters() {
-    if (latestDemoParamters != null) {
-      // Use cached demo parameters.
-      return Optional.of(latestDemoParamters);
-    }
-    // Return empty optional if no demo tag pose.
-    if (demoTagPose == null) return Optional.empty();
+  // public Optional<DemoFollowParameters> getDemoTagParameters() {
+  //   if (latestDemoParamters != null) {
+  //     // Use cached demo parameters.
+  //     return Optional.of(latestDemoParamters);
+  //   }
+  //   // Return empty optional if no demo tag pose.
+  //   if (demoTagPose == null) return Optional.empty();
 
-    // Calculate target pose.
-    Pose2d targetPose =
-        demoTagPose
-            .toPose2d()
-            .transformBy(
-                new Transform2d(
-                    new Translation2d(demoTargetDistance.get(), 0.0), new Rotation2d(Math.PI)));
+  //   // Calculate target pose.
+  //   Pose2d targetPose =
+  //       demoTagPose
+  //           .toPose2d()
+  //           .transformBy(
+  //               new Transform2d(
+  //                   new Translation2d(demoTargetDistance.get(), 0.0), new Rotation2d(Math.PI)));
 
-    // Calculate heading without movement.
-    Translation2d demoTagFixed = demoTagPose.getTranslation().toTranslation2d();
-    Translation2d robotToDemoTagFixed = demoTagFixed.minus(getEstimatedPose().getTranslation());
-    Rotation2d targetHeading = robotToDemoTagFixed.getAngle();
+  //   // Calculate heading without movement.
+  //   Translation2d demoTagFixed = demoTagPose.getTranslation().toTranslation2d();
+  //   Translation2d robotToDemoTagFixed = demoTagFixed.minus(getEstimatedPose().getTranslation());
+  //   Rotation2d targetHeading = robotToDemoTagFixed.getAngle();
 
-    // Calculate arm angle.
-    double z = demoTagPose.getZ();
-    Rotation2d armAngle =
-        new Rotation2d(
-            robotToDemoTagFixed.getNorm() - ArmConstants.armOrigin.getX(),
-            z - ArmConstants.armOrigin.getY());
+  //   // Calculate arm angle.
+  //   double z = demoTagPose.getZ();
+  //   Rotation2d armAngle =
+  //       new Rotation2d(
+  //           robotToDemoTagFixed.getNorm() - ArmConstants.armOrigin.getX(),
+  //           z - ArmConstants.armOrigin.getY());
 
-    latestDemoParamters = new DemoFollowParameters(targetPose, targetHeading, armAngle);
-    return Optional.of(latestDemoParamters);
-  }
+  //   latestDemoParamters = new DemoFollowParameters(targetPose, targetHeading, armAngle);
+  //   return Optional.of(latestDemoParamters);
+  // }
 
-  public ModuleLimits getModuleLimits() {
-    return flywheelAccelerating && !DriverStation.isAutonomousEnabled()
-        ? DriveConstants.moduleLimitsFlywheelSpinup
-        : DriveConstants.moduleLimitsFree;
-  }
+  // public ModuleLimits getModuleLimits() {
+  //   return flywheelAccelerating && !DriverStation.isAutonomousEnabled()
+  //       ? DriveConstants.moduleLimitsFlywheelSpinup
+  //       : DriveConstants.moduleLimitsFree;
+  // }
 
   public boolean inShootingZone() {
     Pose2d robot = AllianceFlipUtil.apply(getEstimatedPose());

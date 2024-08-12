@@ -21,7 +21,7 @@ public class Elevator extends SubsystemBase {
 
     // Switch constants based on mode (the physics simulator is treated as a
     // separate robot with different tuning)
-    switch (Constants.currentMode) {
+    switch (Constants.getMode()) {
       case REAL:
         ffModel = new SimpleMotorFeedforward(0., 0.0);
         io.configurePID(5.101, 0.0, 0.001);
