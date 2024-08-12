@@ -15,36 +15,37 @@
 
 package frc.robot.subsystems.apriltagvision;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public interface AprilTagVisionIO {
   class AprilTagVisionIOInputs implements LoggableInputs {
-    public double[] timestamps = new double[] {};
-    public double[][] frames = new double[][] {};
-    public double[] demoFrame = new double[] {};
+    public double latency = 0.0;
+    public double timestamp = 0.0;
+    public List<PhotonTrackedTarget> targets = new ArrayList<PhotonTrackedTarget>() {};
+
     public long fps = 0;
 
     @Override
     public void toLog(LogTable table) {
-      table.put("Timestamps", timestamps);
-      table.put("FrameCount", frames.length);
-      for (int i = 0; i < frames.length; i++) {
-        table.put("Frame/" + i, frames[i]);
+      table.put("Latency", latency);
+      table.put("Timestamp", timestamp);
+      table.put("TargetCount", targets.size());
+      for (int i = 0; i < targets.size(); i++) {
+        table.put("Target/" + i, targets.get(i));
       }
-      table.put("DemoFrame", demoFrame);
       table.put("Fps", fps);
     }
 
     @Override
     public void fromLog(LogTable table) {
-      timestamps = table.get("Timestamps", new double[] {0.0});
-      int frameCount = table.get("FrameCount", 0);
-      frames = new double[frameCount][];
-      for (int i = 0; i < frameCount; i++) {
-        frames[i] = table.get("Frame/" + i, new double[] {});
-      }
-      demoFrame = table.get("DemoFrame", new double[] {});
+      latency = table.get("Latency", 0.0);
+      timestamp = table.get("Timestamp", 0.0);
+      int targetCount = table.get("TargetCount", 0);
+      targets = new ArrayList<PhotonTrackedTarget>(targetCount);
       fps = table.get("Fps", 0);
     }
   }

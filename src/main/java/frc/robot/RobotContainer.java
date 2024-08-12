@@ -138,8 +138,8 @@ public class RobotContainer {
         aprilTagVision =
             new AprilTagVision(
                 this::getAprilTagLayoutType,
-                new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, 0),
-                new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, 1));
+                new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, "Photon_BW1"),
+                new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, "Photon_BW2"));
         break;
 
       case SIM:

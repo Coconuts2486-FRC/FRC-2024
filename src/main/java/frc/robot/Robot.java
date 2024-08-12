@@ -15,6 +15,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.VirtualSubsystem;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -22,7 +23,6 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import org.photonvision.PhotonCamera;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,10 +33,6 @@ import org.photonvision.PhotonCamera;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
-
-  // Instantiate the PhotonVision cameras
-  PhotonCamera camera1 = new PhotonCamera("Photon_BW1");
-  PhotonCamera camera2 = new PhotonCamera("Photon_BW2");
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -99,13 +95,8 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
-    // Query the latest result from PhotonVision
-    var result1 = camera1.getLatestResult();
-    var result2 = camera2.getLatestResult();
-
-    // Log the entire result for each camera to AdvantageKit
-    Logger.recordOutput("PhotonVision/Result1", result1);
-    Logger.recordOutput("PhotonVision/Result2", result2);
+    // Run all virtual subsystems each time through the loop
+    VirtualSubsystem.periodicAll();
 
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing

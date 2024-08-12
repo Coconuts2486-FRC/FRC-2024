@@ -15,96 +15,69 @@
 
 package frc.robot.subsystems.apriltagvision;
 
-import static frc.robot.subsystems.apriltagvision.AprilTagVisionConstants.*;
-
-import edu.wpi.first.networktables.DoubleArraySubscriber;
-import edu.wpi.first.networktables.IntegerSubscriber;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.PubSubOption;
-import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.FieldConstants;
 import frc.robot.FieldConstants.AprilTagLayoutType;
 import frc.robot.util.Alert;
+import java.util.List;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class AprilTagVisionIOPhotonVision implements AprilTagVisionIO {
-  private static final int cameraResolutionWidth = 1600;
-  private static final int cameraResolutionHeight = 1200;
-  private static final int cameraAutoExposure = 1;
-  private static final int cameraExposure = 10;
-  private static final int cameraGain = 25;
 
   private final Supplier<AprilTagLayoutType> aprilTagTypeSupplier;
   private AprilTagLayoutType lastAprilTagType = null;
 
-  private final StringPublisher tagLayoutPublisher;
-  private final DoubleArraySubscriber observationSubscriber;
-  private final DoubleArraySubscriber demoObservationSubscriber;
-  private final IntegerSubscriber fpsSubscriber;
-
   private static final double disconnectedTimeout = 0.5;
   private final Alert disconnectedAlert;
   private final Timer disconnectedTimer = new Timer();
+  public final PhotonCamera camera;
+  public final String camname;
 
   public AprilTagVisionIOPhotonVision(
-      Supplier<AprilTagLayoutType> aprilTagTypeSupplier, int index) {
+      Supplier<AprilTagLayoutType> aprilTagTypeSupplier, String camname) {
     this.aprilTagTypeSupplier = aprilTagTypeSupplier;
-    var northstarTable = NetworkTableInstance.getDefault().getTable(instanceNames[index]);
-    var configTable = northstarTable.getSubTable("config");
-    configTable.getStringTopic("camera_id").publish().set(cameraIds[index]);
-    configTable.getIntegerTopic("camera_resolution_width").publish().set(cameraResolutionWidth);
-    configTable.getIntegerTopic("camera_resolution_height").publish().set(cameraResolutionHeight);
-    configTable.getIntegerTopic("camera_auto_exposure").publish().set(cameraAutoExposure);
-    configTable.getIntegerTopic("camera_exposure").publish().set(cameraExposure);
-    configTable.getIntegerTopic("camera_gain").publish().set(cameraGain);
-    configTable.getDoubleTopic("fiducial_size_m").publish().set(FieldConstants.aprilTagWidth);
-    tagLayoutPublisher = configTable.getStringTopic("tag_layout").publish();
+    this.camname = camname;
+    this.camera = new PhotonCamera(camname);
 
-    var outputTable = northstarTable.getSubTable("output");
-    observationSubscriber =
-        outputTable
-            .getDoubleArrayTopic("observations")
-            .subscribe(
-                new double[] {}, PubSubOption.keepDuplicates(true), PubSubOption.sendAll(true));
-    demoObservationSubscriber =
-        outputTable
-            .getDoubleArrayTopic("demo_observations")
-            .subscribe(
-                new double[] {}, PubSubOption.keepDuplicates(true), PubSubOption.sendAll(true));
-    fpsSubscriber = outputTable.getIntegerTopic("fps").subscribe(0);
-
-    disconnectedAlert =
-        new Alert("No data from \"" + instanceNames[index] + "\"", Alert.AlertType.ERROR);
+    disconnectedAlert = new Alert("No data from \"" + camname + "\"", Alert.AlertType.ERROR);
     disconnectedTimer.start();
   }
 
   public void updateInputs(AprilTagVisionIOInputs inputs) {
-    // Publish tag layout
-    var aprilTagType = aprilTagTypeSupplier.get();
-    if (aprilTagType != lastAprilTagType) {
-      lastAprilTagType = aprilTagType;
-      tagLayoutPublisher.set(aprilTagType.getLayoutString());
-    }
-
     // Get observations
-    var queue = observationSubscriber.readQueue();
-    inputs.timestamps = new double[queue.length];
-    inputs.frames = new double[queue.length][];
-    for (int i = 0; i < queue.length; i++) {
-      inputs.timestamps[i] = queue[i].timestamp / 1000000.0;
-      inputs.frames[i] = queue[i].value;
-    }
-    inputs.demoFrame = new double[] {};
-    for (double[] demoFrame : demoObservationSubscriber.readQueueValues()) {
-      inputs.demoFrame = demoFrame;
-    }
-    inputs.fps = fpsSubscriber.get();
+    var result = camera.getLatestResult();
 
-    // Update disconnected alert
-    if (queue.length > 0) {
-      disconnectedTimer.reset();
+    // Log the entire result for each camera to AdvantageKit
+    Logger.recordOutput("PhotonVision/" + camname, result); // result.getLatencyMillis());
+
+    // Put the relevant information into the `inputs`
+    inputs.latency = result.getLatencyMillis();
+    inputs.timestamp = result.getTimestampSeconds();
+
+    if (result.hasTargets()) {
+      List<PhotonTrackedTarget> targets = result.getTargets();
+      inputs.targets = targets;
+      for (PhotonTrackedTarget target : targets) {
+        // Get information from target.
+        int targetID = target.getFiducialId();
+        double poseAmbiguity = target.getPoseAmbiguity();
+        Transform3d bestCameraToTarget = target.getBestCameraToTarget();
+        Transform3d alternateCameraToTarget = target.getAlternateCameraToTarget();
+
+        String logTag = "PhotonVision/Tag" + Integer.toString(targetID);
+        Logger.recordOutput(logTag + "/PoseAmbiguity", poseAmbiguity);
+        Logger.recordOutput(logTag + "/BestCameraToTarget", bestCameraToTarget);
+        Logger.recordOutput(logTag + "/AlternateCameraToTarget", alternateCameraToTarget);
+
+        // Calculate robot's field relative pose
+        // Pose3d robotPose =
+        // PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
+        // aprilTagFieldLayout.getTagPose(target.getFiducialId()), cameraToRobot);
+
+      }
     }
-    disconnectedAlert.set(disconnectedTimer.hasElapsed(disconnectedTimeout));
   }
 }
