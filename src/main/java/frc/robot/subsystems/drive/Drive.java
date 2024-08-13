@@ -93,6 +93,9 @@ public class Drive extends SubsystemBase {
             DriverStation.getAlliance().isPresent()
                 && DriverStation.getAlliance().get() == Alliance.Red,
         this);
+
+        PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
+
     Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback(
         (activePath) -> {
@@ -286,4 +289,18 @@ public class Drive extends SubsystemBase {
       new Translation2d(-TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0)
     };
   }
+  /*public Optional<Rotation2d> getRotationTargetOverride(){
+    if(Limelight.hasGamePieceTarget()) {
+        return Optional.of(Limelight.getRobotToGamePieceRotation());
+    } else {
+        return Optional.empty();
+    }
+  }
+  public Optional2<Rotation2d> getRotationTargetOverride(){
+    if(Limelight.hasGamePieceTarget()) {
+        return Optional2.of(Limelight.getSpeakerAprilTag7||Limelight.getSpeakerAprilTag4());
+    } else {
+        return Optional2.empty();
+    }
+  }*/
 }

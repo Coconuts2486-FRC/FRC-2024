@@ -93,7 +93,9 @@ public class LED {
     if (bottomA > 295) {
       positive = false;
     }
-
     // }
+  }
+  public static void gotNote(boolean lightStop){
+     ledBuffer.setRGB(100, 255, 255);
   }
 }
