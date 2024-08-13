@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.subsystems.apriltagvision.AprilTagVision;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -22,7 +23,7 @@ public class Pivot extends SubsystemBase {
 
     // Switch constants based on mode (the physics simulator is treated as a
     // separate robot with different tuning)
-    switch (Constants.currentMode) {
+    switch (Constants.getMode()) {
       case REAL:
         ffModel = new SimpleMotorFeedforward(0., 0.0);
         io.configurePID(0.0, 0.0, 0.0);
@@ -54,6 +55,7 @@ public class Pivot extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Flywheel", inputs);
+    Logger.recordOutput("Pivot/DistanceToSpeaker", getSpeakerDistance());
   }
 
   /** Run open loop at the specified voltage. */
@@ -97,5 +99,20 @@ public class Pivot extends SubsystemBase {
   /** Returns the current velocity in radians per second. */
   public double getCharacterizationVelocity() {
     return inputs.velocityRadPerSec;
+  }
+
+  /**
+   * Compute the distance to the SPEAKER AprilTag, as seen by PhotonVision
+   *
+   * <p>Returns the SPEAKER distance (along the floor) in inches. If the speaker tag is not visible,
+   * this returns -999.9 inches!
+   */
+  public double getSpeakerDistance() {
+
+    if (AprilTagVision.speakerPose == null) {
+      return -999.9;
+    }
+    return Units.metersToInches(
+        Math.hypot(AprilTagVision.speakerPose.getX(), AprilTagVision.speakerPose.getY()));
   }
 }
