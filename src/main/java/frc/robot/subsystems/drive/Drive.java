@@ -95,7 +95,7 @@ public class Drive extends SubsystemBase {
                 && DriverStation.getAlliance().get() == Alliance.Red,
         this);
 
-        PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
+    // PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
 
     Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback(
