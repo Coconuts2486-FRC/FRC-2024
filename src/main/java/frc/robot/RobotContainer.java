@@ -12,7 +12,6 @@
 // GNU General Public License for more details.
 
 package frc.robot;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -165,7 +164,7 @@ public class RobotContainer {
             pivot,
             () -> 45));
     NamedCommands.registerCommand("PivotAmp45", new PivotCommand(pivot, () -> 60));
-    NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.6));
+    NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
     NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
     NamedCommands.registerCommand("PivotAmp24", new PivotCommand(pivot, () -> 24));
 

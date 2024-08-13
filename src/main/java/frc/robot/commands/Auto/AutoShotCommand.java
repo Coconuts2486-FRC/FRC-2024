@@ -30,7 +30,7 @@ public class AutoShotCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    smaIntakeRollers.autoShot(0);
+    smaIntakeRollers.stop();
     flywheel.stop();
   }
 }

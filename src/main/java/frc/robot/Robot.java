@@ -134,7 +134,6 @@ public class Robot extends LoggedRobot {
       autonomousCommand.cancel();
     }
   }
-
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {}

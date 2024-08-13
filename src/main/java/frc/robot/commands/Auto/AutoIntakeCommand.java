@@ -47,24 +47,24 @@ public class AutoIntakeCommand extends Command {
     if (lightStop.getAsBoolean()) {
       if (intakeStop.getAsBoolean()) {
         intake.stop();
+        smaIntakeRollers.stop();
         smaIntakeRollers.autoShot(0);
         pivot.holdPosition(angle.getAsDouble());
         end(true);
       } else {
         intake.retract();
         smaIntakeRollers.autoShot(0);
-        pivot.holdPosition(angle.getAsDouble());
       }
     } else {
       intake.setExtendPosition(48.8);
-      smaIntakeRollers.autoShot(0.3);
+      smaIntakeRollers.autoShot(0.25);
       pivot.holdPosition(angle.getAsDouble());
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-    smaIntakeRollers.autoShot(0);
     intake.stop();
+    smaIntakeRollers.stop();
   }
 }
