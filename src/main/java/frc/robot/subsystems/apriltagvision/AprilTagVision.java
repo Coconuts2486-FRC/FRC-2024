@@ -139,6 +139,14 @@ public class AprilTagVision extends VirtualSubsystem {
         break;
       default:
         // Otherwise, compute the average!
+        Translation3d trans0 = allSpeakerPoses3d.get(0).getTranslation();
+        Translation3d trans1 = allSpeakerPoses3d.get(1).getTranslation();
+        speakerPose =
+            new Pose3d(
+                (trans0.getX() + trans1.getX()) / 2.,
+                (trans0.getY() + trans1.getY()) / 2.,
+                (trans0.getZ() + trans1.getZ()) / 2.,
+                new Rotation3d());
     }
   }
 }
