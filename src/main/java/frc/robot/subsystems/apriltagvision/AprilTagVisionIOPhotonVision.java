@@ -54,6 +54,7 @@ public class AprilTagVisionIOPhotonVision implements AprilTagVisionIO {
     Logger.recordOutput("PhotonVision/" + camname, result); // result.getLatencyMillis());
 
     // Put the relevant information into the `inputs`
+    inputs.camname = camname;
     inputs.latency = result.getLatencyMillis();
     inputs.timestamp = result.getTimestampSeconds();
 
@@ -71,13 +72,9 @@ public class AprilTagVisionIOPhotonVision implements AprilTagVisionIO {
         Logger.recordOutput(logTag + "/PoseAmbiguity", poseAmbiguity);
         Logger.recordOutput(logTag + "/BestCameraToTarget", bestCameraToTarget);
         Logger.recordOutput(logTag + "/AlternateCameraToTarget", alternateCameraToTarget);
-
-        // Calculate robot's field relative pose
-        // Pose3d robotPose =
-        // PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
-        // aprilTagFieldLayout.getTagPose(target.getFiducialId()), cameraToRobot);
-
       }
+    } else {
+      inputs.targets = null;
     }
   }
 }

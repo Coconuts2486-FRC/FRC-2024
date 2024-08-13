@@ -23,6 +23,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public interface AprilTagVisionIO {
   class AprilTagVisionIOInputs implements LoggableInputs {
+    public String camname = "";
     public double latency = 0.0;
     public double timestamp = 0.0;
     public List<PhotonTrackedTarget> targets = new ArrayList<PhotonTrackedTarget>() {};
