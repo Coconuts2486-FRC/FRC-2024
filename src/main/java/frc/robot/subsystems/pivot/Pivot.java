@@ -3,7 +3,10 @@ package frc.robot.subsystems.pivot;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -58,6 +61,8 @@ public class Pivot extends SubsystemBase {
     Logger.processInputs("Flywheel", inputs);
     Logger.recordOutput("Pivot/DistanceToSpeaker", getSpeakerDistance());
     SmartDashboard.putNumber("Speaker Distance", getSpeakerDistance());
+    Logger.recordOutput("Pivot/YawToSpeaker", getSpeakerYaw());
+    SmartDashboard.putNumber("Speaker Yaw", getSpeakerYaw());
   }
 
   /** Run open loop at the specified voltage. */
@@ -108,18 +113,60 @@ public class Pivot extends SubsystemBase {
     return PivotIOInputsAutoLogged.positionDeg;
   }
 
+  /** NOTE: These functions should probably end up somewhere else, but they're here for now */
+
   /**
    * Compute the distance to the SPEAKER AprilTag, as seen by PhotonVision
    *
    * <p>Returns the SPEAKER distance (along the floor) in inches. If the speaker tag is not visible,
    * this returns -999.9 inches!
+   *
+   * <p>NOTE: If we want the null result to return something other than -999.9, we can do that.
    */
   public double getSpeakerDistance() {
 
+    // No tag information, return default value
     if (AprilTagVision.speakerPose == null) {
       return -999.9;
     }
+
+    // Return the distance to the tag along the floor in inches
     return Units.metersToInches(
         Math.hypot(AprilTagVision.speakerPose.getX(), AprilTagVision.speakerPose.getY()));
+  }
+
+  /**
+   * Compute the field-centric YAW to the SPEAKER AprilTag, as seen by PhotonVision
+   *
+   * <p>Returns the field-centric YAW to the SPEAKER in degrees. To aim the robot at the speaker,
+   * set the robot YAW equal to this value. If the speaker tag is not visible, this returns -999.9
+   * degrees!
+   *
+   * <p>NOTE: This function assumes "Always Blue Origin" convention for YAW, meaning that when
+   * alliance is BLUE, 0º is away from the alliance wall, and when alliance is RED, 180º is away
+   * from the alliance wall. A head-on speaker shot has the robot facing away from the alliance wall
+   * (i.e., the shooter is on the back of the robot).
+   *
+   * <p>NOTE: If we want the null result to return something other than -999.9, we can do that.
+   */
+  public double getSpeakerYaw() {
+
+    // No tag information, return default value
+    if (AprilTagVision.speakerPose == null) {
+      return -999.9;
+    }
+
+    // The YAW to the speaker is computed from the X and Y position along the floor.
+    Rotation2d yaw =
+        new Rotation2d(
+            Math.atan(AprilTagVision.robotPose.getY() / AprilTagVision.robotPose.getX()));
+
+    // Rotate by 180º if on the RED alliance
+    if (DriverStation.getAlliance().get() == Alliance.Red) {
+      yaw = yaw.plus(new Rotation2d(Math.PI));
+    }
+
+    // Return the YAW value in degrees
+    return yaw.getDegrees();
   }
 }

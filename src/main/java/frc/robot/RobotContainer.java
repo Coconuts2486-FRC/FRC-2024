@@ -261,6 +261,13 @@ public class RobotContainer {
 
     // Re-Zero Gyro
     driver.y().onTrue(Commands.runOnce(() -> drive.zero()));
+
+    // ############################################/
+    // Re-Zero Gyro :: DOUBLE-UP BECAUSE driver.a() causes a funny odometry reset, but is not
+    // defined here!
+    driver.a().onTrue(Commands.runOnce(() -> drive.zero()));
+    // ############################################/
+
     // ** Pivot Commands
     // > These three are the manual angle changer
     coDriver.povUp().whileTrue(new PivotChangerUpCommand());

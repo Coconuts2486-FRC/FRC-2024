@@ -19,7 +19,9 @@ import static frc.robot.subsystems.apriltagvision.AprilTagVisionConstants.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -57,11 +59,12 @@ public class AprilTagVision extends VirtualSubsystem {
   // Something to do with demo?
   private Pose3d demoTagPose = null;
   private double lastDemoTagPoseTimestamp = 0.0;
-  private static Pose3d robotPose = null;
+  public static Pose2d robotPose = null;
   public static Pose3d speakerPose = null;
   private static Translation3d speakerTranslation = null;
   private static Rotation3d robotRotation = null;
   private static Pose3d thisSpeakerPose = null;
+  private static Pose3d thisRobotPose = null;
 
   // Class method definition, including inputs
   public AprilTagVision(Supplier<AprilTagLayoutType> aprilTagTypeSupplier, AprilTagVisionIO... io) {
@@ -87,6 +90,7 @@ public class AprilTagVision extends VirtualSubsystem {
 
     // Loop over cameras
     List<Pose2d> allSpeakerPoses = new ArrayList<>();
+    List<Pose2d> allRobotPoses = new ArrayList<>();
     List<Pose3d> allSpeakerPoses3d = new ArrayList<>();
     for (int instanceIndex = 0; instanceIndex < io.length; instanceIndex++) {
       var timestamp = inputs[instanceIndex].timestamp;
@@ -106,24 +110,27 @@ public class AprilTagVision extends VirtualSubsystem {
             || (target.getFiducialId() == 7
                 && DriverStation.getAlliance().get() == Alliance.Blue)) {
 
-          // Camera pose is "WHERE IS CAMERA AS SEEN FROM TAG"; invert to get tag from camera
+          // Camera pose is "WHERE IS THE CAMERA AS SEEN FROM TAG"; invert to get tag from camera
           Pose3d cameraPose = GeomUtil.toPose3d(target.getBestCameraToTarget().inverse());
-          robotPose = cameraPose.transformBy(cameraPoses[instanceIndex].toTransform3d().inverse());
+          thisRobotPose =
+              cameraPose.transformBy(cameraPoses[instanceIndex].toTransform3d().inverse());
 
           // Get the speaker pose from the point of view of the robot
-          robotRotation = robotPose.getRotation();
+          robotRotation =
+              thisRobotPose.getRotation(); // This is rotation of bot w.r.t. tag coordinate system
           speakerTranslation =
-              robotPose.getTranslation().unaryMinus().rotateBy(robotRotation.unaryMinus());
+              thisRobotPose.getTranslation().unaryMinus().rotateBy(robotRotation.unaryMinus());
           thisSpeakerPose = new Pose3d(speakerTranslation, new Rotation3d());
 
           allSpeakerPoses3d.add(thisSpeakerPose);
           allSpeakerPoses.add(thisSpeakerPose.toPose2d());
+          allRobotPoses.add(thisRobotPose.toPose2d());
 
           // Log the relevant information to AdvantageKit
           Logger.recordOutput("PhotonVision/Speaker_" + inputs[instanceIndex].camname, speakerPose);
           Logger.recordOutput(
               "PhotonVision/Robot2d_" + inputs[instanceIndex].camname,
-              robotPose.getRotation().toRotation2d());
+              robotRotation.toRotation2d());
         }
       }
     }
@@ -132,21 +139,33 @@ public class AprilTagVision extends VirtualSubsystem {
       case 0:
         // If no speaker tags, return a null Pose3d
         speakerPose = null;
+        robotPose = null;
         break;
       case 1:
         // One tag seen, return it
         speakerPose = allSpeakerPoses3d.get(0);
+        robotPose = allRobotPoses.get(0);
         break;
       default:
-        // Otherwise, compute the average!
-        Translation3d trans0 = allSpeakerPoses3d.get(0).getTranslation();
-        Translation3d trans1 = allSpeakerPoses3d.get(1).getTranslation();
+        // Otherwise, compute the average speakerPose
+        Translation3d strans0 = allSpeakerPoses3d.get(0).getTranslation();
+        Translation3d strans1 = allSpeakerPoses3d.get(1).getTranslation();
         speakerPose =
             new Pose3d(
-                (trans0.getX() + trans1.getX()) / 2.,
-                (trans0.getY() + trans1.getY()) / 2.,
-                (trans0.getZ() + trans1.getZ()) / 2.,
+                (strans0.getX() + strans1.getX()) / 2.,
+                (strans0.getY() + strans1.getY()) / 2.,
+                (strans0.getZ() + strans1.getZ()) / 2.,
                 new Rotation3d());
+        // And then compute the average robotPose
+        Translation2d rtrans0 = allRobotPoses.get(0).getTranslation();
+        Translation2d rtrans1 = allRobotPoses.get(1).getTranslation();
+        Rotation2d rrot0 = allRobotPoses.get(0).getRotation();
+        Rotation2d rrot1 = allRobotPoses.get(1).getRotation();
+        robotPose =
+            new Pose2d(
+                (rtrans0.getX() + rtrans1.getX()) / 2.0,
+                (rtrans0.getY() + rtrans1.getY()) / 2.0,
+                rrot0.plus(rrot1).div(2.0));
     }
   }
 }
