@@ -12,7 +12,7 @@ public class PivotChangerUpCommand extends Command {
 
   @Override
   public void execute() {
-    angler = angler + .1;
+    angler = angler + .02;
     System.out.println(angler);
   }
 

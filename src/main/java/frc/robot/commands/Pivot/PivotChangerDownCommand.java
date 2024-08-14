@@ -11,7 +11,7 @@ public class PivotChangerDownCommand extends Command {
 
   @Override
   public void execute() {
-    PivotChangerUpCommand.angler = PivotChangerUpCommand.angler - .1;
+    PivotChangerUpCommand.angler = PivotChangerUpCommand.angler - .02;
     System.out.println(PivotChangerUpCommand.angler);
   }
 

@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -56,6 +57,7 @@ public class Pivot extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Flywheel", inputs);
     Logger.recordOutput("Pivot/DistanceToSpeaker", getSpeakerDistance());
+    SmartDashboard.putNumber("Speaker Distance", getSpeakerDistance());
   }
 
   /** Run open loop at the specified voltage. */
@@ -99,6 +101,11 @@ public class Pivot extends SubsystemBase {
   /** Returns the current velocity in radians per second. */
   public double getCharacterizationVelocity() {
     return inputs.velocityRadPerSec;
+  }
+
+  public double pivotAngle() {
+
+    return PivotIOInputsAutoLogged.positionDeg;
   }
 
   /**

@@ -1,5 +1,6 @@
 package frc.robot.commands.Pivot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.pivot.Pivot;
 import java.util.function.DoubleSupplier;
@@ -19,7 +20,7 @@ public class PivotCommand extends Command {
 
   @Override
   public void execute() {
-
+    SmartDashboard.putNumber("Pivot Angle", pivot.pivotAngle());
     pivot.holdPosition(angle.getAsDouble());
   }
 

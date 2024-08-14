@@ -40,6 +40,7 @@ import frc.robot.commands.Pivot.PivotChangerDownCommand;
 import frc.robot.commands.Pivot.PivotChangerResetCommand;
 import frc.robot.commands.Pivot.PivotChangerUpCommand;
 import frc.robot.commands.Pivot.PivotCommand;
+import frc.robot.commands.Pivot.RegressedPivotCommand;
 import frc.robot.commands.ShotCommand;
 import frc.robot.subsystems.apriltagvision.AprilTagVision;
 import frc.robot.subsystems.apriltagvision.AprilTagVisionIO;
@@ -270,12 +271,15 @@ public class RobotContainer {
     // >
     // Go to 45
     // Adding the manual angle and the amp angle changer
+
     coDriver
         .leftStick()
         .toggleOnTrue(
             new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
+
+    coDriver.leftBumper().whileTrue(new RegressedPivotCommand(pivot));
     // **
     // Shot
     coDriver.rightBumper().whileTrue(new ShotCommand(intakeRollers, flywheel));
