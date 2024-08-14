@@ -57,6 +57,9 @@ import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.flywheel.FlywheelIO;
 import frc.robot.subsystems.flywheel.FlywheelIOSim;
 import frc.robot.subsystems.flywheel.FlywheelIOTalonFX;
+import frc.robot.subsystems.gamepiecevision.GamePieceVision;
+import frc.robot.subsystems.gamepiecevision.GamePieceVisionIO;
+import frc.robot.subsystems.gamepiecevision.GamePieceVisionIOPiVision;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOReal;
 import frc.robot.subsystems.intake.IntakeRollers;
@@ -92,6 +95,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Flywheel flywheel;
   private final AprilTagVision aprilTagVision;
+  private final GamePieceVision gamePieceVision;
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -140,6 +144,7 @@ public class RobotContainer {
                 this::getAprilTagLayoutType,
                 new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, "Photon_BW1"),
                 new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, "Photon_BW2"));
+        gamePieceVision = new GamePieceVision(new GamePieceVisionIOPiVision());
         break;
 
       case SIM:
@@ -156,6 +161,7 @@ public class RobotContainer {
         intake = new Intake(new IntakeIOReal());
         elevator = new Elevator(new ElevatorIOReal());
         aprilTagVision = new AprilTagVision(this::getAprilTagLayoutType);
+        gamePieceVision = new GamePieceVision();
         break;
 
       default:
@@ -174,6 +180,7 @@ public class RobotContainer {
         aprilTagVision =
             new AprilTagVision(
                 this::getAprilTagLayoutType, new AprilTagVisionIO() {}, new AprilTagVisionIO() {});
+        gamePieceVision = new GamePieceVision(new GamePieceVisionIO() {});
         break;
     }
 

@@ -3,6 +3,7 @@ package frc.robot.subsystems.pivot;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.subsystems.apriltagvision.AprilTagVision;
+import frc.robot.subsystems.gamepiecevision.GamePieceVision;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -113,6 +115,7 @@ public class Pivot extends SubsystemBase {
     return PivotIOInputsAutoLogged.positionDeg;
   }
 
+  /******************************************************************************************/
   /** NOTE: These functions should probably end up somewhere else, but they're here for now */
 
   /**
@@ -168,5 +171,10 @@ public class Pivot extends SubsystemBase {
 
     // Return the YAW value in degrees
     return yaw.getDegrees();
+  }
+
+  /** Get the Pose2d of the Game Piece Relative to the Robot */
+  public Pose2d getGamePiecePose() {
+    return GamePieceVision.gamePieceRelativePose;
   }
 }
