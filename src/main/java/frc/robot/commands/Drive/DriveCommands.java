@@ -52,6 +52,7 @@ public class DriveCommands {
           SmartDashboard.putNumber("Speaker Yaw", drive.getSpeakerYaw().getDegrees());
           omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
 
+          // Square both the linearMagnitude and omega, preseriving sign
           linearMagnitude = linearMagnitude * linearMagnitude;
           omega = Math.copySign(omega * omega, omega);
 

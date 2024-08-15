@@ -131,20 +131,5 @@ public class Pivot extends SubsystemBase {
         Math.hypot(AprilTagVision.speakerPose.getX(), AprilTagVision.speakerPose.getY()));
   }
 
-  /**
-   * Compute the field-centric YAW to the SPEAKER AprilTag, as seen by PhotonVision
-   *
-   * <p>Returns the field-centric YAW to the SPEAKER in degrees. To aim the robot at the speaker,
-   * set the robot YAW equal to this value. If the speaker tag is not visible, this returns -999.9
-   * degrees!
-   *
-   * <p>NOTE: This function assumes "Always Blue Origin" convention for YAW, meaning that when
-   * alliance is BLUE, 0º is away from the alliance wall, and when alliance is RED, 180º is away
-   * from the alliance wall. A head-on speaker shot has the robot facing away from the alliance wall
-   * (i.e., the shooter is on the back of the robot).
-   *
-   * <p>NOTE: If we want the null result to return something other than -999.9, we can do that.
-   */
   // find others in Drive.java
-
 }

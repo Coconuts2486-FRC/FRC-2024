@@ -37,10 +37,16 @@ public class TargetTagCommand extends Command {
         MathUtil.applyDeadband(
             Math.hypot(xSupplier.getAsDouble(), ySupplier.getAsDouble()), DriveCommands.DEADBAND);
     Rotation2d linearDirection = new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
-    double omega;
 
-    omega = drive.gyroAngles().minus(drive.getSpeakerYaw()).getDegrees();
+    // Omega is the difference between the gyro YAW and the desired speaker YAW
+    // BUT: As used in the drive command, omega is the ROTATIONAL VELOCITY, not the desired
+    //      position offset.  When targeting, we need to override the OMEGA from the drive
+    //      command with a PID/Feedforward combo that sets the YAW of the robot to the
+    //      YAW of the speaker!
+    // See https://docs.wpilib.org/en/stable/docs/software/commandbased/profilepid-subsystems-commands.html
+    double omega = drive.gyroAngles().minus(drive.getSpeakerYaw()).getDegrees();
 
+    // Square both the linearMagnitude and omega, preseriving sign
     linearMagnitude = linearMagnitude * linearMagnitude;
     omega = Math.copySign(omega * omega, omega);
 
