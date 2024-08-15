@@ -28,7 +28,7 @@ import frc.robot.FieldConstants.AprilTagLayoutType;
 import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
-import frc.robot.commands.Drive.TargetTagCommand;
+import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
 import frc.robot.commands.Elevator.ManualElevatorCommand;
@@ -221,11 +221,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // drive.setDefaultCommand(
-    //     DriveCommands.joystickDrive(
-    //         drive, () -> -driver.getRightY(), () -> -driver.getRightX(), () ->
-    // -driver.getLeftX()));
-    // driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive, () -> -driver.getRightY(), () -> -driver.getRightX(), () -> -driver.getLeftX()));
+    driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Manual Intake
     intakeRollers.setDefaultCommand(
@@ -235,10 +234,10 @@ public class RobotContainer {
             () -> driver.getLeftTriggerAxis(),
             lightStop::get));
 
-    coDriver
-        .start()
-        .whileTrue(
-            new TargetTagCommand(drive, () -> -driver.getRightY(), () -> -driver.getRightX()));
+    // coDriver
+    //     .start()
+    //     .whileTrue(
+    //         new TargetTagCommand(drive, () -> -driver.getRightY(), () -> -driver.getRightX()));
 
     // ** Normal Intake
     // - Rollers
