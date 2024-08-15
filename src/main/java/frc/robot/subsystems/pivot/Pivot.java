@@ -3,18 +3,13 @@ package frc.robot.subsystems.pivot;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.subsystems.apriltagvision.AprilTagVision;
-import frc.robot.subsystems.gamepiecevision.GamePieceVision;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -63,8 +58,6 @@ public class Pivot extends SubsystemBase {
     Logger.processInputs("Flywheel", inputs);
     Logger.recordOutput("Pivot/DistanceToSpeaker", getSpeakerDistance());
     SmartDashboard.putNumber("Speaker Distance", getSpeakerDistance());
-    Logger.recordOutput("Pivot/YawToSpeaker", getSpeakerYaw());
-    SmartDashboard.putNumber("Speaker Yaw", getSpeakerYaw());
   }
 
   /** Run open loop at the specified voltage. */
@@ -152,29 +145,6 @@ public class Pivot extends SubsystemBase {
    *
    * <p>NOTE: If we want the null result to return something other than -999.9, we can do that.
    */
-  public double getSpeakerYaw() {
+  // find others in Drive.java
 
-    // No tag information, return default value
-    if (AprilTagVision.speakerPose == null) {
-      return -999.9;
-    }
-
-    // The YAW to the speaker is computed from the X and Y position along the floor.
-    Rotation2d yaw =
-        new Rotation2d(
-            Math.atan(AprilTagVision.robotPose.getY() / AprilTagVision.robotPose.getX()));
-
-    // Rotate by 180º if on the RED alliance
-    if (DriverStation.getAlliance().get() == Alliance.Red) {
-      yaw = yaw.plus(new Rotation2d(Math.PI));
-    }
-
-    // Return the YAW value in degrees
-    return yaw.getDegrees();
-  }
-
-  /** Get the Pose2d of the Game Piece Relative to the Robot */
-  public Pose2d getGamePiecePose() {
-    return GamePieceVision.gamePieceRelativePose;
-  }
 }

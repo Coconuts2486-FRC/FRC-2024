@@ -36,6 +36,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.subsystems.apriltagvision.AprilTagVision;
+import frc.robot.subsystems.gamepiecevision.GamePieceVision;
 import frc.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -281,6 +283,10 @@ public class Drive extends SubsystemBase {
     gyroIO.zero();
   }
 
+  public Rotation2d gyroAngles() {
+    return gyroInputs.yawPosition;
+  }
+
   /** Returns an array of module translations. */
   public static Translation2d[] getModuleTranslations() {
     return new Translation2d[] {
@@ -289,6 +295,33 @@ public class Drive extends SubsystemBase {
       new Translation2d(-TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0),
       new Translation2d(-TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0)
     };
+  }
+
+  public Rotation2d getSpeakerYaw() {
+
+    // No tag information, return default value
+    if (AprilTagVision.speakerPose == null) {
+      return new Rotation2d(Float.NaN);
+    }
+
+    // The YAW to the speaker is computed from the X and Y position along the floor.
+
+    Rotation2d yaw =
+        new Rotation2d(
+            Math.atan(AprilTagVision.robotPose.getY() / AprilTagVision.robotPose.getX()));
+
+    // Rotate by 180º if on the RED alliance
+    if (DriverStation.getAlliance().get() == Alliance.Red) {
+      yaw = yaw.plus(new Rotation2d(Math.PI));
+    }
+
+    // Return the YAW value in degrees
+    return yaw;
+  }
+
+  /** Get the Pose2d of the Game Piece Relative to the Robot */
+  public Pose2d getGamePiecePose() {
+    return GamePieceVision.gamePieceRelativePose;
   }
   /*public Optional<Rotation2d> getRotationTargetOverride(){
     if(Limelight.hasGamePieceTarget()) {
