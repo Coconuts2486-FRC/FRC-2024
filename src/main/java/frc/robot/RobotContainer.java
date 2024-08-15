@@ -13,21 +13,15 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.FieldConstants.AprilTagLayoutType;
-import frc.robot.commands.Auto.AutoIntakeCommand;
-import frc.robot.commands.Auto.AutoShotCommand;
-import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
@@ -70,7 +64,6 @@ import frc.robot.subsystems.sma.SmaIntakeRollers;
 import frc.robot.util.Alert;
 import frc.robot.util.Alert.AlertType;
 import frc.robot.util.OverrideSwitches;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -114,7 +107,6 @@ public class RobotContainer {
   private final Alert aprilTagLayoutAlert = new Alert("", AlertType.INFO);
 
   // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
   // private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel
   // Speed", 1500.0);
 
@@ -187,27 +179,6 @@ public class RobotContainer {
     }
 
     // Set up auto routines
-    NamedCommands.registerCommand(
-        "autoShoot",
-        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.4));
-    NamedCommands.registerCommand("autoSpinUp", new AutoSpinUpCommand(flywheel));
-
-    NamedCommands.registerCommand(
-        "autoIntake",
-        new AutoIntakeCommand(
-            intakeRollers,
-            smaIntakeRollers,
-            intake,
-            lightStop::get,
-            intakeStop::get,
-            pivot,
-            () -> 45));
-    NamedCommands.registerCommand("PivotAmp45", new PivotCommand(pivot, () -> 60));
-    NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
-    NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
-    NamedCommands.registerCommand("PivotAmp24", new PivotCommand(pivot, () -> 24));
-
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Configure the button bindings
     configureButtonBindings();
@@ -364,9 +335,6 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
-  }
 
   /** Updates the alerts. */
   public void updateAlerts() {
