@@ -1,0 +1,95 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.4556022399081838,
+        "y": 7.3178775200143
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.2873992229465943,
+        "y": 7.621806766761682
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.2,
+        "y": 7.65
+      },
+      "prevControl": {
+        "x": 2.4604925562916193,
+        "y": 7.654456577747697
+      },
+      "nextControl": {
+        "x": 3.6631387642404913,
+        "y": 7.647208934232684
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.648878399608651,
+        "y": 7.15
+      },
+      "prevControl": {
+        "x": 3.985495512657692,
+        "y": 7.472111285148498
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.35,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Amp SpinUp 1",
+      "waypointRelativePos": 1.65,
+      "command": {
+        "type": "race",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "autoSpinUp"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "PivotAmp23.6"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.5,
+    "maxAcceleration": 3.85,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 21.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Amp Side",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}
