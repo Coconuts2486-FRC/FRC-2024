@@ -12,19 +12,19 @@
     "data": {
       "commands": [
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed"
+                  "name": "PivotAmp23.6"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "autoShootFull"
+                  "name": "autoShoot"
                 }
               }
             ]

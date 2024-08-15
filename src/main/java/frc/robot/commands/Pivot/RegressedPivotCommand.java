@@ -33,9 +33,12 @@ public class RegressedPivotCommand extends Command {
                       * pivot.getSpeakerDistance()))
               + (b * pivot.getSpeakerDistance() * pivot.getSpeakerDistance())
               + c * pivot.getSpeakerDistance()
-              + intercept
-              - 0.2;
+              + intercept;
     }
+    System.out.println(pivot.getSpeakerDistance());
+
+    System.out.println(angle);
+    pivot.holdPosition(angle);
   }
 
   @Override
