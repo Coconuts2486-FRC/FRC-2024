@@ -32,5 +32,6 @@ public class AutoShotCommand extends Command {
   public void end(boolean interrupted) {
     smaIntakeRollers.stop();
     flywheel.stop();
+    intakeRollers.stop();
   }
 }
