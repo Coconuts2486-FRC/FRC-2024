@@ -79,6 +79,12 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Note 2"
+          }
         }
       ]
     }
