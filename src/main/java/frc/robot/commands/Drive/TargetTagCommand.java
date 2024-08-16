@@ -43,8 +43,7 @@ public class TargetTagCommand extends Command {
     //      position offset.  When targeting, we need to override the OMEGA from the drive
     //      command with a PID/Feedforward combo that sets the YAW of the robot to the
     //      YAW of the speaker!
-    // See
-    // https://docs.wpilib.org/en/stable/docs/software/commandbased/profilepid-subsystems-commands.html
+    // See https://docs.wpilib.org/en/stable/docs/software/commandbased/profilepid-subsystems-commands.html
     double omega = drive.gyroAngles().minus(drive.getSpeakerYaw()).getDegrees();
 
     // Square both the linearMagnitude and omega, preseriving sign

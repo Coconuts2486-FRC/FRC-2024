@@ -142,10 +142,8 @@ public class RobotContainer {
         aprilTagVision =
             new AprilTagVision(
                 this::getAprilTagLayoutType,
-                new AprilTagVisionIOPhotonVision(
-                    this::getAprilTagLayoutType, "Photon_BW1", 0, drive),
-                new AprilTagVisionIOPhotonVision(
-                    this::getAprilTagLayoutType, "Photon_BW2", 1, drive));
+                new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, "Photon_BW1"),
+                new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, "Photon_BW2"));
         gamePieceVision = new GamePieceVision(new GamePieceVisionIOPiVision());
         break;
 
