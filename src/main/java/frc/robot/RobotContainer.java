@@ -235,7 +235,7 @@ public class RobotContainer {
             () -> driver.getLeftTriggerAxis(),
             lightStop::get));
 
-    coDriver.start().whileTrue(new TargetTagCommand());
+    coDriver.leftBumper().whileTrue(new TargetTagCommand());
 
     // ** Normal Intake
     // - Rollers
@@ -248,9 +248,9 @@ public class RobotContainer {
                 () -> coDriver.getRightTriggerAxis(),
                 lightStop::get));
     // - Extend
-    coDriver.y().whileTrue(new IntakeExtendCommand(intake, lightStop::get, intakeStop::get));
+    driver.rightBumper().whileTrue(new IntakeExtendCommand(intake, lightStop::get, intakeStop::get));
     // - Retract
-    coDriver.y().whileFalse(new IntakeRetractCommand(intake, intakeStop::get));
+    driver.rightBumper().whileFalse(new IntakeRetractCommand(intake, intakeStop::get));
     // **
     // I Actually Don't know
     driver
@@ -296,7 +296,14 @@ public class RobotContainer {
     // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
 
-    coDriver.leftBumper().whileTrue(new RegressedPivotCommand(pivot));
+    coDriver
+        .leftBumper()
+        .whileTrue(
+            new RegressedPivotCommand(pivot, () -> PivotChangerUpCommand.angler)
+                .andThen(
+                    new PivotCommand(
+                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+
     // **
     // Shot
     coDriver.rightBumper().whileTrue(new ShotCommand(intakeRollers, flywheel));

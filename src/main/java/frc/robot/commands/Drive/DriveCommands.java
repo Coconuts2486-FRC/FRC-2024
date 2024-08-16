@@ -30,7 +30,7 @@ import java.util.function.DoubleSupplier;
 
 public class DriveCommands {
   public static final double DEADBAND = 0.1;
-  private static final PIDController rotatePid = new PIDController(.2, 0, 0);
+  private static final PIDController rotatePid = new PIDController(.2, 0, 0.0005);
 
   private DriveCommands() {}
 
