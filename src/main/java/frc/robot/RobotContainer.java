@@ -228,7 +228,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive, () -> -driver.getRightY(), () -> -driver.getRightX(), () -> -driver.getLeftX()));
+            drive,
+            () -> -driver.getRightY(),
+            () -> -driver.getRightX(),
+            () -> -driver.getLeftX(),
+            lightStop::get));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     coDriver.start().whileTrue(new TargetNoteCommand());
