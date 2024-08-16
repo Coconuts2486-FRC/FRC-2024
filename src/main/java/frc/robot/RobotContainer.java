@@ -207,7 +207,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
     NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
     NamedCommands.registerCommand("PivotAmp25.5", new PivotCommand(pivot, () -> 25.5));
-    NamedCommands.registerCommand("PivotRegressed", new RegressedPivotCommand(pivot));
+    NamedCommands.registerCommand("PivotRegressed", new RegressedPivotCommand(pivot,() -> 0));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
