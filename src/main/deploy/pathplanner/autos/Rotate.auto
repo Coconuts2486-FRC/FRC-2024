@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.289801056453965,
+      "y": 5.56479129624926
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Rotate"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Making sure autos work",
+  "choreoAuto": false
+}

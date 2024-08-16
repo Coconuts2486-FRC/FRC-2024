@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.416646087921806,
+      "y": 7.313008001016002
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PID1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of PID1"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Making sure autos work",
+  "choreoAuto": false
+}
