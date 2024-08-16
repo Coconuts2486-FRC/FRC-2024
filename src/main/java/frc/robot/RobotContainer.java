@@ -207,7 +207,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
     NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
     NamedCommands.registerCommand("PivotAmp25.5", new PivotCommand(pivot, () -> 25.5));
-    NamedCommands.registerCommand("PivotRegressed", new RegressedPivotCommand(pivot,() -> 0));
+    NamedCommands.registerCommand("PivotRegressed", new RegressedPivotCommand(pivot, () -> 0));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -242,8 +242,8 @@ public class RobotContainer {
 
     // ** Normal Intake
     // - Rollers
-    coDriver
-        .y()
+    driver
+        .rightBumper()
         .whileTrue(
             new IntakeRollerCommand(
                 intakeRollers,
@@ -251,7 +251,9 @@ public class RobotContainer {
                 () -> coDriver.getRightTriggerAxis(),
                 lightStop::get));
     // - Extend
-    driver.rightBumper().whileTrue(new IntakeExtendCommand(intake, lightStop::get, intakeStop::get));
+    driver
+        .rightBumper()
+        .whileTrue(new IntakeExtendCommand(intake, lightStop::get, intakeStop::get));
     // - Retract
     driver.rightBumper().whileFalse(new IntakeRetractCommand(intake, intakeStop::get));
     // **
