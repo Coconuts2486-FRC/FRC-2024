@@ -351,7 +351,7 @@ public class Drive extends SubsystemBase {
   // }
 
   /** Get the Pose2d of the Game Piece Relative to the Robot */
-  public Pose2d getGamePiecePose() {
+  public static Pose2d getGamePiecePose() {
     return GamePieceVision.gamePieceRelativePose;
   }
 }
