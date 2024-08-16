@@ -8,36 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2873992229465943,
-        "y": 7.621806766761682
+        "x": 2.0574629112221188,
+        "y": 7.6993627644662705
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.2,
-        "y": 7.65
+        "x": 3.1221654248864055,
+        "y": 7.621331691737458
       },
       "prevControl": {
-        "x": 2.460479127823072,
-        "y": 7.65
+        "x": 2.206502431423989,
+        "y": 7.621335361931115
       },
       "nextControl": {
-        "x": 3.9953627556888422,
-        "y": 7.65
+        "x": 3.537106827047407,
+        "y": 7.621330028554264
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.108183637663572,
-        "y": 5.590861038203558
+        "x": 4.105273803140199,
+        "y": 6.5
       },
       "prevControl": {
-        "x": 3.9993914571162477,
-        "y": 6.582877073161554
+        "x": 4.12902518027958,
+        "y": 7.202188411114857
       },
       "nextControl": null,
       "isLocked": false,
@@ -52,31 +52,7 @@
     }
   ],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "Amp SpinUp 1",
-      "waypointRelativePos": 1.65,
-      "command": {
-        "type": "race",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "autoSpinUp"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "PivotAmp23.6"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.5,
     "maxAcceleration": 3.85,
@@ -84,7 +60,7 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 1.0,
     "rotation": 0.0,
     "rotateFast": false
   },

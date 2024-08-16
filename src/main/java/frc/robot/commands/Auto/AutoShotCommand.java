@@ -25,7 +25,7 @@ public class AutoShotCommand extends Command {
   public void execute() {
     flywheel.setDutyCycle(1);
 
-    if (flywheel.getVelocity() > 68.36) smaIntakeRollers.autoShot(1);
+    if (flywheel.getVelocity() > 68.36) smaIntakeRollers.autoShot(1.2);
   }
 
   @Override

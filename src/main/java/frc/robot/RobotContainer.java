@@ -189,8 +189,10 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "autoShoot",
         new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.4));
+    NamedCommands.registerCommand(
+        "autoShootFull",
+        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.8));
     NamedCommands.registerCommand("autoSpinUp", new AutoSpinUpCommand(flywheel));
-
     NamedCommands.registerCommand(
         "autoIntake",
         new AutoIntakeCommand(
@@ -204,7 +206,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotAmp45", new PivotCommand(pivot, () -> 60));
     NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
     NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
-    NamedCommands.registerCommand("PivotAmp24", new PivotCommand(pivot, () -> 24));
+    NamedCommands.registerCommand("PivotAmp25.5", new PivotCommand(pivot, () -> 25.5));
+    NamedCommands.registerCommand("PivotRegressed", new RegressedPivotCommand(pivot));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 

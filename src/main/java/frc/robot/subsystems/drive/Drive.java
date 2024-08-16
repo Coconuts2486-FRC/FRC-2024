@@ -16,7 +16,6 @@ package frc.robot.subsystems.drive;
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -40,7 +39,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.apriltagvision.AprilTagVision;
 import frc.robot.subsystems.gamepiecevision.GamePieceVision;
 import frc.robot.util.LocalADStarAK;
-import java.util.Optional;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -101,7 +99,7 @@ public class Drive extends SubsystemBase {
                 && DriverStation.getAlliance().get() == Alliance.Red,
         this);
 
-    PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
+    // PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
 
     Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback(
@@ -337,20 +335,20 @@ public class Drive extends SubsystemBase {
     return yaw;
   }
 
-  public Optional<Rotation2d> getRotationTargetOverride() {
-    double placeholder = 1;
-    // Some condition that should decide if we want to override rotation
-    if (1 == placeholder) {
-      // Return an optional containing the rotation override (this should be a field relative
-      // rotation)
+  // public Optional<Rotation2d> getRotationTargetOverride() {
+  //   double placeholder = 1;
+  //   // Some condition that should decide if we want to override rotation
+  //   if (1 == placeholder) {
+  //     // Return an optional containing the rotation override (this should be a field relative
+  //     // rotation)
 
-      // Important getSpeakerYaw was changed to static idk if that affects anything or not
-      return Optional.of(Drive.getSpeakerYaw());
-    } else {
-      // return an empty optional when we don't want to override the path's rotation
-      return Optional.empty();
-    }
-  }
+  //     // Important getSpeakerYaw was changed to static idk if that affects anything or not
+  //     return Optional.of(Drive.getSpeakerYaw());
+  //   } else {
+  //     // return an empty optional when we don't want to override the path's rotation
+  //     return Optional.empty();
+  //   }
+  // }
 
   /** Get the Pose2d of the Game Piece Relative to the Robot */
   public Pose2d getGamePiecePose() {

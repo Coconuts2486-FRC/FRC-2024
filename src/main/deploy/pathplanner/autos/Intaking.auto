@@ -16,6 +16,12 @@
           "data": {
             "name": "autoIntake"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
         }
       ]
     }

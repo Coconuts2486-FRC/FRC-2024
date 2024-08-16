@@ -57,7 +57,7 @@ public class AutoIntakeCommand extends Command {
       }
     } else {
       intake.setExtendPosition(48.8);
-      smaIntakeRollers.autoShot(0.25);
+      smaIntakeRollers.autoShot(0.225);
       pivot.holdPosition(angle.getAsDouble());
     }
   }
