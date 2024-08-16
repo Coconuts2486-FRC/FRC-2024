@@ -29,6 +29,7 @@ import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.Drive.DriveCommands;
+import frc.robot.commands.Drive.TargetTagCommand;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
 import frc.robot.commands.Elevator.ManualElevatorCommand;
@@ -234,10 +235,7 @@ public class RobotContainer {
             () -> driver.getLeftTriggerAxis(),
             lightStop::get));
 
-    // coDriver
-    //     .start()
-    //     .whileTrue(
-    //         new TargetTagCommand(drive, () -> -driver.getRightY(), () -> -driver.getRightX()));
+    coDriver.start().whileTrue(new TargetTagCommand());
 
     // ** Normal Intake
     // - Rollers

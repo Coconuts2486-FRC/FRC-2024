@@ -14,6 +14,7 @@
 package frc.robot.commands.Drive;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -29,6 +30,7 @@ import java.util.function.DoubleSupplier;
 
 public class DriveCommands {
   public static final double DEADBAND = 0.1;
+  private static final PIDController rotatePid = new PIDController(.2, 0, 0);
 
   private DriveCommands() {}
 
@@ -43,13 +45,14 @@ public class DriveCommands {
     return Commands.run(
         () -> {
           // Apply deadband
+          double speakerYawVal;
           double linearMagnitude =
               MathUtil.applyDeadband(
                   Math.hypot(xSupplier.getAsDouble(), ySupplier.getAsDouble()), DEADBAND);
           Rotation2d linearDirection =
               new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
           double omega;
-          SmartDashboard.putNumber("Speaker Yaw", drive.getSpeakerYaw().getDegrees());
+          //  SmartDashboard.putNumber("Speaker Yaw", Drive.getSpeakerYaw().getDegrees());
           omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
 
           // Square both the linearMagnitude and omega, preseriving sign
@@ -62,18 +65,41 @@ public class DriveCommands {
                   .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                   .getTranslation();
 
+          if (Drive.getSpeakerYaw().getDegrees() < -180) {
+            speakerYawVal = Drive.getSpeakerYaw().getDegrees() + 360;
+          } else {
+            speakerYawVal = Drive.getSpeakerYaw().getDegrees();
+          }
+          SmartDashboard.putBoolean("target", TargetTagCommand.target);
+          SmartDashboard.putNumber("Speaker Yaw@", TargetTagCommand.freeze);
+          SmartDashboard.putNumber("Gyro", drive.gyroAngles().getDegrees());
+          SmartDashboard.putNumber(
+              "Calculate target", drive.gyroAngles().getDegrees() - speakerYawVal);
+          SmartDashboard.putNumber("real Turn", omega * drive.getMaxAngularSpeedRadPerSec());
           // Convert to field relative speeds & send command
           boolean isFlipped =
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
-          drive.runVelocity(
-              ChassisSpeeds.fromFieldRelativeSpeeds(
-                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
-                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
-                  omega * drive.getMaxAngularSpeedRadPerSec(),
-                  isFlipped
-                      ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                      : drive.getRotation()));
+
+          if (TargetTagCommand.target) {
+            drive.runVelocity(
+                ChassisSpeeds.fromFieldRelativeSpeeds(
+                    linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                    linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                    rotatePid.calculate(drive.gyroAngles().getDegrees() - TargetTagCommand.freeze),
+                    isFlipped
+                        ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                        : drive.getRotation()));
+          } else {
+            drive.runVelocity(
+                ChassisSpeeds.fromFieldRelativeSpeeds(
+                    linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                    linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                    omega * drive.getMaxAngularSpeedRadPerSec(),
+                    isFlipped
+                        ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                        : drive.getRotation()));
+          }
         },
         drive);
   }
