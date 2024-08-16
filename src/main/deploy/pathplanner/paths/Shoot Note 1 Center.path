@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.22,
+        "x": 1.28,
         "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7200000000000017,
+        "x": 1.7800000000000018,
         "y": 5.55
       },
       "isLocked": false,
@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 2.553084930243935,
+        "x": 2.6745783373540997,
         "y": 5.55
       },
       "prevControl": {
-        "x": 2.053084930243935,
+        "x": 2.1745783373540997,
         "y": 5.55
       },
       "nextControl": null,
@@ -29,26 +29,20 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
-  "eventMarkers": [
+  "constraintZones": [
     {
-      "name": "Shoot while move",
-      "waypointRelativePos": 0.15,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "autoIntake"
-              }
-            }
-          ]
-        }
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 4.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
       }
     }
   ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.5,
     "maxAcceleration": 4.0,

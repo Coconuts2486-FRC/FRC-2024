@@ -36,8 +36,7 @@ public class AutoRegressedPivotCommand extends Command {
           (a * (freezeRegress * freezeRegress * freezeRegress))
               + (b * freezeRegress * freezeRegress)
               + c * freezeRegress
-              + intercept
-              - .4;
+              + intercept;
     }
     // System.out.println(freezeRegress);
 

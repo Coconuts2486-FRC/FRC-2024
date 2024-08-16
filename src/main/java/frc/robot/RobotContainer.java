@@ -28,7 +28,6 @@ import frc.robot.FieldConstants.AprilTagLayoutType;
 import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
-import frc.robot.commands.Pivot.RegressedPivotCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Drive.TargetNoteCommand;
 import frc.robot.commands.Drive.TargetTagCommand;
@@ -43,6 +42,7 @@ import frc.robot.commands.Pivot.PivotChangerDownCommand;
 import frc.robot.commands.Pivot.PivotChangerResetCommand;
 import frc.robot.commands.Pivot.PivotChangerUpCommand;
 import frc.robot.commands.Pivot.PivotCommand;
+import frc.robot.commands.Pivot.RegressedPivotCommand;
 import frc.robot.commands.ShotCommand;
 import frc.robot.subsystems.apriltagvision.AprilTagVision;
 import frc.robot.subsystems.apriltagvision.AprilTagVisionIO;
@@ -208,7 +208,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
     NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
     NamedCommands.registerCommand("PivotAmp25.5", new PivotCommand(pivot, () -> 25.5));
+    NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 45));
     NamedCommands.registerCommand("PivotRegressed", new RegressedPivotCommand(pivot, () -> 0));
+    NamedCommands.registerCommand("Retract", new IntakeRetractCommand(intake, intakeStop::get));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
