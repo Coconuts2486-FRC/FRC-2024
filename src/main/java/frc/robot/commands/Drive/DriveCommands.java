@@ -64,11 +64,18 @@ public class DriveCommands {
               new Pose2d(new Translation2d(), linearDirection)
                   .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                   .getTranslation();
-
-          if (Drive.getSpeakerYaw().getDegrees() < -180) {
-            speakerYawVal = Drive.getSpeakerYaw().getDegrees() + 360;
+          if (DriverStation.getAlliance().get() == Alliance.Red) {
+            if (Drive.getSpeakerYaw().getDegrees() < 0) {
+              speakerYawVal = Drive.getSpeakerYaw().getDegrees() + 360;
+            } else {
+              speakerYawVal = Drive.getSpeakerYaw().getDegrees();
+            }
           } else {
-            speakerYawVal = Drive.getSpeakerYaw().getDegrees();
+            if (Drive.getSpeakerYaw().getDegrees() < -180) {
+              speakerYawVal = Drive.getSpeakerYaw().getDegrees() + 360;
+            } else {
+              speakerYawVal = Drive.getSpeakerYaw().getDegrees();
+            }
           }
           SmartDashboard.putBoolean("target", TargetTagCommand.target);
           SmartDashboard.putNumber("Speaker Yaw@", TargetTagCommand.freeze);
