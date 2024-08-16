@@ -91,7 +91,7 @@ public class GamePieceVisionIOPiVision implements GamePieceVisionIO {
     inputs.timestamp = Float.NaN;
 
     inputs.gpX = gamePieceX;
-    inputs.gpY = gamePieceX;
+    inputs.gpY = gamePieceAngle;
     inputs.gpZ = gamePieceX;
     inputs.gpAng = gamePieceX;
     inputs.gpDist = gamePieceX;

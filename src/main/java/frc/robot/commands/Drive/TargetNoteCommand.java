@@ -11,15 +11,15 @@ public class TargetNoteCommand extends Command {
   public TargetNoteCommand() {}
 
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
-    SmartDashboard.putNumber(getName(), Drive.getGamePiecePose().getY());
+    SmartDashboard.putNumber("note y", Drive.getGamePiecePose().getY());
+    SmartDashboard.putNumber("note x", Drive.getGamePiecePose().getX());
+    SmartDashboard.putNumber("note r", Drive.getGamePiecePose().getRotation().getRadians());
   }
 
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 }

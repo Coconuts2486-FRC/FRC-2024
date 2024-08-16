@@ -29,6 +29,7 @@ import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.Drive.DriveCommands;
+import frc.robot.commands.Drive.TargetNoteCommand;
 import frc.robot.commands.Drive.TargetTagCommand;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
@@ -229,6 +230,8 @@ public class RobotContainer {
         DriveCommands.joystickDrive(
             drive, () -> -driver.getRightY(), () -> -driver.getRightX(), () -> -driver.getLeftX()));
     driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+
+    coDriver.start().whileTrue(new TargetNoteCommand());
 
     // Manual Intake
     intakeRollers.setDefaultCommand(
