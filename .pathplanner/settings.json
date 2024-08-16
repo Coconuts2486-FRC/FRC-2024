@@ -4,6 +4,8 @@
   "holonomicMode": true,
   "pathFolders": [
     "Amp Side",
+    "Amp Side Straight",
+    "5 Note",
     "Teaching",
     "ZMaking sure paths works"
   ],
