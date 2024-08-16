@@ -14,11 +14,11 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp Start Shoot"
+            "pathName": "Amp Start Shoot Straight"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
@@ -34,12 +34,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Amp Note 1"
           }
         }
       ]
