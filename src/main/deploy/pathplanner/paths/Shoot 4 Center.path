@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.4,
-        "y": 7.0
+        "x": 7.85,
+        "y": 7.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.055354679550561,
-        "y": 6.507560243360831
+        "x": 7.112544942276585,
+        "y": 7.1
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.28,
-        "y": 5.55
+        "x": 4.612653929011562,
+        "y": 5.526250834909077
       },
       "prevControl": {
-        "x": 1.6111804101290605,
-        "y": 6.026129620928771
+        "x": 4.612653929011562,
+        "y": 6.326250834909077
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,24 +33,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.9,
-      "command": {
-        "type": "race",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "PivotRegressed"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.6,
       "command": {
         "type": "race",
         "data": {
@@ -66,6 +49,12 @@
               "data": {
                 "name": "autoSpinUp"
               }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "PivotAmp23.6"
+              }
             }
           ]
         }
@@ -74,13 +63,13 @@
   ],
   "globalConstraints": {
     "maxVelocity": 5.5,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 3.8,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0,
+    "velocity": 1.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,

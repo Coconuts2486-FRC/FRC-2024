@@ -39,6 +39,12 @@
                 "data": {
                   "pathName": "Note 1 Center"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
               }
             ]
           }
@@ -62,7 +68,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 2 Center"
+                  "pathName": "Note 3 Center"
                 }
               }
             ]
@@ -71,7 +77,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Return 2"
+            "pathName": "Return 3"
           }
         },
         {
