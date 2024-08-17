@@ -22,18 +22,6 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "PivotAmp23.6"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoSpinUp"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "Amp Intermidiate 1"
@@ -46,12 +34,6 @@
           "type": "race",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed"
-                }
-              },
               {
                 "type": "named",
                 "data": {
@@ -83,12 +65,6 @@
                     }
                   ]
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntake"
-                }
               }
             ]
           }
@@ -97,24 +73,6 @@
           "type": "race",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Retract"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotAmp23.6"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoSpinUp"
-                }
-              },
               {
                 "type": "path",
                 "data": {
@@ -128,12 +86,6 @@
           "type": "race",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed"
-                }
-              },
               {
                 "type": "named",
                 "data": {
@@ -160,16 +112,10 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Amp Straight Shoot 2"
+                        "pathName": "Copy of Amp Straight Shoot 2"
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntake"
                 }
               }
             ]
@@ -180,27 +126,9 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Retract"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoSpinUp"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotAmp23.6"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp Intermidiate 3"
+                  "pathName": "Copy of Amp Intermidiate 3"
                 }
               }
             ]
@@ -214,12 +142,6 @@
                 "type": "named",
                 "data": {
                   "name": "autoShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed"
                 }
               }
             ]
