@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.intake.Intake;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -33,6 +34,7 @@ public class DriveCommands {
   public static final double DEADBAND = 0.1;
   private static final PIDController rotatePid = new PIDController(.2, 0, 0.0005);
   private static final PIDController noteTargetPid = new PIDController(3, 0, 0.0005);
+  public static double gyroYaw;
 
   private DriveCommands() {}
 
@@ -47,6 +49,7 @@ public class DriveCommands {
       BooleanSupplier lightStop) {
     return Commands.run(
         () -> {
+          gyroYaw = drive.gyroAngles().getDegrees();
           rotatePid.enableContinuousInput(0, 360);
           // Apply deadband
           double speakerYawVal;
@@ -103,32 +106,45 @@ public class DriveCommands {
                         ? drive.getRotation().plus(new Rotation2d(Math.PI))
                         : drive.getRotation()));
           } else if (TargetNoteCommand.targetNote) {
+
             if (lightStop.getAsBoolean()) {
               drive.runVelocity(
                   ChassisSpeeds.fromFieldRelativeSpeeds(
-                      0,
-                      0,
-                      0,
+                      linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                      linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                      omega * drive.getMaxAngularSpeedRadPerSec(),
                       isFlipped
                           ? drive.getRotation().plus(new Rotation2d(Math.PI))
                           : drive.getRotation()));
 
             } else {
-              if (Math.abs(Drive.getGamePiecePose().getY()) > .1) {
-                drive.runVelocity(
-                    ChassisSpeeds.fromFieldRelativeSpeeds(
-                        0,
-                        0,
-                        noteTargetPid.calculate(Drive.getGamePiecePose().getY()),
-                        isFlipped
-                            ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                            : drive.getRotation()));
+              if (Intake.getPosition() > 35) {
+                if (Math.abs(Drive.getGamePiecePose().getY()) > .25) {
+                  drive.runVelocity(
+                      ChassisSpeeds.fromFieldRelativeSpeeds(
+                          0,
+                          0,
+                          -noteTargetPid.calculate(Drive.getGamePiecePose().getY()),
+                          isFlipped
+                              ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                              : drive.getRotation()));
+                } else {
+                  drive.runVelocity(
+                      ChassisSpeeds.fromFieldRelativeSpeeds(
+                          1.5,
+                          0,
+                          -noteTargetPid.calculate(Drive.getGamePiecePose().getY()),
+                          isFlipped
+                              ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                              : drive.getRotation()));
+                }
               } else {
+
                 drive.runVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                        3,
                         0,
-                        noteTargetPid.calculate(Drive.getGamePiecePose().getY()),
+                        0,
+                        0,
                         isFlipped
                             ? drive.getRotation().plus(new Rotation2d(Math.PI))
                             : drive.getRotation()));

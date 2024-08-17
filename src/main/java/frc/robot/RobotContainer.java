@@ -15,8 +15,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -38,6 +36,7 @@ import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
 import frc.robot.commands.Intake.ManualRollerCmd;
+import frc.robot.commands.LobShotCommand;
 import frc.robot.commands.Pivot.PivotChangerDownCommand;
 import frc.robot.commands.Pivot.PivotChangerResetCommand;
 import frc.robot.commands.Pivot.PivotChangerUpCommand;
@@ -235,9 +234,10 @@ public class RobotContainer {
             () -> -driver.getRightX(),
             () -> -driver.getLeftX(),
             lightStop::get));
-    driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    // driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    driver.x().whileTrue(new LobShotCommand(intakeRollers, flywheel));
 
-    coDriver.start().whileTrue(new TargetNoteCommand());
+    driver.rightBumper().whileTrue(new TargetNoteCommand());
 
     // Manual Intake
     intakeRollers.setDefaultCommand(
@@ -262,20 +262,55 @@ public class RobotContainer {
     // - Extend
     driver
         .rightBumper()
-        .whileTrue(new IntakeExtendCommand(intake, lightStop::get, intakeStop::get));
+        .whileTrue(
+            new IntakeExtendCommand(intake, lightStop::get, intakeStop::get)
+                .alongWith(
+                    new PivotCommand(
+                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
     // - Retract
-    driver.rightBumper().whileFalse(new IntakeRetractCommand(intake, intakeStop::get));
-    // **
-    // I Actually Don't know
+    driver
+        .rightBumper()
+        .whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
+
+        driver
+        .b()
+        .whileTrue(
+            new IntakeRollerCommand(
+                intakeRollers,
+                () -> coDriver.getLeftTriggerAxis(),
+                () -> coDriver.getRightTriggerAxis(),
+                lightStop::get));
+
     driver
         .b()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                    drive)
-                .ignoringDisable(true));
+        .whileTrue(
+            new IntakeExtendCommand(intake, lightStop::get, intakeStop::get)
+                .alongWith(
+                    new PivotCommand(
+                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+    // - Retract
+    driver.b().whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
+
+    coDriver
+        .y()
+        .whileTrue(
+            new IntakeExtendCommand(intake, lightStop::get, intakeStop::get)
+                .alongWith(
+                    new PivotCommand(
+                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+    // - Retract
+    coDriver.y().whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
+    // **
+    // // I Actually Don't know
+    // driver
+    //     .b()
+    //     .onTrue(
+    //         Commands.runOnce(
+    //                 () ->
+    //                     drive.setPose(
+    //                         new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+    //                 drive)
+    //             .ignoringDisable(true));
 
     // controller
     //     .a()

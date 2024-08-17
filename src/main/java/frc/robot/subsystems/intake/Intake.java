@@ -107,4 +107,8 @@ public class Intake extends SubsystemBase {
   public double getCharacterizationVelocity() {
     return inputs.velocityRadPerSec;
   }
+
+  public static double getPosition() {
+    return IntakeIOInputsAutoLogged.pose;
+  }
 }

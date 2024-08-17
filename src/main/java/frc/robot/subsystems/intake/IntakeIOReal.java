@@ -23,7 +23,7 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
-    IntakeIO.super.updateInputs(inputs);
+    IntakeIOInputs.pose = extend.getPosition().getValueAsDouble();
   }
 
   @Override

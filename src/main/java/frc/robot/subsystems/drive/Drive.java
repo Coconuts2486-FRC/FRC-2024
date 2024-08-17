@@ -285,6 +285,10 @@ public class Drive extends SubsystemBase {
     gyroIO.zero();
   }
 
+  public void setAngle(double angle) {
+    gyroIO.setAngle(angle);
+  }
+
   public Rotation2d gyroAngles() {
     return gyroInputs.yawPosition;
   }

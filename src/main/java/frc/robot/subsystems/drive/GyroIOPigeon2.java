@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.commands.Drive.TargetNoteCommand;
 
 /** IO implementation for Pigeon2 */
 public class GyroIOPigeon2 implements GyroIO {
@@ -42,11 +43,19 @@ public class GyroIOPigeon2 implements GyroIO {
   public void updateInputs(GyroIOInputs inputs) {
     inputs.connected = BaseStatusSignal.refreshAll(yaw, yawVelocity).equals(StatusCode.OK);
     if (DriverStation.getAlliance().get() == Alliance.Blue) {
-      inputs.yawPosition =
-          Rotation2d.fromDegrees(MathUtil.inputModulus(yaw.getValueAsDouble(), 0, 360));
+      if (TargetNoteCommand.targetNote) {
+        inputs.yawPosition = Rotation2d.fromDegrees(0);
+      } else {
+        inputs.yawPosition =
+            Rotation2d.fromDegrees(MathUtil.inputModulus(yaw.getValueAsDouble(), 0, 360));
+      }
     } else {
-      inputs.yawPosition =
-          Rotation2d.fromDegrees(MathUtil.inputModulus(yaw.getValueAsDouble(), 0, 360));
+      if (TargetNoteCommand.targetNote) {
+        inputs.yawPosition = Rotation2d.fromDegrees(180);
+      } else {
+        inputs.yawPosition =
+            Rotation2d.fromDegrees(MathUtil.inputModulus(yaw.getValueAsDouble(), 0, 360));
+      }
     }
 
     inputs.yawVelocityRadPerSec = Units.degreesToRadians(yawVelocity.getValueAsDouble());
@@ -69,5 +78,10 @@ public class GyroIOPigeon2 implements GyroIO {
       System.out.println("Alliance Red: Setting YAW to 180");
       pigeon.setYaw(180.0);
     }
+  }
+
+  @Override
+  public void setAngle(double angle) {
+    pigeon.setYaw(angle);
   }
 }
