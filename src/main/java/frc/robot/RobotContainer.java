@@ -272,7 +272,7 @@ public class RobotContainer {
         .rightBumper()
         .whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
 
-        driver
+    driver
         .b()
         .whileTrue(
             new IntakeRollerCommand(
@@ -299,7 +299,9 @@ public class RobotContainer {
                     new PivotCommand(
                         pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
     // - Retract
-    coDriver.y().whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
+    coDriver
+        .y()
+        .whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
     // **
     // // I Actually Don't know
     // driver

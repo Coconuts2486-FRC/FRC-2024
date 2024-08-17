@@ -12,41 +12,27 @@
     "data": {
       "commands": [
         {
-          "type": "race",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoShootFull"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed"
-                }
-              }
-            ]
+            "pathName": "Note 1 Center"
           }
         },
         {
-          "type": "race",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Shoot Note 1 Center"
-                }
-              }
-            ]
+            "pathName": "Return 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 2 Center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Return 2"
           }
         }
       ]
