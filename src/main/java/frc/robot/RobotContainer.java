@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.FieldConstants.AprilTagLayoutType;
 import frc.robot.commands.Auto.AutoIntakeCommand;
+import frc.robot.commands.Auto.AutoIntakeCommandSlow;
+import frc.robot.commands.Auto.AutoRegressedPivotCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.Drive.DriveCommands;
@@ -36,6 +38,7 @@ import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
 import frc.robot.commands.Intake.ManualRollerCmd;
+import frc.robot.commands.Intake.fixcmd;
 import frc.robot.commands.LobShotCommand;
 import frc.robot.commands.Pivot.PivotChangerDownCommand;
 import frc.robot.commands.Pivot.PivotChangerResetCommand;
@@ -194,11 +197,21 @@ public class RobotContainer {
         new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.8));
     NamedCommands.registerCommand(
         "autoShootHalf",
-    new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.6));
+        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.6));
     NamedCommands.registerCommand("autoSpinUp", new AutoSpinUpCommand(flywheel));
     NamedCommands.registerCommand(
         "autoIntake",
         new AutoIntakeCommand(
+            intakeRollers,
+            smaIntakeRollers,
+            intake,
+            lightStop::get,
+            intakeStop::get,
+            pivot,
+            () -> 45));
+    NamedCommands.registerCommand(
+        "autoIntakeSlow",
+        new AutoIntakeCommandSlow(
             intakeRollers,
             smaIntakeRollers,
             intake,
@@ -211,7 +224,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
     NamedCommands.registerCommand("PivotAmp25.5", new PivotCommand(pivot, () -> 25.5));
     NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 45));
-    NamedCommands.registerCommand("PivotRegressed", new RegressedPivotCommand(pivot, () -> 0));
+    NamedCommands.registerCommand("PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0));
     NamedCommands.registerCommand("Retract", new IntakeRetractCommand(intake, intakeStop::get));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -297,7 +310,7 @@ public class RobotContainer {
     coDriver
         .y()
         .whileTrue(
-            new IntakeExtendCommand(intake, lightStop::get, intakeStop::get)
+            new fixcmd(intake, lightStop::get, intakeStop::get)
                 .alongWith(
                     new PivotCommand(
                         pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
@@ -373,7 +386,7 @@ public class RobotContainer {
                     elevatorBottom::get,
                     () -> coDriver.getRightTriggerAxis(),
                     () -> coDriver.getLeftTriggerAxis(),
-                    .6,
+                    .9,
                     true)
                 .until(elevatorBottom::get));
     // climb command

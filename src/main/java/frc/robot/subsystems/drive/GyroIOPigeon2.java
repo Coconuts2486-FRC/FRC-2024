@@ -42,20 +42,12 @@ public class GyroIOPigeon2 implements GyroIO {
   @Override
   public void updateInputs(GyroIOInputs inputs) {
     inputs.connected = BaseStatusSignal.refreshAll(yaw, yawVelocity).equals(StatusCode.OK);
-    if (DriverStation.getAlliance().get() == Alliance.Blue) {
-      if (TargetNoteCommand.targetNote) {
-        inputs.yawPosition = Rotation2d.fromDegrees(0);
-      } else {
-        inputs.yawPosition =
-            Rotation2d.fromDegrees(MathUtil.inputModulus(yaw.getValueAsDouble(), 0, 360));
-      }
+    if (TargetNoteCommand.targetNote) {
+      inputs.yawPosition =
+          Rotation2d.fromDegrees((DriverStation.getAlliance().get() == Alliance.Blue) ? 0 : 180);
     } else {
-      if (TargetNoteCommand.targetNote) {
-        inputs.yawPosition = Rotation2d.fromDegrees(180);
-      } else {
-        inputs.yawPosition =
-            Rotation2d.fromDegrees(MathUtil.inputModulus(yaw.getValueAsDouble(), 0, 360));
-      }
+      inputs.yawPosition =
+          Rotation2d.fromDegrees(MathUtil.inputModulus(yaw.getValueAsDouble(), 0, 360));
     }
 
     inputs.yawVelocityRadPerSec = Units.degreesToRadians(yawVelocity.getValueAsDouble());

@@ -51,13 +51,18 @@ public class DriveCommands {
         () -> {
           gyroYaw = drive.gyroAngles().getDegrees();
           rotatePid.enableContinuousInput(0, 360);
+
+          // Convert joystick commands to "Always Blue Origin" reference frame (i.e., invert for red
+          // to match Gyro)
+          // Apply deadband
+          int isRed = (DriverStation.getAlliance().get() == Alliance.Red) ? 1 : 0;
+          double xDrive = xSupplier.getAsDouble() * Math.pow(-1, isRed);
+          double yDrive = ySupplier.getAsDouble() * Math.pow(-1, isRed);
+
           // Apply deadband
           double speakerYawVal;
-          double linearMagnitude =
-              MathUtil.applyDeadband(
-                  Math.hypot(xSupplier.getAsDouble(), ySupplier.getAsDouble()), DEADBAND);
-          Rotation2d linearDirection =
-              new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+          double linearMagnitude = MathUtil.applyDeadband(Math.hypot(xDrive, yDrive), DEADBAND);
+          Rotation2d linearDirection = new Rotation2d(xDrive, yDrive);
           double omega;
           //  SmartDashboard.putNumber("Speaker Yaw", Drive.getSpeakerYaw().getDegrees());
           omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
@@ -131,7 +136,7 @@ public class DriveCommands {
                 } else {
                   drive.runVelocity(
                       ChassisSpeeds.fromFieldRelativeSpeeds(
-                          1.5,
+                          1.5 * Math.pow(-1, isRed),
                           0,
                           -noteTargetPid.calculate(Drive.getGamePiecePose().getY()),
                           isFlipped

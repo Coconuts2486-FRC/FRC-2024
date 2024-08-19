@@ -87,6 +87,8 @@ public class Robot extends LoggedRobot {
     Logger.start();
     LogTable.disableProtobufWarning();
 
+    Logger.recordOutput("Cmd_Status/GP Tracking", false);
+
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();

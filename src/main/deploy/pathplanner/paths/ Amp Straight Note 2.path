@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 7.9,
-        "y": 5.2
+        "y": 5.05
       },
       "prevControl": {
         "x": 7.254166344169598,
-        "y": 5.2359900187611546
+        "y": 5.085990018761154
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,25 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.4,
-      "command": {
-        "type": "race",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Retract"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.5,
     "maxAcceleration": 3.8,

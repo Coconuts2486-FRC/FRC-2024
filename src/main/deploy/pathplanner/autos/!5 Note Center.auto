@@ -56,7 +56,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoIntake"
+                  "name": "autoIntakeSlow"
                 }
               }
             ]
@@ -113,7 +113,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoIntake"
+                  "name": "autoIntakeSlow"
                 }
               }
             ]
@@ -151,7 +151,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoIntake"
+                  "name": "autoIntakeSlow"
                 }
               },
               {
@@ -214,7 +214,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoIntake"
+                  "name": "autoIntakeSlow"
                 }
               }
             ]

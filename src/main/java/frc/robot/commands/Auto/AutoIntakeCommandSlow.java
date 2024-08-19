@@ -8,7 +8,7 @@ import frc.robot.subsystems.sma.SmaIntakeRollers;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-public class AutoIntakeCommand extends Command {
+public class AutoIntakeCommandSlow extends Command {
   // private final IntakeRollers intakeRollers;
   private final SmaIntakeRollers smaIntakeRollers;
   private final Intake intake;
@@ -18,7 +18,7 @@ public class AutoIntakeCommand extends Command {
   private final DoubleSupplier angle;
   double anglee = 0;
 
-  public AutoIntakeCommand(
+  public AutoIntakeCommandSlow(
       IntakeRollers intakeRollers,
       SmaIntakeRollers smaIntakeRollers,
       Intake intake,
@@ -57,7 +57,7 @@ public class AutoIntakeCommand extends Command {
       }
     } else {
       intake.setExtendPosition(48.8);
-      smaIntakeRollers.autoShot(0.23);
+      smaIntakeRollers.autoShot(0.2);
       pivot.holdPosition(angle.getAsDouble());
     }
   }
