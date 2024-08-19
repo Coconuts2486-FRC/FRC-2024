@@ -3,15 +3,18 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
-    "Amp Side",
-    "Amp Side Straight",
-    "5 Note",
+    "ZMaking sure paths works",
     "Teaching",
-    "ZMaking sure paths works"
+    "Better 5 Note",
+    "Amp Side Straight",
+    "Amp Side",
+    "5 Note"
   ],
   "autoFolders": [
+    "Actual Autos",
     "Auto Building",
     "Making sure autos work",
+    "Old Stuff",
     "Teaching"
   ],
   "defaultMaxVel": 5.5,
