@@ -14,6 +14,7 @@
 package frc.robot.subsystems.gamepiecevision;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
@@ -90,10 +91,11 @@ public class GamePieceVisionIOPiVision implements GamePieceVisionIO {
     inputs.latency = Float.NaN;
     inputs.timestamp = Float.NaN;
 
-    inputs.gpX = gamePieceX;
-    inputs.gpY = gamePieceAngle;
-    inputs.gpZ = gamePieceX;
-    inputs.gpAng = gamePieceX;
-    inputs.gpDist = gamePieceX;
+    // Note: All distances in METERS, all angles in DEGREES
+    inputs.gpX = Units.inchesToMeters(gamePieceX);
+    inputs.gpY = Units.inchesToMeters(gamePieceY);
+    inputs.gpZ = Units.inchesToMeters(gamePieceZ);
+    inputs.gpAng = gamePieceAngle;
+    inputs.gpDist = Units.inchesToMeters(gamePieceDist);
   }
 }

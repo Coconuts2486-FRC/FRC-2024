@@ -21,8 +21,7 @@ public class TargetNoteCommand extends Command {
   public void execute() {
     targetNote = true;
     Logger.recordOutput("Cmd_Status/GP Tracking", true);
-    SmartDashboard.putNumber("note y", Drive.getGamePiecePose().getY());
-    SmartDashboard.putNumber("note x", Drive.getGamePiecePose().getX());
+    SmartDashboard.putNumber("note ang", Drive.getGamePieceYaw().getDegrees());
   }
 
   @Override

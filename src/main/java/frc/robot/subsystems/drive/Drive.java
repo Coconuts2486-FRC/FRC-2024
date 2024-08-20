@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.subsystems.apriltagvision.AprilTagVision;
 import frc.robot.subsystems.gamepiecevision.GamePieceVision;
 import frc.robot.util.LocalADStarAK;
@@ -354,8 +355,38 @@ public class Drive extends SubsystemBase {
   //   }
   // }
 
-  /** Get the Pose2d of the Game Piece Relative to the Robot */
+  /**
+   * Compute the field-centric YAW to the GAMEPIECE, as seen by PiVision
+   *
+   * <p>Returns the field-centric YAW to the GAMEPIECE in degrees. To aim the robot at the game
+   * piece, set the robot YAW equal to this value. If the game piece is not visible, this returns
+   * -999.9 degrees!
+   *
+   * <p>NOTE: This function assumes "Always Blue Origin" convention for YAW, meaning that when
+   * alliance is BLUE, 0º is away from the alliance wall, and when alliance is RED, 180º is away
+   * from the alliance wall.
+   *
+   * <p>NOTE: If we want the null result to return something other than -999.9, we can do that.
+   */
+  public static Rotation2d getGamePieceYaw() {
+
+    // No tag information, return default value
+    if (GamePieceVision.gamePieceRelativePose == null) {
+      return new Rotation2d(Float.NaN);
+    }
+
+    // The YAW to the game piece is retrieved from PiVision relative to the robot
+    Rotation2d gpYaw = new Rotation2d(Units.degreesToRadians(GamePieceVision.gamePieceRelYaw));
+
+    // Add the game piece YAW to the current gyro value
+    Rotation2d yaw = new Rotation2d(Units.degreesToRadians(DriveCommands.gyroYaw)).plus(gpYaw);
+
+    // Return the YAW value in degrees
+    return yaw;
+  }
+
   public static Pose2d getGamePiecePose() {
+
     return GamePieceVision.gamePieceRelativePose;
   }
 }

@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -124,7 +125,12 @@ public class DriveCommands {
 
             } else {
               if (Intake.getPosition() > 35) {
-                if (Math.abs(Drive.getGamePiecePose().getY()) > .25) {
+                // NOTE: THIS IS NOW IN ANGLE RATHER THAN POSITION!!!!!!
+                if (Math.abs(
+                        Drive.getGamePieceYaw()
+                            .minus(new Rotation2d(Units.degreesToRadians(DriveCommands.gyroYaw)))
+                            .getDegrees())
+                    > 5.0) {
                   drive.runVelocity(
                       ChassisSpeeds.fromFieldRelativeSpeeds(
                           0,

@@ -27,7 +27,7 @@ public class GamePieceVision extends VirtualSubsystem {
   private final GamePieceVisionIO[] io;
   private final GamePieceVisionIOInputs[] inputs;
   public static Pose2d gamePieceRelativePose;
-  // public Pose2d gamePieceFieldPose;
+  public static double gamePieceRelYaw;
 
   // Class method definition, including inputs
   public GamePieceVision(GamePieceVisionIO... io) {
@@ -51,6 +51,10 @@ public class GamePieceVision extends VirtualSubsystem {
       // Produce a Pose2d for the gamepiece relative to the robot
       gamePieceRelativePose =
           new Pose2d(inputs[instanceIndex].gpX, inputs[instanceIndex].gpY, new Rotation2d());
+      gamePieceRelYaw = inputs[instanceIndex].gpAng;
+      if (inputs[instanceIndex].gpAng == -999) {
+        gamePieceRelativePose = null;
+      }
     }
   }
 }
