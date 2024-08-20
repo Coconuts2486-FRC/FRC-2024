@@ -43,6 +43,8 @@ public interface IntakeIO {
   /** Stop in open loop. */
   public default void stop() {}
 
+  public default void coastTrue(boolean coast) {}
+
   /** Set velocity PID constants. */
   public default void configurePID(double kP, double kI, double kD) {}
 }

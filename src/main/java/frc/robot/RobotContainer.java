@@ -28,6 +28,7 @@ import frc.robot.commands.Auto.AutoIntakeCommandSlow;
 import frc.robot.commands.Auto.AutoRegressedPivotCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
+import frc.robot.commands.DisabledCoast;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Drive.TargetNoteCommand;
 import frc.robot.commands.Drive.TargetTagCommand;
@@ -318,6 +319,8 @@ public class RobotContainer {
     coDriver
         .y()
         .whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
+
+    coDriver.rightStick().whileTrue(new DisabledCoast(pivot, elevator, intake));
     // **
     // // I Actually Don't know
     // driver

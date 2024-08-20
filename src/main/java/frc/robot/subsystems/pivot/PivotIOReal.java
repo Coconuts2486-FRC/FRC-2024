@@ -74,6 +74,13 @@ public class PivotIOReal implements PivotIO {
   }
 
   @Override
+  public void coastTrue(boolean coast) {
+    var config = new TalonFXConfiguration();
+    config.MotorOutput.NeutralMode = coast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
+    pivot.getConfigurator().apply(config);
+  }
+
+  @Override
   public void configurePID(double kP, double kI, double kD) {
     var config = new Slot0Configs();
     config.kP = kP;

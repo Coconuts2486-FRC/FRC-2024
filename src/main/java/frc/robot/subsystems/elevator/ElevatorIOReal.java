@@ -3,6 +3,7 @@ package frc.robot.subsystems.elevator;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -59,6 +60,13 @@ public class ElevatorIOReal implements ElevatorIO {
   @Override
   public void setPose(double pose) {
     elevatorMotor.setPosition(pose);
+  }
+
+  @Override
+  public void coastTrue(boolean coast) {
+    var config = new TalonFXConfiguration();
+    config.MotorOutput.NeutralMode = coast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
+    elevatorMotor.getConfigurator().apply(config);
   }
 
   @Override

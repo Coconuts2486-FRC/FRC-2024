@@ -87,6 +87,10 @@ public class Intake extends SubsystemBase {
     io.setExtendPosition(position);
   }
 
+  public void coast(boolean coast) {
+    io.coastTrue(coast);
+  }
+
   /** Returns a command to run a quasistatic test in the specified direction. */
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return sysId.quasistatic(direction);

@@ -2,6 +2,7 @@ package frc.robot.subsystems.intake;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -52,6 +53,13 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void setPose(int position) {
     extend.setPosition(0);
+  }
+
+  @Override
+  public void coastTrue(boolean coast) {
+    var config = new TalonFXConfiguration();
+    config.MotorOutput.NeutralMode = coast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
+    extend.getConfigurator().apply(config);
   }
 
   @Override
