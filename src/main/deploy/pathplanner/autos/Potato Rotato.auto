@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.289801056453965,
-      "y": 5.56479129624926
+      "x": 4.11,
+      "y": 6.15
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Rotate"
+            "pathName": "Amp Intermidiate 2"
           }
         }
       ]
     }
   },
-  "folder": "Making sure autos work",
+  "folder": null,
   "choreoAuto": false
 }
