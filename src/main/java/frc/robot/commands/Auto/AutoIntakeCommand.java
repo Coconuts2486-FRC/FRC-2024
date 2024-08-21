@@ -17,6 +17,8 @@ public class AutoIntakeCommand extends Command {
   private final Pivot pivot;
   private final DoubleSupplier angle;
   double anglee = 0;
+  //this is for telling RotationOverride when to turn to notes in auto
+  public static int AutoRoto;
 
   public AutoIntakeCommand(
       IntakeRollers intakeRollers,
@@ -40,6 +42,7 @@ public class AutoIntakeCommand extends Command {
   public void initialize() {
     pivot.holdPosition(angle.getAsDouble());
     System.out.println("Build Issue");
+    AutoRoto = 0
   }
 
   @Override
@@ -51,14 +54,17 @@ public class AutoIntakeCommand extends Command {
         smaIntakeRollers.autoShot(0);
         pivot.holdPosition(angle.getAsDouble());
         end(true);
+        AutoRoto = 0;
       } else {
         intake.retract();
         smaIntakeRollers.autoShot(0);
+        AutoRoto = 0;
       }
     } else {
       intake.setExtendPosition(48.8);
       smaIntakeRollers.autoShot(0.23);
       pivot.holdPosition(angle.getAsDouble());
+      AutoRoto = 1;
     }
   }
 
@@ -66,5 +72,6 @@ public class AutoIntakeCommand extends Command {
   public void end(boolean interrupted) {
     intake.stop();
     smaIntakeRollers.stop();
+    AutoRoto = 0;
   }
 }

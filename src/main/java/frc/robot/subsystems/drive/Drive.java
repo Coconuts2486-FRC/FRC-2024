@@ -37,6 +37,10 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.Auto.AutoIntakeCommand;
+import frc.robot.commands.Auto.AutoIntakeCommandSlow;
+import frc.robot.commands.Auto.AutoRegressedPivotCommand;
+import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.subsystems.apriltagvision.AprilTagVision;
 import frc.robot.subsystems.gamepiecevision.GamePieceVision;
@@ -342,16 +346,31 @@ public class Drive extends SubsystemBase {
     return yaw;
   }
 
+  //This allows the robot to rotate to the gamepiece or speaker during auto
   public Optional<Rotation2d> getRotationTargetOverride() {
-    // Some condition that should decide if we want to override rotation
-    if (getGamePieceYaw() != null) {
-      // Return an optional containing the rotation override (this should be a field relative
-      // rotation)
+    // This checks if the commands are running we want running when turning to gamepiece
+    if (AutoIntakeCommandSlow.AutoRotos == 1 || AutoIntakeCommand.AutoRoto == 1) {
+      //This makes sure the vision can see a Gamepiece so the robot doesn't spin in circles violently
+      if (getGamePieceYaw() != null) {
+        // Return an optional containing the rotation override (this should be a field relative
+        // rotation)
 
-      // Important getSpeakerYaw was changed to static idk if that affects anything or not
-      return Optional.of(Drive.getGamePieceYaw());
+        // This gives the game piece yaw to rotation override which turns the robot towards the piece
+        return Optional.of(Drive.getGamePieceYaw());
+      } else {
+        // return an empty optional when we don't want to override the path's rotation
+        return Optional.empty();
+      }
+      // Checks if commands are running that we want when turning towards speaker
+    } else if(AutoRegressedPivotCommand.AutoShoto == 1 || AutoSpinUpCommand.AutoShoto2 == 1) {
+      //makes sure that visoin can see apriltags
+      if (getSpeakerYaw() != null) {
+        // makes robot turn towards speaker
+        return Optional.of(Drive.getSpeakerYaw());
+      } else{
+        return Optional.empty();
+      }
     } else {
-      // return an empty optional when we don't want to override the path's rotation
       return Optional.empty();
     }
   }

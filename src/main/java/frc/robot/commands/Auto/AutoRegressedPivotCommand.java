@@ -9,6 +9,8 @@ public class AutoRegressedPivotCommand extends Command {
   private final Pivot pivot;
   private final DoubleSupplier angler;
   public static double freezeRegress = 0;
+  //This variable is used to tell RotationOverride when to turn to speaker in auto
+  public static int AutoShoto;
 
   public AutoRegressedPivotCommand(Pivot pivot, DoubleSupplier angler) {
     this.pivot = pivot;
@@ -18,6 +20,7 @@ public class AutoRegressedPivotCommand extends Command {
   @Override
   public void initialize() {
     freezeRegress = pivot.getSpeakerDistance();
+    AutoShoto = 0;
   }
 
   @Override
@@ -42,11 +45,13 @@ public class AutoRegressedPivotCommand extends Command {
 
     //  System.out.println(angle + angler.getAsDouble());
     pivot.holdPosition(angle + angler.getAsDouble());
+    AutoShoto = 1;    
   }
 
   @Override
   public void end(boolean interrupted) {
     freezeRegress = 0;
     pivot.stop();
+    AutoShoto = 0;
   }
 }

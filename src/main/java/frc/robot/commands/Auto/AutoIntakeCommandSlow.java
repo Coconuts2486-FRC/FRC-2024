@@ -16,7 +16,10 @@ public class AutoIntakeCommandSlow extends Command {
   private final BooleanSupplier intakeStop;
   private final Pivot pivot;
   private final DoubleSupplier angle;
+  //for manualling changing pivot angle
   double anglee = 0;
+  //this is for telling RotationOverride when to turn to notes in auto
+  public static int AutoRotos;
 
   public AutoIntakeCommandSlow(
       IntakeRollers intakeRollers,
@@ -40,6 +43,7 @@ public class AutoIntakeCommandSlow extends Command {
   public void initialize() {
     pivot.holdPosition(angle.getAsDouble());
     System.out.println("Build Issue");
+    AutoRotos = 0;
   }
 
   @Override
@@ -51,14 +55,17 @@ public class AutoIntakeCommandSlow extends Command {
         smaIntakeRollers.autoShot(0);
         pivot.holdPosition(angle.getAsDouble());
         end(true);
+        AutoRotos = 0;
       } else {
         intake.retract();
         smaIntakeRollers.autoShot(0);
+        AutoRotos = 0;
       }
     } else {
       intake.setExtendPosition(48.8);
       smaIntakeRollers.autoShot(0.2);
       pivot.holdPosition(angle.getAsDouble());
+      AutoRotos = 1;
     }
   }
 
@@ -66,5 +73,6 @@ public class AutoIntakeCommandSlow extends Command {
   public void end(boolean interrupted) {
     intake.stop();
     smaIntakeRollers.stop();
+    AutoRotos = 0;
   }
 }
