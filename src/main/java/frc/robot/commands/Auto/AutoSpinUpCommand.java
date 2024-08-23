@@ -5,7 +5,7 @@ import frc.robot.subsystems.flywheel.Flywheel;
 
 public class AutoSpinUpCommand extends Command {
   private final Flywheel flywheel;
-  //this is for telling RotationOverride when to turn to speaker in auto
+  // this is for telling RotationOverride when to turn to speaker in auto
   public static int AutoShoto2;
 
   public AutoSpinUpCommand(Flywheel flywheel) {

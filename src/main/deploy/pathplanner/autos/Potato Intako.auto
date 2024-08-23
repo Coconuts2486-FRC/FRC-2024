@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 4.11,
-      "y": 6.15
+      "x": 1.3177117141271322,
+      "y": 5.458255722067
     },
     "rotation": 0
   },
@@ -18,28 +18,16 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Copy of Amp Intermidiate 2"
+                  "pathName": "Slow Note Pickup"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoSpinUp"
+                  "name": "autoIntake"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShoot"
           }
         }
       ]

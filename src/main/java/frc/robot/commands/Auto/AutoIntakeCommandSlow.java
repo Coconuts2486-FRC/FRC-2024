@@ -16,9 +16,9 @@ public class AutoIntakeCommandSlow extends Command {
   private final BooleanSupplier intakeStop;
   private final Pivot pivot;
   private final DoubleSupplier angle;
-  //for manualling changing pivot angle
+  // for manualling changing pivot angle
   double anglee = 0;
-  //this is for telling RotationOverride when to turn to notes in auto
+  // this is for telling RotationOverride when to turn to notes in auto
   public static int AutoRotos;
 
   public AutoIntakeCommandSlow(

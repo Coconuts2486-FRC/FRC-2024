@@ -346,28 +346,30 @@ public class Drive extends SubsystemBase {
     return yaw;
   }
 
-  //This allows the robot to rotate to the gamepiece or speaker during auto
+  // This allows the robot to rotate to the gamepiece or speaker during auto
   public Optional<Rotation2d> getRotationTargetOverride() {
     // This checks if the commands are running we want running when turning to gamepiece
     if (AutoIntakeCommandSlow.AutoRotos == 1 || AutoIntakeCommand.AutoRoto == 1) {
-      //This makes sure the vision can see a Gamepiece so the robot doesn't spin in circles violently
+      // This makes sure the vision can see a Gamepiece so the robot doesn't spin in circles
+      // violently
       if (getGamePieceYaw() != null) {
         // Return an optional containing the rotation override (this should be a field relative
         // rotation)
 
-        // This gives the game piece yaw to rotation override which turns the robot towards the piece
+        // This gives the game piece yaw to rotation override which turns the robot towards the
+        // piece
         return Optional.of(Drive.getGamePieceYaw());
       } else {
         // return an empty optional when we don't want to override the path's rotation
         return Optional.empty();
       }
       // Checks if commands are running that we want when turning towards speaker
-    } else if(AutoRegressedPivotCommand.AutoShoto == 1 || AutoSpinUpCommand.AutoShoto2 == 1) {
-      //makes sure that visoin can see apriltags
+    } else if (AutoRegressedPivotCommand.AutoShoto == 1 || AutoSpinUpCommand.AutoShoto2 == 1) {
+      // makes sure that vision can see apriltags
       if (getSpeakerYaw() != null) {
         // makes robot turn towards speaker
         return Optional.of(Drive.getSpeakerYaw());
-      } else{
+      } else {
         return Optional.empty();
       }
     } else {

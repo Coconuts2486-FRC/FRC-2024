@@ -17,7 +17,7 @@ public class AutoIntakeCommand extends Command {
   private final Pivot pivot;
   private final DoubleSupplier angle;
   double anglee = 0;
-  //this is for telling RotationOverride when to turn to notes in auto
+  // this is for telling RotationOverride when to turn to notes in auto
   public static int AutoRoto;
 
   public AutoIntakeCommand(
@@ -42,7 +42,7 @@ public class AutoIntakeCommand extends Command {
   public void initialize() {
     pivot.holdPosition(angle.getAsDouble());
     System.out.println("Build Issue");
-    AutoRoto = 0
+    AutoRoto = 0;
   }
 
   @Override

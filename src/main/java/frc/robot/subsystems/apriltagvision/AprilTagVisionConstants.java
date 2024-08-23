@@ -40,16 +40,16 @@ public class AprilTagVisionConstants {
         case COMPBOT -> new Pose3d[] {
           new Pose3d(
               Units.inchesToMeters(-2.0),
-              Units.inchesToMeters(-9.0),
-              Units.inchesToMeters(12.0),
-              new Rotation3d(0.0, Units.degreesToRadians(-20.0), 0.0)
+              Units.inchesToMeters(0),
+              Units.inchesToMeters(0),
+              new Rotation3d(0.0, Units.degreesToRadians(0), 0.0)
                   .rotateBy(new Rotation3d(0.0, 0.0, Units.degreesToRadians(180 - 32.5)))),
-          new Pose3d(
-              Units.inchesToMeters(-2.0),
-              Units.inchesToMeters(9.0),
-              Units.inchesToMeters(12.0),
-              new Rotation3d(0.0, Units.degreesToRadians(-20.0), 0.0)
-                  .rotateBy(new Rotation3d(0, 0, Units.degreesToRadians(180 + 32.5))))
+          // new Pose3d(
+          //     Units.inchesToMeters(-2.0),
+          //     Units.inchesToMeters(9.0),
+          //     Units.inchesToMeters(12.0),
+          //     new Rotation3d(0.0, Units.degreesToRadians(-20.0), 0.0)
+          //         .rotateBy(new Rotation3d(0, 0, Units.degreesToRadians(180 + 32.5))))
         };
         case DEVBOT -> new Pose3d[] {};
         default -> new Pose3d[] {};
