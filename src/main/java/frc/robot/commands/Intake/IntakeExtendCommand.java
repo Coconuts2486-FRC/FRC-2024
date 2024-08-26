@@ -8,11 +8,17 @@ public class IntakeExtendCommand extends Command {
   private final Intake intake;
   private final BooleanSupplier lightStop;
   private final BooleanSupplier intakeStop;
+  private final BooleanSupplier pivotStop;
 
-  public IntakeExtendCommand(Intake intake, BooleanSupplier lightStop, BooleanSupplier intakeStop) {
+  public IntakeExtendCommand(
+      Intake intake,
+      BooleanSupplier lightStop,
+      BooleanSupplier intakeStop,
+      BooleanSupplier pivotStop) {
     this.intake = intake;
     this.lightStop = lightStop;
     this.intakeStop = intakeStop;
+    this.pivotStop = pivotStop;
   }
 
   @Override
@@ -20,13 +26,16 @@ public class IntakeExtendCommand extends Command {
 
   @Override
   public void execute() {
-    if (lightStop.getAsBoolean()) {
+    // This is if the pivot is too steep and will hit the swerve module, or the lightstop is
+    // triggered, retract
+    if (pivotStop.getAsBoolean() || lightStop.getAsBoolean()) {
       if (intakeStop.getAsBoolean()) {
         intake.stop();
       } else {
         intake.retract();
       }
     } else {
+      // intake.setExtendPosition(5);
       intake.setExtendPosition(48.8);
     }
   }

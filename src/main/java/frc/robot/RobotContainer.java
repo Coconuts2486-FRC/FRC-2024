@@ -75,6 +75,7 @@ import frc.robot.subsystems.sma.SmaIntakeRollers;
 import frc.robot.util.Alert;
 import frc.robot.util.Alert.AlertType;
 import frc.robot.util.OverrideSwitches;
+import java.util.function.BooleanSupplier;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -101,6 +102,7 @@ public class RobotContainer {
   private final Flywheel flywheel;
   private final AprilTagVision aprilTagVision;
   private final GamePieceVision gamePieceVision;
+  private final BooleanSupplier pivotStop;
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -149,6 +151,7 @@ public class RobotContainer {
                 this::getAprilTagLayoutType,
                 new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, "Photon_BW2"));
         gamePieceVision = new GamePieceVision(new GamePieceVisionIOPiVision());
+        pivotStop = () -> (pivot.pivotAngle() > 50);
         break;
 
       case SIM:
@@ -166,6 +169,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOReal());
         aprilTagVision = new AprilTagVision(this::getAprilTagLayoutType);
         gamePieceVision = new GamePieceVision();
+        pivotStop = () -> false;
         break;
 
       default:
@@ -185,6 +189,7 @@ public class RobotContainer {
             new AprilTagVision(
                 this::getAprilTagLayoutType, new AprilTagVisionIO() {}, new AprilTagVisionIO() {});
         gamePieceVision = new GamePieceVision(new GamePieceVisionIO() {});
+        pivotStop = () -> false;
         break;
     }
 
@@ -279,7 +284,7 @@ public class RobotContainer {
     driver
         .rightBumper()
         .whileTrue(
-            new IntakeExtendCommand(intake, lightStop::get, intakeStop::get)
+            new IntakeExtendCommand(intake, lightStop::get, intakeStop::get, pivotStop)
                 .alongWith(
                     new PivotCommand(
                         pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
@@ -300,7 +305,7 @@ public class RobotContainer {
     driver
         .b()
         .whileTrue(
-            new IntakeExtendCommand(intake, lightStop::get, intakeStop::get)
+            new IntakeExtendCommand(intake, lightStop::get, intakeStop::get, pivotStop)
                 .alongWith(
                     new PivotCommand(
                         pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
