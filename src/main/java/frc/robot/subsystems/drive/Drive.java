@@ -39,8 +39,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoIntakeCommandSlow;
-import frc.robot.commands.Auto.AutoRegressedPivotCommand;
-import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.subsystems.apriltagvision.AprilTagVision;
 import frc.robot.subsystems.gamepiecevision.GamePieceVision;
@@ -97,7 +95,7 @@ public class Drive extends SubsystemBase {
         this::runVelocity,
         new HolonomicPathFollowerConfig(
             new PIDConstants(0.0015, 0.0005, 0.05),
-            new PIDConstants(0.011, 0.0, 0.0),
+            new PIDConstants(0.011, 0.0, 0.0005 * 10),
             MAX_LINEAR_SPEED,
             DRIVE_BASE_RADIUS,
             new ReplanningConfig()),
@@ -358,23 +356,27 @@ public class Drive extends SubsystemBase {
 
         // This gives the game piece yaw to rotation override which turns the robot towards the
         // piece
+        Logger.recordOutput("AutoTargeting/GP_YAW", Drive.getGamePieceYaw());
         return Optional.of(Drive.getGamePieceYaw());
       } else {
-    //     // return an empty optional when we don't want to override the path's rotation
-    //     return Optional.empty();
-    //   }
-    //   // Checks if commands are running that we want when turning towards speaker
-    // } else if (AutoRegressedPivotCommand.AutoShoto == 1 || AutoSpinUpCommand.AutoShoto2 == 1) {
-    //   // makes sure that vision can see apriltags
-    //   if (getSpeakerYaw() != null) {
-    //     // makes robot turn towards speaker
-    //     return Optional.of(Drive.getSpeakerYaw());
-    //   } else {
-    //     return Optional.empty();
-    //   }
-    // } else {
-      return Optional.empty();
+        //     // return an empty optional when we don't want to override the path's rotation
+        //     return Optional.empty();
+        //   }
+        //   // Checks if commands are running that we want when turning towards speaker
+        // } else if (AutoRegressedPivotCommand.AutoShoto == 1 || AutoSpinUpCommand.AutoShoto2 == 1)
+        // {
+        //   // makes sure that vision can see apriltags
+        //   if (getSpeakerYaw() != null) {
+        //     // makes robot turn towards speaker
+        //     return Optional.of(Drive.getSpeakerYaw());
+        //   } else {
+        //     return Optional.empty();
+        //   }
+        // } else {
+        return Optional.empty();
       }
+    } else {
+      return Optional.empty();
     }
   }
 
