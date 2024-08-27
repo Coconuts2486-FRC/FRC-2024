@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Zero"
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
@@ -24,10 +30,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoIntake"
+                  "name": "autoIntakeSlow"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoIntake"
           }
         }
       ]

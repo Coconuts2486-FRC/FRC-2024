@@ -360,20 +360,21 @@ public class Drive extends SubsystemBase {
         // piece
         return Optional.of(Drive.getGamePieceYaw());
       } else {
-        // return an empty optional when we don't want to override the path's rotation
-        return Optional.empty();
-      }
-      // Checks if commands are running that we want when turning towards speaker
-    } else if (AutoRegressedPivotCommand.AutoShoto == 1 || AutoSpinUpCommand.AutoShoto2 == 1) {
-      // makes sure that vision can see apriltags
-      if (getSpeakerYaw() != null) {
-        // makes robot turn towards speaker
-        return Optional.of(Drive.getSpeakerYaw());
-      } else {
-        return Optional.empty();
-      }
-    } else {
+    //     // return an empty optional when we don't want to override the path's rotation
+    //     return Optional.empty();
+    //   }
+    //   // Checks if commands are running that we want when turning towards speaker
+    // } else if (AutoRegressedPivotCommand.AutoShoto == 1 || AutoSpinUpCommand.AutoShoto2 == 1) {
+    //   // makes sure that vision can see apriltags
+    //   if (getSpeakerYaw() != null) {
+    //     // makes robot turn towards speaker
+    //     return Optional.of(Drive.getSpeakerYaw());
+    //   } else {
+    //     return Optional.empty();
+    //   }
+    // } else {
       return Optional.empty();
+      }
     }
   }
 

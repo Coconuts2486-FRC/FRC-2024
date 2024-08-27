@@ -224,6 +224,7 @@ public class RobotContainer {
             intakeStop::get,
             pivot,
             () -> 45));
+    NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
     NamedCommands.registerCommand("PivotAmp45", new PivotCommand(pivot, () -> 60));
     NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
     NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));

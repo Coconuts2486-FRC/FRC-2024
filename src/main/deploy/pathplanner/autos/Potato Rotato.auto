@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Zero"
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
