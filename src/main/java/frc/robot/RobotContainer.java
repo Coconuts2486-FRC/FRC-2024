@@ -225,12 +225,14 @@ public class RobotContainer {
             pivot,
             () -> 45));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
-    NamedCommands.registerCommand("PivotAmp45", new PivotCommand(pivot, () -> 60));
     NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
     NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
     NamedCommands.registerCommand("PivotAmp25.5", new PivotCommand(pivot, () -> 25.5));
     NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 45));
     NamedCommands.registerCommand("PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0));
+    NamedCommands.registerCommand(
+        "RetractWithStop",
+        new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
     NamedCommands.registerCommand("Retract", new IntakeRetractCommand(intake, intakeStop::get));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());

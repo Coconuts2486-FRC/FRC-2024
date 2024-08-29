@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4556022399081838,
-        "y": 7.3178775200143
+        "x": 4.72,
+        "y": 6.64
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2873992229465943,
-        "y": 7.621806766761682
+        "x": 6.551850793516402,
+        "y": 7.075411104525913
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.2547113566449353,
-        "y": 7.622935069944214
+        "x": 7.02,
+        "y": 5.65
       },
       "prevControl": {
-        "x": 2.5152039129365544,
-        "y": 7.627391647691911
+        "x": 6.541080974078337,
+        "y": 5.65
       },
       "nextControl": {
-        "x": 3.7178501208854264,
-        "y": 7.620144004176898
+        "x": 7.908882273365633,
+        "y": 5.65
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.67376045400239,
-        "y": 6.9
+        "x": 7.9,
+        "y": 5.65
       },
       "prevControl": {
-        "x": 4.010377567051431,
-        "y": 7.222111285148498
+        "x": 6.9986584089383745,
+        "y": 5.65
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,7 +46,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.35,
+      "waypointRelativePos": 1.05,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -54,11 +54,11 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 1.3,
+      "minWaypointRelativePos": 1.0,
       "maxWaypointRelativePos": 2.0,
       "constraints": {
-        "maxVelocity": 3.0,
-        "maxAcceleration": 2.0,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
@@ -67,17 +67,20 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 3.85,
+    "maxAcceleration": 3.9,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 17.91,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Amp Side",
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": 17.25,
+    "velocity": 0
+  },
   "useDefaultConstraints": false
 }

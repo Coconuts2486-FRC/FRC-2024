@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 2.4,
-        "y": 4.1
+        "y": 3.98
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.0553300879872674,
-        "y": 4.592422544751635
+        "y": 4.472422544751636
       },
       "isLocked": false,
       "linkedName": null
@@ -45,21 +45,15 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.5,
       "command": {
-        "type": "parallel",
+        "type": "race",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
                 "name": "Retract"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoSpinUp"
               }
             }
           ]
@@ -68,7 +62,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 0.7,
       "command": {
         "type": "race",
         "data": {
@@ -76,7 +70,7 @@
             {
               "type": "named",
               "data": {
-                "name": "PivotRegressed"
+                "name": "autoSpinUp"
               }
             }
           ]
