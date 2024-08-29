@@ -92,6 +92,8 @@ public class Drive extends SubsystemBase {
         () -> kinematics.toChassisSpeeds(getModuleStates()),
         this::runVelocity,
         new HolonomicPathFollowerConfig(
+
+            // Sam, don't touch this.
             new PIDConstants(0.0015, 0.0005, 0.05),
             new PIDConstants(2, 0.0000, .5),
             MAX_LINEAR_SPEED,
@@ -344,58 +346,56 @@ public class Drive extends SubsystemBase {
 
   // This allows the robot to rotate to the gamepiece or speaker during auto
   // public Optional<Rotation2d> getRotationTargetOverride() {
-  //   System.out.println(Drive.getGamePieceYaw());
+  // System.out.println(Drive.getGamePieceYaw());
 
-  //   // This checks if the commands are running we want running when turning to gamepiece
-  //   if (AutoIntakeCommandSlow.AutoRotos == 1 || AutoIntakeCommand.AutoRoto == 1) {
-  //     // This makes sure the vision can see a Gamepiece so the robot doesn't spin in circles
-  //     // violently
-  //     if (getGamePieceYaw() != null) {
-  //       saveYaw = Drive.getGamePieceYaw();
-  //       System.out.println("save" + saveYaw);
-  //       // Return an optional containing the rotation override (this should be a field relative
-  //       // rotation)
+  // This checks if the commands are running we want running when turning to gamepiece
+  // if (AutoIntakeCommandSlow.AutoRotos == 1 || AutoIntakeCommand.AutoRoto == 1) {
+  // This makes sure the vision can see a Gamepiece so the robot doesn't spin in circles
+  // violently
+  // if (getGamePieceYaw() != null) {
+  // saveYaw = Drive.getGamePieceYaw();
+  // System.out.println("save" + saveYaw);
+  // Return an optional containing the rotation override (this should be a field relative
+  // rotation)
 
-  //       // This gives the game piece yaw to rotation override which turns the robot towards the
-  //       // piece
-  //       Logger.recordOutput("AutoTargeting/GP_YAW", Drive.getGamePieceYaw());
-  //       return Optional.of(Drive.getGamePieceYaw());
-  //     } else {
-  //       //     // return an empty optional when we don't want to override the path's rotation
-  //       //     return Optional.empty();
-  //       //   }
-  //       //   // Checks if commands are running that we want when turning towards speaker
-  //       // } else if (AutoRegressedPivotCommand.AutoShoto == 1 || AutoSpinUpCommand.AutoShoto2 ==
-  // 1)
-  //       // {
-  //       //   // makes sure that vision can see apriltags
-  //       //   if (getSpeakerYaw() != null) {
-  //       //     // makes robot turn towards speaker
-  //       //     return Optional.of(Drive.getSpeakerYaw());
-  //       //   } else {
-  //       //     return Optional.empty();
-  //       //   }
-  //       // } else {
-  //       return Optional.of(saveYaw);
-  //     }
-  //   } else {
+  // This gives the game piece yaw to rotation override which turns the robot towards the
+  // piece
+  //   Logger.recordOutput("AutoTargeting/GP_YAW", Drive.getGamePieceYaw());
+  //   return Optional.of(Drive.getGamePieceYaw());
+  // } else {
+  //     // return an empty optional when we don't want to override the path's rotation
   //     return Optional.empty();
+  //   }
+  //   // Checks if commands are running that we want when turning towards speaker
+  // } else if (AutoRegressedPivotCommand.AutoShoto == 1 || AutoSpinUpCommand.AutoShoto2 == 1)
+  // {
+  //   // makes sure that vision can see apriltags
+
+  //         if (getSpeakerYaw() != null) {
+  //            // makes robot turn towards speaker
+  //           return Optional.of(Drive.getSpeakerYaw());
+  //          } else {
+  //           return Optional.empty();
+  //          }
+  //     }
+  //  // } else {
+  //    // return Optional.empty();
   //   }
   // }
 
-  /**
-   * Compute the field-centric YAW to the GAMEPIECE, as seen by PiVision
-   *
-   * <p>Returns the field-centric YAW to the GAMEPIECE in degrees. To aim the robot at the game
-   * piece, set the robot YAW equal to this value. If the game piece is not visible, this returns
-   * -999.9 degrees!
-   *
-   * <p>NOTE: This function assumes "Always Blue Origin" convention for YAW, meaning that when
-   * alliance is BLUE, 0º is away from the alliance wall, and when alliance is RED, 180º is away
-   * from the alliance wall.
-   *
-   * <p>NOTE: If we want the null result to return something other than -999.9, we can do that.
-   */
+  // /**
+  //  * Compute the field-centric YAW to the GAMEPIECE, as seen by PiVision
+  //  *
+  //  * <p>Returns the field-centric YAW to the GAMEPIECE in degrees. To aim the robot at the game
+  //  * piece, set the robot YAW equal to this value. If the game piece is not visible, this returns
+  //  * -999.9 degrees!
+  //  *
+  //  * <p>NOTE: This function assumes "Always Blue Origin" convention for YAW, meaning that when
+  //  * alliance is BLUE, 0º is away from the alliance wall, and when alliance is RED, 180º is away
+  //  * from the alliance wall.
+  //  *
+  //  * <p>NOTE: If we want the null result to return something other than -999.9, we can do that.
+  //  */
   public static Rotation2d getGamePieceYaw() {
 
     // No tag information, return default value
