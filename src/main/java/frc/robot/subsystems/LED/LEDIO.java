@@ -1,5 +1,3 @@
 package frc.robot.subsystems.LED;
 
-public class LEDIO {
-    
-}
+public class LEDIO {}
