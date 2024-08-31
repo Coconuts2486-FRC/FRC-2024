@@ -327,7 +327,11 @@ public class Drive extends SubsystemBase {
 
     // No tag information, return default value
     if (AprilTagVision.speakerPose == null) {
-      return new Rotation2d(Float.NaN);
+      if (DriverStation.getAlliance().get() == Alliance.Red) {
+        return new Rotation2d(Units.degreesToRadians(180));
+      } else {
+        return new Rotation2d(Units.degreesToRadians(0));
+      }
     }
 
     // The YAW to the speaker is computed from the X and Y position along the floor.
