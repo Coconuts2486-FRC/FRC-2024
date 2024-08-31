@@ -32,11 +32,11 @@
     },
     {
       "anchor": {
-        "x": 4.67376045400239,
+        "x": 4.67,
         "y": 6.9
       },
       "prevControl": {
-        "x": 4.173625222250444,
+        "x": 4.169864768248054,
         "y": 7.258433757608256
       },
       "nextControl": null,
@@ -67,7 +67,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 1.7,
+      "waypointRelativePos": 1.4,
       "command": {
         "type": "race",
         "data": {
@@ -84,7 +84,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
+    "maxVelocity": 5.3,
     "maxAcceleration": 3.85,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0

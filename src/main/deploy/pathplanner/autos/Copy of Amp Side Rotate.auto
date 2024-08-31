@@ -49,7 +49,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoShootHalf"
+                  "name": "autoShootFull"
                 }
               }
             ]
@@ -113,13 +113,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed"
+                  "name": "PivotRegressedLower"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "autoShootHalf"
+                  "name": "autoShootFull"
                 }
               }
             ]
@@ -183,13 +183,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed"
+                  "name": "PivotRegressedLower"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "autoShootHalf"
+                  "name": "autoShootFull"
                 }
               }
             ]
@@ -208,6 +208,12 @@
                       "data": {
                         "pathName": "Copy of Outer Noter 3"
                       }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Return Outer Noter 3"
+                      }
                     }
                   ]
                 }
@@ -216,6 +222,31 @@
                 "type": "named",
                 "data": {
                   "name": "autoIntakeSlow"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractWithStop"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressedLower"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootFull"
                 }
               }
             ]

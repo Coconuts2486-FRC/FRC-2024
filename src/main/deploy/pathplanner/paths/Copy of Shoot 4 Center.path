@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.768188082672461,
-        "y": 6.804266973348763
+        "x": 6.674776456034393,
+        "y": 6.870950690975456
       },
       "isLocked": false,
       "linkedName": null
@@ -42,6 +42,23 @@
               "type": "named",
               "data": {
                 "name": "Retract"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.8,
+      "command": {
+        "type": "race",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "autoSpinUp"
               }
             }
           ]

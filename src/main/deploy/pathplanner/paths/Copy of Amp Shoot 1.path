@@ -67,7 +67,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Better Amp Side",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

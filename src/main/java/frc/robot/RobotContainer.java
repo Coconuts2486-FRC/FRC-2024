@@ -36,6 +36,7 @@ import frc.robot.commands.Drive.TargetNoteCommand;
 import frc.robot.commands.Drive.TargetTagCommand;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
+import frc.robot.commands.Elevator.ElevatorSOSCommand;
 import frc.robot.commands.Elevator.ManualElevatorCommand;
 import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
@@ -443,6 +444,8 @@ public class RobotContainer {
                     .60,
                     true)
                 .until(elevatorBottom::get));
+
+    coDriver.start().whileTrue(new ElevatorSOSCommand(elevator));
   }
 
   /**
