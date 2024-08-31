@@ -15,7 +15,7 @@ public class TargetTagCommand extends Command {
   public void initialize() {
     // The additional rotation is because Euclid's shooter sends notes off-centerline due to the
     // grip/slip dichotomy of the wheels.
-    freeze = Drive.getSpeakerYaw().plus(new Rotation2d(Units.degreesToRadians(6))).getDegrees();
+    freeze = Drive.getSpeakerYaw().plus(new Rotation2d(Units.degreesToRadians(5))).getDegrees();
   }
 
   @Override
