@@ -32,7 +32,7 @@ import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.DisabledCoast;
 import frc.robot.commands.Drive.DriveCommands;
-import frc.robot.commands.Drive.TargetNoteCommand;
+import frc.robot.commands.Drive.DriveToNoteCmd;
 import frc.robot.commands.Drive.TargetTagCommand;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
@@ -268,8 +268,8 @@ public class RobotContainer {
     // driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     driver.x().whileTrue(new LobShotCommand(intakeRollers, flywheel));
 
-    driver.rightBumper().whileTrue(new TargetNoteCommand());
-
+    // driver.rightBumper().whileTrue(new TargetNoteCommand());
+    driver.rightBumper().whileTrue(new DriveToNoteCmd(drive, lightStop::get));
     // Manual Intake
     intakeRollers.setDefaultCommand(
         ManualRollerCmd.manualRoller(
@@ -286,10 +286,12 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(
             new IntakeRollerCommand(
-                intakeRollers,
-                () -> coDriver.getLeftTriggerAxis(),
-                () -> coDriver.getRightTriggerAxis(),
-                lightStop::get));
+                    intakeRollers,
+                    () -> coDriver.getLeftTriggerAxis(),
+                    () -> coDriver.getRightTriggerAxis(),
+                    lightStop::get)
+                .until(lightStop::get)
+                .andThen(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get)));
     // - Extend
     driver
         .rightBumper()
