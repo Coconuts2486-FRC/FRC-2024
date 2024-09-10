@@ -130,7 +130,7 @@ public class DriveCommands {
                         Drive.getGamePieceYaw()
                             .minus(new Rotation2d(Units.degreesToRadians(DriveCommands.gyroYaw)))
                             .getDegrees())
-                    > 5.0) {
+                    > 7.0) {
                   drive.runVelocity(
                       ChassisSpeeds.fromFieldRelativeSpeeds(
                           0,

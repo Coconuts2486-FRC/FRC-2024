@@ -322,11 +322,16 @@ public class Drive extends SubsystemBase {
    *
    * <p>NOTE: If we want the null result to return something other than -999.9, we can do that.
    */
+  @AutoLogOutput(key = "Targeting/SpeakerYaw")
   public static Rotation2d getSpeakerYaw() {
 
     // No tag information, return default value
     if (AprilTagVision.speakerPose == null) {
-      return new Rotation2d(Float.NaN);
+      if (DriverStation.getAlliance().get() == Alliance.Red) {
+        return new Rotation2d(Units.degreesToRadians(180));
+      } else {
+        return new Rotation2d(Units.degreesToRadians(0));
+      }
     }
 
     // The YAW to the speaker is computed from the X and Y position along the floor.
@@ -340,7 +345,7 @@ public class Drive extends SubsystemBase {
       yaw = yaw.plus(new Rotation2d(Math.PI));
     }
 
-    // Return the YAW value in degrees
+    // Return the YAW value as a Rotation2d object
     return yaw;
   }
 
@@ -396,6 +401,7 @@ public class Drive extends SubsystemBase {
   //  *
   //  * <p>NOTE: If we want the null result to return something other than -999.9, we can do that.
   //  */
+  @AutoLogOutput(key = "Targeting/GamePieceYaw")
   public static Rotation2d getGamePieceYaw() {
 
     // No tag information, return default value
@@ -409,10 +415,11 @@ public class Drive extends SubsystemBase {
     // Add the game piece YAW to the current gyro value
     Rotation2d yaw = new Rotation2d(Units.degreesToRadians(DriveCommands.gyroYaw)).plus(gpYaw);
 
-    // Return the YAW value in degrees
+    // Return the YAW value as a Rotation2d object
     return yaw;
   }
 
+  @AutoLogOutput(key = "Targeting/GamePiecePose")
   public static Pose2d getGamePiecePose() {
 
     return GamePieceVision.gamePieceRelativePose;

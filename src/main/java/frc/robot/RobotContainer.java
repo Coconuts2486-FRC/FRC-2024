@@ -72,6 +72,7 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOReal;
 import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.intake.IntakeRollersIOReal;
+import frc.robot.subsystems.pdh.PDH;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
@@ -106,6 +107,7 @@ public class RobotContainer {
   private final AprilTagVision aprilTagVision;
   private final GamePieceVision gamePieceVision;
   private final BooleanSupplier pivotStop;
+  private final PDH pdh;
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -155,6 +157,7 @@ public class RobotContainer {
                 new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, "Photon_BW2"));
         gamePieceVision = new GamePieceVision(new GamePieceVisionIOPiVision());
         pivotStop = () -> (pivot.pivotAngle() > 50);
+        pdh = new PDH();
         break;
 
       case SIM:
@@ -173,6 +176,7 @@ public class RobotContainer {
         aprilTagVision = new AprilTagVision(this::getAprilTagLayoutType);
         gamePieceVision = new GamePieceVision();
         pivotStop = () -> false;
+        pdh = new PDH();
         break;
 
       default:
@@ -193,6 +197,7 @@ public class RobotContainer {
                 this::getAprilTagLayoutType, new AprilTagVisionIO() {}, new AprilTagVisionIO() {});
         gamePieceVision = new GamePieceVision(new GamePieceVisionIO() {});
         pivotStop = () -> false;
+        pdh = new PDH();
         break;
     }
 
