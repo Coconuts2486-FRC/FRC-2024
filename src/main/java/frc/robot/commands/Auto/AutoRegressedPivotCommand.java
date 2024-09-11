@@ -28,7 +28,7 @@ public class AutoRegressedPivotCommand extends Command {
   @Override
   public void execute() {
     SmartDashboard.putNumber("Pivot Angle", pivot.pivotAngle());
-
+  //Regression Algorithm for pivot angle when shooting from a distance
     double a = -0.0000035721;
     double b = 0.00256816;
     double c = -0.65009;

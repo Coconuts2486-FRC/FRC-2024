@@ -2,7 +2,7 @@ package frc.robot.commands.Auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.flywheel.Flywheel;
-
+//Just let us spin up the wheels before shooting
 public class AutoSpinUpCommand extends Command {
   private final Flywheel flywheel;
   // this is for telling RotationOverride when to turn to speaker in auto

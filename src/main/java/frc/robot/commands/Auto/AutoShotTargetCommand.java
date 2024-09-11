@@ -5,13 +5,13 @@ import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
 
-public class AutoShotCommand extends Command {
+public class AutoShotTargetCommand extends Command {
   private final IntakeRollers intakeRollers;
   private final Flywheel flywheel;
   private final SmaIntakeRollers smaIntakeRollers;
-  //Shot Command exepct using smaIntakeRollers for auto
+  //This is shot command but it waits for robot to target before firing
 
-  public AutoShotCommand(
+  public AutoShotTargetCommand(
       IntakeRollers intakeRollers, Flywheel flywheel, SmaIntakeRollers smaIntakeRollers) {
     this.intakeRollers = intakeRollers;
     this.flywheel = flywheel;
@@ -26,7 +26,7 @@ public class AutoShotCommand extends Command {
   public void execute() {
     flywheel.setDutyCycle(1);
 
-    if (flywheel.getVelocity() > 68.36) smaIntakeRollers.autoShot(1.2);
+    if (flywheel.getVelocity() > 68.36 /*||*/ ) smaIntakeRollers.autoShot(1.2);
   }
 
   @Override
