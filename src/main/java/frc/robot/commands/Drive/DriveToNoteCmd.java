@@ -15,7 +15,7 @@ public class DriveToNoteCmd extends Command {
   private final Drive drive;
   private final BooleanSupplier lightStop;
   private static final PIDController rotatePid = new PIDController(.2, 0, 0.0005);
-  private static final PIDController noteTargetPid = new PIDController(1.5, 0, 0.0005);
+  private static final PIDController noteTargetPid = new PIDController(3, 0, 0.0005);
 
   public DriveToNoteCmd(Drive drive, BooleanSupplier lightStop) {
     this.drive = drive;
