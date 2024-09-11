@@ -211,7 +211,7 @@ public class RobotContainer {
         "autoShootHalf",
         new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.6));
     NamedCommands.registerCommand("autoSpinUp", new AutoSpinUpCommand(flywheel));
-    NamedCommands.registerCommand("autoShootTarget", new AutoShotTargetCommand(intakeRollers, flywheel, smaIntakeRollers).until(AutoShotTargetCommand.time > 99));
+    NamedCommands.registerCommand("autoShootTarget", new AutoShotTargetCommand(intakeRollers, flywheel, smaIntakeRollers));
     NamedCommands.registerCommand(
         "autoIntake",
         new AutoIntakeCommand(
@@ -222,7 +222,7 @@ public class RobotContainer {
                 intakeStop::get,
                 pivot,
                 () -> 45)
-            .until(lightStop::get).until(intakeStop::get && lightStop::get));
+            .until(lightStop::get));
     NamedCommands.registerCommand(
         "autoIntakeSlow",
         new AutoIntakeCommandSlow(
@@ -232,7 +232,7 @@ public class RobotContainer {
                 lightStop::get,
                 intakeStop::get,
                 pivot,
-                () -> 45).until(intakeStop::get && lightStop::get)
+                () -> 45).until(lightStop::get)
             .until(lightStop::get));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
     NamedCommands.registerCommand(

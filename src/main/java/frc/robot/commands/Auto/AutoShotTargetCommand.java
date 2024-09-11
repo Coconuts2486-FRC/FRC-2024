@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
-import frc.robot.subsystems.pivot.Pivot;
 
 public class AutoShotTargetCommand extends Command {
   private final IntakeRollers intakeRollers;
@@ -28,13 +27,12 @@ public class AutoShotTargetCommand extends Command {
   public void execute() {
     flywheel.setDutyCycle(1);
 
-    if (flywheel.getVelocity() > 68.36 && freezeRegress > -100) && time < 100{
+    if (flywheel.getVelocity() > 68.36 && AutoRegressedPivotCommand.freezeRegress > -100 && time < 100){
             smaIntakeRollers.autoShot(1.2);
             time = time+1;
         }
     if(time > 99){
-
-    }
+      end(true);
     }
   }
 

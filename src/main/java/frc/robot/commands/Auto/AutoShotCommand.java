@@ -6,14 +6,12 @@ import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
 
 public class AutoShotCommand extends Command {
-  private final IntakeRollers intakeRollers;
   private final Flywheel flywheel;
   private final SmaIntakeRollers smaIntakeRollers;
   //Shot Command exepct using smaIntakeRollers for auto
 
   public AutoShotCommand(
       IntakeRollers intakeRollers, Flywheel flywheel, SmaIntakeRollers smaIntakeRollers) {
-    this.intakeRollers = intakeRollers;
     this.flywheel = flywheel;
     this.smaIntakeRollers = smaIntakeRollers;
     addRequirements(intakeRollers);
