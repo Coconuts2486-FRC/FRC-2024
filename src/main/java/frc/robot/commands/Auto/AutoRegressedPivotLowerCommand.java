@@ -5,16 +5,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.pivot.Pivot;
 import java.util.function.DoubleSupplier;
 
-public class AutoRegressedPivotCommandLower extends Command {
+public class AutoRegressedPivotLowerCommand extends Command {
   private final Pivot pivot;
   private final DoubleSupplier angler;
+  private final DoubleSupplier ogAngle;
   public static double freezeRegress = 0;
   // This variable is used to tell RotationOverride when to turn to speaker in auto
   public static int AutoShoto;
 
-  public AutoRegressedPivotCommandLower(Pivot pivot, DoubleSupplier angler) {
+  public AutoRegressedPivotLowerCommand(
+      Pivot pivot, DoubleSupplier angler, DoubleSupplier ogAngle) {
     this.pivot = pivot;
     this.angler = angler;
+    this.ogAngle = ogAngle;
   }
 
   @Override
@@ -33,7 +36,7 @@ public class AutoRegressedPivotCommandLower extends Command {
     double intercept = 80.2242;
     double angle;
     if (freezeRegress < -100) {
-      angle = 60;
+      angle = 0 + ogAngle.getAsDouble();
     } else {
       angle =
           (a * (freezeRegress * freezeRegress * freezeRegress))

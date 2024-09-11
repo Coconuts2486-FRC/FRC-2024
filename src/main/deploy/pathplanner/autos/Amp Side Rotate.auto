@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4556022399081838,
-      "y": 7.3178775200143
+      "x": 1.46,
+      "y": 7.35
     },
     "rotation": 0
   },
@@ -24,13 +24,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp Start Shoot"
+                  "pathName": "ZBetter Amp Start Shoot"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotAmp23.6"
+                  "name": "PivotRegressed23.6"
                 }
               }
             ]
@@ -66,13 +66,13 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Outer Noter 1"
+                        "pathName": "ZBetter Outer Noter 1"
                       }
                     },
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "return of Outer Noter 1"
+                        "pathName": "ZBetter Return Outer Noter 1"
                       }
                     }
                   ]
@@ -113,7 +113,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed"
+                  "name": "PivotRegressedLower"
                 }
               },
               {
@@ -136,13 +136,13 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Outer Noter 2"
+                        "pathName": "ZBetter Outer Noter 2"
                       }
                     },
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "return of Outer Noter 2"
+                        "pathName": "ZBetter return Outer Noter 2"
                       }
                     }
                   ]
@@ -183,7 +183,64 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed"
+                  "name": "PivotRegressedLower"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootFull"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "ZBetter Outer Noter 3"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "ZBetter Return Outer Noter 3"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntakeSlow"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractWithStop"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressedLower"
                 }
               },
               {

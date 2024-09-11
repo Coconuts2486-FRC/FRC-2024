@@ -26,8 +26,7 @@ import frc.robot.FieldConstants.AprilTagLayoutType;
 import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoIntakeCommandSlow;
 import frc.robot.commands.Auto.AutoRegressedPivotCommand;
-import frc.robot.commands.Auto.AutoRegressedPivotCommandLower;
-import frc.robot.commands.Auto.AutoRegressedPivotCommandStay;
+import frc.robot.commands.Auto.AutoRegressedPivotLowerCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.DisabledCoast;
@@ -215,37 +214,42 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "autoIntake",
         new AutoIntakeCommand(
-            intakeRollers,
-            smaIntakeRollers,
-            intake,
-            lightStop::get,
-            intakeStop::get,
-            pivot,
-            () -> 45));
+                intakeRollers,
+                smaIntakeRollers,
+                intake,
+                lightStop::get,
+                intakeStop::get,
+                pivot,
+                () -> 45)
+            .until(lightStop::get));
     NamedCommands.registerCommand(
         "autoIntakeSlow",
         new AutoIntakeCommandSlow(
-            intakeRollers,
-            smaIntakeRollers,
-            intake,
-            lightStop::get,
-            intakeStop::get,
-            pivot,
-            () -> 45));
+                intakeRollers,
+                smaIntakeRollers,
+                intake,
+                lightStop::get,
+                intakeStop::get,
+                pivot,
+                () -> 45)
+            .until(lightStop::get));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
-    NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
-    NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
-    NamedCommands.registerCommand("PivotAmp25.5", new PivotCommand(pivot, () -> 25.5));
+    NamedCommands.registerCommand(
+        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.52));
+    NamedCommands.registerCommand(
+        "PivotRegressed23", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23));
     NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 45));
-    NamedCommands.registerCommand("PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0));
     NamedCommands.registerCommand(
-        "PivotRegressedLower", new AutoRegressedPivotCommandLower(pivot, () -> 0));
+        "PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 60));
     NamedCommands.registerCommand(
-        "PivotRegressedStay", new AutoRegressedPivotCommandStay(pivot, () -> 0));
+        "PivotRegressedLower", new AutoRegressedPivotLowerCommand(pivot, () -> 0, () -> 60));
     NamedCommands.registerCommand(
         "RetractWithStop",
         new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
     NamedCommands.registerCommand("Retract", new IntakeRetractCommand(intake, intakeStop::get));
+
+    NamedCommands.registerCommand(
+        "Tracking", new DriveToNoteCmd(drive, lightStop::get).until(lightStop::get));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 

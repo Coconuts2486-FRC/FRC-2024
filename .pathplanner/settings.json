@@ -4,10 +4,9 @@
   "holonomicMode": true,
   "pathFolders": [
     "5 Note",
-    "Amp Side",
-    "Amp Side Straight",
     "Better 5 Note",
     "Better Amp Side",
+    "Tracking Amp Side",
     "Teaching",
     "ZMaking sure paths works"
   ],
@@ -16,7 +15,7 @@
     "Making sure autos work",
     "Teaching"
   ],
-  "defaultMaxVel": 5.5,
+  "defaultMaxVel": 5.3,
   "defaultMaxAccel": 3.9,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,

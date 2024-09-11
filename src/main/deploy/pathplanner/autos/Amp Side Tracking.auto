@@ -1,0 +1,113 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.46,
+      "y": 7.35
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Zero"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0Tracking Amp Start Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed23.6"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed23.6"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootFull"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0Tracking Outer Noter 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Tracking"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractWithStop"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed23.6"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "0Tracking Return Outer Noter 1"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Actual Autos",
+  "choreoAuto": false
+}
