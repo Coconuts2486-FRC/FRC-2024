@@ -10,6 +10,7 @@ public class AutoShotTargetCommand extends Command {
   private final IntakeRollers intakeRollers;
   private final Flywheel flywheel;
   private final SmaIntakeRollers smaIntakeRollers;
+  public static double time = 0;
   //This is shot command but it waits for robot to target before firing
 
   public AutoShotTargetCommand(
@@ -27,10 +28,13 @@ public class AutoShotTargetCommand extends Command {
   public void execute() {
     flywheel.setDutyCycle(1);
 
-    if (flywheel.getVelocity() > 68.36){
-        if (freezeRegress > -100){
+    if (flywheel.getVelocity() > 68.36 && freezeRegress > -100) && time < 100{
             smaIntakeRollers.autoShot(1.2);
+            time = time+1;
         }
+    if(time > 99){
+
+    }
     }
   }
 
@@ -38,5 +42,6 @@ public class AutoShotTargetCommand extends Command {
   public void end(boolean interrupted) {
     smaIntakeRollers.stop();
     flywheel.stop();
+    time = 0;
   }
 }
