@@ -26,7 +26,6 @@ import frc.robot.FieldConstants.AprilTagLayoutType;
 import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoIntakeCommandSlow;
 import frc.robot.commands.Auto.AutoRegressedPivotCommand;
-import frc.robot.commands.Auto.AutoRegressedPivotLowerCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.DisabledCoast;
@@ -242,7 +241,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 60));
     NamedCommands.registerCommand(
-        "PivotRegressedLower", new AutoRegressedPivotLowerCommand(pivot, () -> 0, () -> 60));
+        "PivotRegressedLower", new AutoRegressedPivotCommand(pivot, () -> -0.3, () -> 60));
     NamedCommands.registerCommand(
         "RetractWithStop",
         new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
