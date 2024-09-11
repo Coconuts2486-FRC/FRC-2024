@@ -13,9 +13,9 @@ public class AutoRegressedPivotCommand extends Command {
   // This variable is used to tell RotationOverride when to turn to speaker in auto
   public static int AutoShoto;
 
-  public AutoRegressedPivotCommand(Pivot pivot, DoubleSupplier angler, DoubleSupplier ogAngle) {
+  public AutoRegressedPivotCommand(Pivot pivot, DoubleSupplier angled, DoubleSupplier ogAngle) {
     this.pivot = pivot;
-    this.angler = angler;
+    this.angler = angled;
     this.ogAngle = ogAngle;
   }
 
@@ -56,6 +56,5 @@ public class AutoRegressedPivotCommand extends Command {
     freezeRegress = 0;
     pivot.stop();
     AutoShoto = 0;
-    angler = 0;
   }
 }
