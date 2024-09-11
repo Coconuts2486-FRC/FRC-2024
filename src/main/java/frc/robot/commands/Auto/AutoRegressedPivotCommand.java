@@ -56,5 +56,6 @@ public class AutoRegressedPivotCommand extends Command {
     freezeRegress = 0;
     pivot.stop();
     AutoShoto = 0;
+    angler = 0;
   }
 }

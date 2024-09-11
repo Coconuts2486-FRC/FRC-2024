@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
+import frc.robot.subsystems.pivot.Pivot;
 
 public class AutoShotTargetCommand extends Command {
   private final IntakeRollers intakeRollers;
@@ -26,7 +27,11 @@ public class AutoShotTargetCommand extends Command {
   public void execute() {
     flywheel.setDutyCycle(1);
 
-    if (flywheel.getVelocity() > 68.36 /*||*/ ) smaIntakeRollers.autoShot(1.2);
+    if (flywheel.getVelocity() > 68.36){
+        if (freezeRegress > -100){
+            smaIntakeRollers.autoShot(1.2);
+        }
+    }
   }
 
   @Override
