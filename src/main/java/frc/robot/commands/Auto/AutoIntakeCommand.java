@@ -10,7 +10,7 @@ import java.util.function.DoubleSupplier;
 
 public class AutoIntakeCommand extends Command {
   // private final IntakeRollers intakeRollers;
-  //The normal intake rollers don't work in auto for some reason so use smaIntakeRollers instead
+  // The normal intake rollers don't work in auto for some reason so use smaIntakeRollers instead
   private final SmaIntakeRollers smaIntakeRollers;
   private final Intake intake;
   private final BooleanSupplier lightStop;
@@ -18,7 +18,7 @@ public class AutoIntakeCommand extends Command {
   private final Pivot pivot;
   private final DoubleSupplier angle;
   double anglee = 0;
-  //AutoRoto is not longer used for pivot
+  // AutoRoto is not longer used for pivot
   // this is for telling RotationOverride when to turn to notes in auto
   public static int AutoRoto;
 
@@ -49,7 +49,8 @@ public class AutoIntakeCommand extends Command {
 
   @Override
   public void execute() {
-    //This makes it so the intake retracts when the lightstop is triggered and the command the end when the intake limit switch is triggered
+    // This makes it so the intake retracts when the lightstop is triggered and the command the end
+    // when the intake limit switch is triggered
     if (lightStop.getAsBoolean()) {
       if (intakeStop.getAsBoolean()) {
         intake.stop();
@@ -64,8 +65,8 @@ public class AutoIntakeCommand extends Command {
         AutoRoto = 0;
       }
     } else {
-      intake.setExtendPosition(46.8);//position of pivot
-      smaIntakeRollers.autoShot(0.23);//speed of intake rollers
+      intake.setExtendPosition(46.8); // position of pivot
+      smaIntakeRollers.autoShot(0.23); // speed of intake rollers
       pivot.holdPosition(angle.getAsDouble());
       AutoRoto = 1;
     }

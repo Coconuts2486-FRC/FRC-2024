@@ -7,9 +7,11 @@ import java.util.function.DoubleSupplier;
 
 public class AutoRegressedPivotCommand extends Command {
   private final Pivot pivot;
-  private final DoubleSupplier angler;//this adds offsets to the angle that the pivot goes to
-  private final DoubleSupplier ogAngle;//this sets the angle that the pivot goes to when the april tag isn't being seen
-  public static double freezeRegress = 0;//this freezes the regression to decrease bobbing of the pivot
+  private final DoubleSupplier angler; // this adds offsets to the angle that the pivot goes to
+  private final DoubleSupplier
+      ogAngle; // this sets the angle that the pivot goes to when the april tag isn't being seen
+  public static double freezeRegress =
+      0; // this freezes the regression to decrease bobbing of the pivot
   // This variable is used to tell RotationOverride when to turn to speaker in auto
   public static int AutoShoto;
 
@@ -28,7 +30,7 @@ public class AutoRegressedPivotCommand extends Command {
   @Override
   public void execute() {
     SmartDashboard.putNumber("Pivot Angle", pivot.pivotAngle());
-  //Regression Algorithm for pivot angle when shooting from a distance
+    // Regression Algorithm for pivot angle when shooting from a distance
     double a = -0.0000035721;
     double b = 0.00256816;
     double c = -0.65009;
