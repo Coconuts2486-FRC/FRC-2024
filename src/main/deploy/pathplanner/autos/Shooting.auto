@@ -26,6 +26,12 @@
                 "data": {
                   "name": "autoShootFull"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "TrackSpeaker"
+                }
               }
             ]
           }

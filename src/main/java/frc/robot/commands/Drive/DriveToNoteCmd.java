@@ -13,6 +13,7 @@ import java.util.function.BooleanSupplier;
 
 public class DriveToNoteCmd extends Command {
   private final Drive drive;
+  public static boolean targetNote = false;
   private final BooleanSupplier lightStop;
   private static final PIDController rotatePid = new PIDController(.2, 0, 0.0005);
   private static final PIDController noteTargetPid = new PIDController(3, 0, 0.0005);
@@ -28,6 +29,7 @@ public class DriveToNoteCmd extends Command {
 
   @Override
   public void execute() {
+    targetNote = true;
     boolean isFlipped =
         DriverStation.getAlliance().isPresent()
             && DriverStation.getAlliance().get() == Alliance.Red;
@@ -82,5 +84,7 @@ public class DriveToNoteCmd extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    targetNote = false;
+  }
 }

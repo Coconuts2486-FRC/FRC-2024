@@ -32,7 +32,7 @@ import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.DisabledCoast;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Drive.DriveToNoteCmd;
-import frc.robot.commands.Drive.TargetTagCommand;
+import frc.robot.commands.Drive.RotateToTagCmd;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
 import frc.robot.commands.Elevator.ElevatorSOSCommand;
@@ -41,6 +41,7 @@ import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
 import frc.robot.commands.Intake.ManualRollerCmd;
+import frc.robot.commands.Intake.SafeToIntakeCmd;
 import frc.robot.commands.Intake.fixcmd;
 import frc.robot.commands.LobShotCommand;
 import frc.robot.commands.Pivot.PivotChangerDownCommand;
@@ -252,6 +253,8 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Tracking", new DriveToNoteCmd(drive, lightStop::get).until(lightStop::get));
 
+    NamedCommands.registerCommand("TrackSpeaker", new RotateToTagCmd(drive));
+
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Configure the button bindings
@@ -288,7 +291,7 @@ public class RobotContainer {
             () -> driver.getLeftTriggerAxis(),
             lightStop::get));
 
-    coDriver.leftBumper().whileTrue(new TargetTagCommand());
+    coDriver.leftBumper().whileTrue(new RotateToTagCmd(drive));
 
     // ** Normal Intake
     // - Rollers
@@ -384,6 +387,8 @@ public class RobotContainer {
     // >
     // Go to 45
     // Adding the manual angle and the amp angle changer
+
+    coDriver.start().onTrue(new SafeToIntakeCmd(intake));
 
     coDriver
         .leftStick()

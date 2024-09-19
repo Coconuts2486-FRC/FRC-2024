@@ -63,7 +63,7 @@ public class AutoIntakeCommandSlow extends Command {
         AutoRotos = 0;
       }
     } else {
-      intake.setExtendPosition(46.8);
+      intake.setExtendPosition(47.8);
       smaIntakeRollers.autoShot(0.175);
       pivot.holdPosition(angle.getAsDouble());
       AutoRotos = 1;

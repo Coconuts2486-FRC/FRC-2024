@@ -111,7 +111,7 @@ public class DriveCommands {
                     isFlipped
                         ? drive.getRotation().plus(new Rotation2d(Math.PI))
                         : drive.getRotation()));
-          } else if (TargetNoteCommand.targetNote) {
+          } else if (DriveToNoteCmd.targetNote) {
 
             if (lightStop.getAsBoolean()) {
               drive.runVelocity(
