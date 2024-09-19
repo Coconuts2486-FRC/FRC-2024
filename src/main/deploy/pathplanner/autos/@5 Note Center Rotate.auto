@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.46,
-      "y": 7.35
+      "x": 1.28,
+      "y": 5.55
     },
     "rotation": 0
   },
@@ -12,38 +12,13 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Zero"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "0Tracking Amp Start Shoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed23.6"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "PivotRegressed"
                 }
               },
               {
@@ -62,19 +37,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "0Tracking Outer Noter 1"
+                  "pathName": "Copy of Note 1 Center"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Pivot45"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntake"
+                  "name": "autoIntakeSlow"
                 }
               }
             ]
@@ -85,21 +54,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Pivot45"
+                  "pathName": "Copy of Return 1"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "autoIntake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Tracking"
+                  "name": "Retract"
                 }
               }
             ]
@@ -116,31 +79,6 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "0Tracking Return Outer Noter"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed23.6"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed23.6"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "autoShootFull"
@@ -149,7 +87,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "TrackSpeaker"
+                  "name": "PivotRegressed45"
                 }
               }
             ]
@@ -162,38 +100,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "0Tracking Outer Noter 2"
+                  "pathName": "Copy of Note 2 Center"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Pivot45"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pivot45"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Tracking"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntake"
+                  "name": "autoIntakeSlow"
                 }
               }
             ]
@@ -210,15 +123,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "0Tracking Return Outer Noter 2.5"
+                  "name": "PivotRegressed45"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "autoShootFull"
                 }
               }
             ]
@@ -231,13 +144,89 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "0Tracking Return Outer Noter 2"
+                  "pathName": "Copy of Return 2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "autoIntakeSlow"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractWithStop"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootFull"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed45"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 4 Center With Track"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Tracking"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of Return 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RetractWithStop"
                 }
               }
             ]
@@ -258,20 +247,8 @@
                 "data": {
                   "name": "autoShootFull"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "TrackSpeaker"
-                }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "0Tracking Outer Z3"
           }
         }
       ]
