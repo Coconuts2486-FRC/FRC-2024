@@ -50,7 +50,7 @@ public class DriveToNoteCmd extends Command {
                 Drive.getGamePieceYaw()
                     .minus(new Rotation2d(Units.degreesToRadians(DriveCommands.gyroYaw)))
                     .getDegrees())
-            > 5.0) {
+            > 6.0) {
           drive.runVelocity(
               ChassisSpeeds.fromFieldRelativeSpeeds(
                   0,
