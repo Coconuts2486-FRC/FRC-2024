@@ -17,8 +17,8 @@ public class AutoRegressedPivotCommand extends Command {
 
   public AutoRegressedPivotCommand(Pivot pivot, DoubleSupplier angled, DoubleSupplier ogAngle) {
     this.pivot = pivot;
-    this.angler = angled;
-    this.ogAngle = ogAngle;
+    this.angler = angled; // Used to offset angle
+    this.ogAngle = ogAngle; // Chooses angle to go to when tag isn't seen
   }
 
   @Override
@@ -43,14 +43,17 @@ public class AutoRegressedPivotCommand extends Command {
           (a * (freezeRegress * freezeRegress * freezeRegress))
               + (b * freezeRegress * freezeRegress)
               + c * freezeRegress
-              + intercept
-              - 0.4;
+              + intercept;
     }
     // System.out.println(freezeRegress);
 
     //  System.out.println(angle + angler.getAsDouble());
-    pivot.holdPosition(angle + angler.getAsDouble());
-    AutoShoto = 1;
+    if (angle + angler.getAsDouble() > 5) {
+      pivot.holdPosition(angle + angler.getAsDouble());
+      AutoShoto = 1;
+    } else {
+      pivot.holdPosition(5);
+    }
   }
 
   @Override
