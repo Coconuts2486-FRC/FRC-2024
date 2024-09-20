@@ -12,12 +12,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Zero"
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [
@@ -124,7 +118,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "Pivot23.6"
                 }
               }
             ]
@@ -137,19 +131,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "PivotRegressed23"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "autoShootFull"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "TrackSpeaker"
                 }
               }
             ]
@@ -218,7 +206,26 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "Pivot24"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed24"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootFull"
                 }
               }
             ]
@@ -231,47 +238,16 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "0Tracking Return Outer Noter"
+                  "pathName": "0Tracking Outer Z3"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "Pivot45"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed23.6"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoShootFull"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "TrackSpeaker"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "0Tracking Outer Z3"
           }
         }
       ]

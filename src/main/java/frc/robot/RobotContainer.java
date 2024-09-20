@@ -242,8 +242,11 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "PivotRegressed23", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23));
     NamedCommands.registerCommand(
+        "PivotRegressed24", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 24));
+    NamedCommands.registerCommand(
         "PivotRegressed45", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 45));
     NamedCommands.registerCommand("Pivot23.6", new PivotCommand(pivot, () -> 23.6));
+    NamedCommands.registerCommand("Pivot24", new PivotCommand(pivot, () -> 24));
     NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 45));
     NamedCommands.registerCommand(
         "PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 60));

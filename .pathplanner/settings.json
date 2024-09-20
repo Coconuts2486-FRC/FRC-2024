@@ -6,14 +6,12 @@
     "Better 5 Note",
     "Better Amp Side",
     "Experimental",
-    "Teaching",
     "Tracking Amp Side",
     "ZMaking sure paths works"
   ],
   "autoFolders": [
     "Actual Autos",
-    "Making sure autos work",
-    "Teaching"
+    "Making sure autos work"
   ],
   "defaultMaxVel": 5.3,
   "defaultMaxAccel": 3.9,
