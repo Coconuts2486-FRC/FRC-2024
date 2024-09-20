@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.25,
-        "y": 6.45
+        "x": 7.442319542046492,
+        "y": 7.1201275411810085
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.239269923337356,
-        "y": 6.45
+        "x": 7.431589465383848,
+        "y": 7.1201275411810085
       },
       "isLocked": false,
       "linkedName": null
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 13.0,
+    "rotation": 15.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Tracking Amp Side",
   "previewStartingState": {
-    "rotation": 13.0,
+    "rotation": 15.0,
     "velocity": 0
   },
   "useDefaultConstraints": false

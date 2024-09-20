@@ -3,11 +3,11 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
-    "5 Note",
     "Better 5 Note",
     "Better Amp Side",
-    "Tracking Amp Side",
+    "Experimental",
     "Teaching",
+    "Tracking Amp Side",
     "ZMaking sure paths works"
   ],
   "autoFolders": [

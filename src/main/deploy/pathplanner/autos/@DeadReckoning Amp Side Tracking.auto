@@ -145,12 +145,6 @@
                 "data": {
                   "name": "autoShootFull"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "TrackSpeaker"
-                }
               }
             ]
           }
@@ -210,34 +204,22 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "0Tracking Return Outer Noter 2.5"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "0Tracking Return Outer Noter 2"
+                      }
+                    }
+                  ]
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "0Tracking Return Outer Noter"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "Pivot23.6"
                 }
               }
             ]
@@ -257,12 +239,6 @@
                 "type": "named",
                 "data": {
                   "name": "autoShootFull"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "TrackSpeaker"
                 }
               }
             ]
