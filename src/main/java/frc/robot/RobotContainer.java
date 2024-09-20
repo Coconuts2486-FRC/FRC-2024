@@ -29,7 +29,6 @@ import frc.robot.commands.Auto.AutoRegressedPivotCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoShotTargetCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
-import frc.robot.commands.DisabledCoast;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Drive.DriveToNoteCmd;
 import frc.robot.commands.Drive.RotateToTagCmd;
@@ -259,7 +258,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Tracking", new DriveToNoteCmd(drive, lightStop::get).until(lightStop::get));
 
-    NamedCommands.registerCommand("TrackSpeaker", new RotateToTagCmd(drive));
+    NamedCommands.registerCommand("TrackSpeaker", new RotateToTagCmd(drive, 0));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -297,7 +296,17 @@ public class RobotContainer {
             () -> driver.getLeftTriggerAxis(),
             lightStop::get));
 
-    coDriver.leftBumper().whileTrue(new RotateToTagCmd(drive));
+    coDriver.leftBumper().whileTrue(new RotateToTagCmd(drive, 0));
+    coDriver
+        .rightStick()
+        .whileTrue(
+            new RotateToTagCmd(drive, -2)
+                .alongWith(
+                    new RegressedPivotCommand(pivot, () -> PivotChangerUpCommand.angler)
+                        .andThen(
+                            new PivotCommand(
+                                pivot,
+                                () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot))));
 
     // ** Normal Intake
     // - Rollers
@@ -355,7 +364,7 @@ public class RobotContainer {
         .y()
         .whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
 
-    coDriver.rightStick().whileTrue(new DisabledCoast(pivot, elevator, intake));
+    // coDriver.rightStick().whileTrue(new DisabledCoast(pivot, elevator, intake));
     // **
     // // I Actually Don't know
     // driver

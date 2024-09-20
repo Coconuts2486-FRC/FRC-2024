@@ -27,7 +27,7 @@ public class RegressedPivotCommand extends Command {
     double a = -0.0000035721;
     double b = 0.00256816;
     double c = -0.65009;
-    double intercept = 80.2242;
+    double intercept = 80.5242;
     double angle;
     if (freezeRegress < -100) {
       angle = 60;

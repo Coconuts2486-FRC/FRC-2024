@@ -14,18 +14,25 @@ public class RotateToTagCmd extends Command {
   private final Drive drive;
   public static double freeze = 0;
   public static double sight = 0;
+  private double pivotOffset;
   private static final PIDController rotatePid = new PIDController(.2, 0, 0.0005);
   private static final PIDController noteTargetPid = new PIDController(3, 0, 0.0005);
 
-  public RotateToTagCmd(Drive drive) {
+  public RotateToTagCmd(Drive drive, double pivotOffset) {
     this.drive = drive;
+    this.pivotOffset = pivotOffset;
     addRequirements(drive);
   }
 
   @Override
   public void initialize() {
+    int redOffset = (DriverStation.getAlliance().get() == Alliance.Red) ? -1 : 1;
+
     rotatePid.enableContinuousInput(0, 360);
-    freeze = Drive.getSpeakerYaw().plus(new Rotation2d(Units.degreesToRadians(6))).getDegrees();
+    freeze =
+        Drive.getSpeakerYaw()
+            .plus(new Rotation2d(Units.degreesToRadians(5 + redOffset + pivotOffset)))
+            .getDegrees();
     sight = Drive.getSpeakerYaw().getRotations();
     Logger.recordOutput("Targeting/TargetTagFreeze", freeze);
   }

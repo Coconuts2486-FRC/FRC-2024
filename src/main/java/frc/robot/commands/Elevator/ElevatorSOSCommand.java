@@ -8,6 +8,7 @@ public class ElevatorSOSCommand extends Command {
 
   public ElevatorSOSCommand(Elevator elevator) {
     this.elevator = elevator;
+    addRequirements(elevator);
   }
 
   @Override
