@@ -113,9 +113,16 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "RetractWithStop"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "RetractWithStop"
+                }
+              }
+            ]
           }
         },
         {

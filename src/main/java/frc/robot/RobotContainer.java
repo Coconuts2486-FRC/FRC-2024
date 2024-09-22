@@ -237,18 +237,20 @@ public class RobotContainer {
             .until(lightStop::get));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
     NamedCommands.registerCommand(
-        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.52));
+        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.6));
     NamedCommands.registerCommand(
         "PivotRegressed23", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23));
     NamedCommands.registerCommand(
         "PivotRegressed24", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 24));
     NamedCommands.registerCommand(
-        "PivotRegressed45", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 45));
+        "PivotRegressed45", new AutoRegressedPivotCommand(pivot, () -> 0.7, () -> 45));
+    NamedCommands.registerCommand(
+        "PivotRegressed45Lower", new AutoRegressedPivotCommand(pivot, () -> 0.3, () -> 40));
     NamedCommands.registerCommand("Pivot23.6", new PivotCommand(pivot, () -> 23.6));
     NamedCommands.registerCommand("Pivot24", new PivotCommand(pivot, () -> 24));
-    NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 45));
+    NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 46));
     NamedCommands.registerCommand(
-        "PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 60));
+        "PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0.75, () -> 60));
     NamedCommands.registerCommand(
         "PivotRegressedLower", new AutoRegressedPivotCommand(pivot, () -> -0.3, () -> 60));
     NamedCommands.registerCommand(
@@ -348,7 +350,7 @@ public class RobotContainer {
             new IntakeExtendCommand(intake, lightStop::get, intakeStop::get, pivotStop)
                 .alongWith(
                     new PivotCommand(
-                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+                        pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
     // - Retract
     driver.b().whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
 
@@ -408,7 +410,7 @@ public class RobotContainer {
     coDriver
         .leftStick()
         .toggleOnTrue(
-            new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
+            new PivotCommand(pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
 
@@ -418,7 +420,7 @@ public class RobotContainer {
             new RegressedPivotCommand(pivot, () -> PivotChangerUpCommand.angler)
                 .andThen(
                     new PivotCommand(
-                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+                        pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
 
     // **
     // Shot
