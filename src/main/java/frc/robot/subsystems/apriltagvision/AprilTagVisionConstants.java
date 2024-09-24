@@ -41,9 +41,9 @@ public class AprilTagVisionConstants {
           new Pose3d(
               Units.inchesToMeters(-2.0),
               Units.inchesToMeters(0),
-              Units.inchesToMeters(0),
-              new Rotation3d(0.0, Units.degreesToRadians(0), 0.0)
-                  .rotateBy(new Rotation3d(0.0, 0.0, Units.degreesToRadians(180 - 32.5)))),
+              Units.inchesToMeters(23.5),
+              new Rotation3d(0.0, Units.degreesToRadians(-20), 0.0)
+                  .rotateBy(new Rotation3d(0.0, 0.0, Units.degreesToRadians(0)))),
           // new Pose3d(
           //     Units.inchesToMeters(-2.0),
           //     Units.inchesToMeters(9.0),
