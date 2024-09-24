@@ -20,7 +20,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +35,9 @@ public class DriveCommands {
   private static final PIDController rotatePid = new PIDController(.2, 0, 0.0005);
   private static final PIDController noteTargetPid = new PIDController(3, 0, 0.0005);
   public static double gyroYaw;
+  private static double speakerYawVal;
+  private static Rotation2d robotAngle;
+  private static boolean isFlipped;
 
   private DriveCommands() {}
 
@@ -50,23 +52,31 @@ public class DriveCommands {
       BooleanSupplier lightStop) {
     return Commands.run(
         () -> {
-          gyroYaw = drive.gyroAngles().getDegrees();
+          // Get the orientation of the bot based on alliance
+          isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          robotAngle =
+              isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI)) : drive.getRotation();
+
+          // Set the PID to allow continuous input
           rotatePid.enableContinuousInput(0, 360);
+
+          // Get various YAW values needed
+          gyroYaw = drive.gyroAngles().getDegrees();
+          // This wraps the YAW between 0º and 360º
+          speakerYawVal = MathUtil.inputModulus(Drive.getSpeakerYaw().getDegrees(), 0, 360);
 
           // Convert joystick commands to "Always Blue Origin" reference frame (i.e., invert for red
           // to match Gyro)
-          // Apply deadband
           int isRed = (DriverStation.getAlliance().get() == Alliance.Red) ? 1 : 0;
           double xDrive = xSupplier.getAsDouble() * Math.pow(-1, isRed);
           double yDrive = ySupplier.getAsDouble() * Math.pow(-1, isRed);
 
-          // Apply deadband
-          double speakerYawVal;
+          // Apply deadbands
           double linearMagnitude = MathUtil.applyDeadband(Math.hypot(xDrive, yDrive), DEADBAND);
           Rotation2d linearDirection = new Rotation2d(xDrive, yDrive);
-          double omega;
-          //  SmartDashboard.putNumber("Speaker Yaw", Drive.getSpeakerYaw().getDegrees());
-          omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
+          double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
 
           // Square both the linearMagnitude and omega, preseriving sign
           linearMagnitude = linearMagnitude * linearMagnitude;
@@ -77,99 +87,80 @@ public class DriveCommands {
               new Pose2d(new Translation2d(), linearDirection)
                   .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                   .getTranslation();
-          if (DriverStation.getAlliance().get() == Alliance.Red) {
-            if (Drive.getSpeakerYaw().getDegrees() < 0) {
-              speakerYawVal = Drive.getSpeakerYaw().getDegrees() + 360;
-            } else {
-              speakerYawVal = Drive.getSpeakerYaw().getDegrees();
-            }
-          } else {
-            if (Drive.getSpeakerYaw().getDegrees() < 0) {
-              speakerYawVal = Drive.getSpeakerYaw().getDegrees() + 360;
-            } else {
-              speakerYawVal = Drive.getSpeakerYaw().getDegrees();
-            }
-          }
+
+          // Put various values out to the SmartDashboard
+          //  SmartDashboard.putNumber("Speaker Yaw", speakerYawVal);
           SmartDashboard.putBoolean("Light Stop", lightStop.getAsBoolean());
           SmartDashboard.putBoolean("target", TargetTagCommand.target);
           SmartDashboard.putNumber("Speaker Yaw@", TargetTagCommand.freeze);
-          SmartDashboard.putNumber("Gyro", drive.gyroAngles().getDegrees());
-          SmartDashboard.putNumber(
-              "Calculate target", drive.gyroAngles().getDegrees() - speakerYawVal);
+          SmartDashboard.putNumber("Gyro", gyroYaw);
+          SmartDashboard.putNumber("Calculate target", gyroYaw - speakerYawVal);
           SmartDashboard.putNumber("real Turn", omega * drive.getMaxAngularSpeedRadPerSec());
-          // Convert to field relative speeds & send command
-          boolean isFlipped =
-              DriverStation.getAlliance().isPresent()
-                  && DriverStation.getAlliance().get() == Alliance.Red;
+
+          //// Convert to field relative speeds & send command ////
 
           if (TargetTagCommand.target) {
+            // Driving Case #1: Targeting the AprilTag for the Speaker; rotate to speaker YAW
             drive.runVelocity(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                     linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                     linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                     rotatePid.calculate(drive.gyroAngles().getDegrees() - TargetTagCommand.freeze),
-                    isFlipped
-                        ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                        : drive.getRotation()));
-          } else if (DriveToNoteCmd.targetNote) {
+                    robotAngle));
 
+          } else if (DriveToNoteCmd.targetNote) {
+            // Driving Case #2: Driving to the Note; rotate to note YAW and drive toward it
             if (lightStop.getAsBoolean()) {
+              // If the Light Stop is triggered, "Fly Casual" -- this is the same as Driving Case #3
               drive.runVelocity(
                   ChassisSpeeds.fromFieldRelativeSpeeds(
                       linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                       linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                       omega * drive.getMaxAngularSpeedRadPerSec(),
-                      isFlipped
-                          ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                          : drive.getRotation()));
+                      robotAngle));
 
             } else {
+              // If the Light Stop is NOT triggered, we need to go fetch the NOTE!
               if (Intake.getPosition() > 35) {
-                // NOTE: THIS IS NOW IN ANGLE RATHER THAN POSITION!!!!!!
+                // Intake Case #1: Intake is extended
                 if (Math.abs(
                         Drive.getGamePieceYaw()
-                            .minus(new Rotation2d(Units.degreesToRadians(DriveCommands.gyroYaw)))
+                            .minus(Rotation2d.fromDegrees(DriveCommands.gyroYaw))
                             .getDegrees())
                     > 7.0) {
+                  // NOTE Position Case #1: NOTE is >7º from ROBOT FORWARD; rotate toward the note
                   drive.runVelocity(
                       ChassisSpeeds.fromFieldRelativeSpeeds(
                           0,
                           0,
+                          // We need a different way of doing this...
                           -noteTargetPid.calculate(Drive.getGamePiecePose().getY()),
-                          isFlipped
-                              ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                              : drive.getRotation()));
+                          robotAngle));
                 } else {
+                  // NOTE Position Case #2: NOTE is <7º from ROBOT FORWARD; rotate and drive forward
                   drive.runVelocity(
                       ChassisSpeeds.fromFieldRelativeSpeeds(
                           1.5 * Math.pow(-1, isRed),
                           0,
+                          // We need a different way of doing this...
                           -noteTargetPid.calculate(Drive.getGamePiecePose().getY()),
-                          isFlipped
-                              ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                              : drive.getRotation()));
+                          robotAngle));
                 }
               } else {
-
-                drive.runVelocity(
-                    ChassisSpeeds.fromFieldRelativeSpeeds(
-                        0,
-                        0,
-                        0,
-                        isFlipped
-                            ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                            : drive.getRotation()));
+                // Intake Case #2: Intake is NOT extended; just sit there (waiting for the intake to
+                // deploy)
+                drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, robotAngle));
               }
             }
+
           } else {
+            // Driving Case #3: "Fly Casual"
             drive.runVelocity(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                     linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                     linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                     omega * drive.getMaxAngularSpeedRadPerSec(),
-                    isFlipped
-                        ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                        : drive.getRotation()));
+                    robotAngle));
           }
         },
         drive);
