@@ -101,7 +101,7 @@ public class Drive extends SubsystemBase {
             new ReplanningConfig()),
         () ->
             DriverStation.getAlliance().isPresent()
-                && DriverStation.getAlliance().get() == Alliance.Red,
+                && DriverStation.getAlliance().get() == Alliance.Red,//Change this to blue to run @Red Reckoning Amp Side Auto. I know that doesn't make any sense, but do it.
         this);
 
     // PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
