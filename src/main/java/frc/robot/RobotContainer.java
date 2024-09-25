@@ -27,20 +27,18 @@ import frc.robot.commands.Auto.AutoIntakeCommand;
 import frc.robot.commands.Auto.AutoIntakeCommandSlow;
 import frc.robot.commands.Auto.AutoRegressedPivotCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
-import frc.robot.commands.Auto.AutoShotTargetCommand;
 import frc.robot.commands.Auto.AutoSpinUpCommand;
+import frc.robot.commands.DisabledCoast;
 import frc.robot.commands.Drive.DriveCommands;
-import frc.robot.commands.Drive.DriveToNoteCmd;
-import frc.robot.commands.Drive.RotateToTagCmd;
+import frc.robot.commands.Drive.TargetNoteCommand;
+import frc.robot.commands.Drive.TargetTagCommand;
 import frc.robot.commands.Elevator.AmpCommand;
 import frc.robot.commands.Elevator.ClimbCommand;
-import frc.robot.commands.Elevator.ElevatorSOSCommand;
 import frc.robot.commands.Elevator.ManualElevatorCommand;
 import frc.robot.commands.Intake.IntakeExtendCommand;
 import frc.robot.commands.Intake.IntakeRetractCommand;
 import frc.robot.commands.Intake.IntakeRollerCommand;
 import frc.robot.commands.Intake.ManualRollerCmd;
-import frc.robot.commands.Intake.SafeToIntakeCmd;
 import frc.robot.commands.Intake.fixcmd;
 import frc.robot.commands.LobShotCommand;
 import frc.robot.commands.Pivot.PivotChangerDownCommand;
@@ -71,7 +69,6 @@ import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOReal;
 import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.intake.IntakeRollersIOReal;
-import frc.robot.subsystems.pdh.PDH;
 import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.pivot.PivotIOReal;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
@@ -106,7 +103,6 @@ public class RobotContainer {
   private final AprilTagVision aprilTagVision;
   private final GamePieceVision gamePieceVision;
   private final BooleanSupplier pivotStop;
-  private final PDH pdh;
 
   // Controller
   private final CommandXboxController driver = new CommandXboxController(0);
@@ -156,7 +152,6 @@ public class RobotContainer {
                 new AprilTagVisionIOPhotonVision(this::getAprilTagLayoutType, "Photon_BW2"));
         gamePieceVision = new GamePieceVision(new GamePieceVisionIOPiVision());
         pivotStop = () -> (pivot.pivotAngle() > 50);
-        pdh = new PDH();
         break;
 
       case SIM:
@@ -175,7 +170,6 @@ public class RobotContainer {
         aprilTagVision = new AprilTagVision(this::getAprilTagLayoutType);
         gamePieceVision = new GamePieceVision();
         pivotStop = () -> false;
-        pdh = new PDH();
         break;
 
       default:
@@ -196,7 +190,6 @@ public class RobotContainer {
                 this::getAprilTagLayoutType, new AprilTagVisionIO() {}, new AprilTagVisionIO() {});
         gamePieceVision = new GamePieceVision(new GamePieceVisionIO() {});
         pivotStop = () -> false;
-        pdh = new PDH();
         break;
     }
 
@@ -212,55 +205,33 @@ public class RobotContainer {
         new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.6));
     NamedCommands.registerCommand("autoSpinUp", new AutoSpinUpCommand(flywheel));
     NamedCommands.registerCommand(
-        "autoShootTarget", new AutoShotTargetCommand(intakeRollers, flywheel, smaIntakeRollers));
-    NamedCommands.registerCommand(
         "autoIntake",
         new AutoIntakeCommand(
-                intakeRollers,
-                smaIntakeRollers,
-                intake,
-                lightStop::get,
-                intakeStop::get,
-                pivot,
-                () -> 45)
-            .until(lightStop::get));
+            intakeRollers,
+            smaIntakeRollers,
+            intake,
+            lightStop::get,
+            intakeStop::get,
+            pivot,
+            () -> 45));
     NamedCommands.registerCommand(
         "autoIntakeSlow",
         new AutoIntakeCommandSlow(
-                intakeRollers,
-                smaIntakeRollers,
-                intake,
-                lightStop::get,
-                intakeStop::get,
-                pivot,
-                () -> 45)
-            .until(lightStop::get));
+            intakeRollers,
+            smaIntakeRollers,
+            intake,
+            lightStop::get,
+            intakeStop::get,
+            pivot,
+            () -> 45));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
-    NamedCommands.registerCommand(
-        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.6));
-    NamedCommands.registerCommand(
-        "PivotRegressed23", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23));
-    NamedCommands.registerCommand(
-        "PivotRegressed24", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 24));
-    NamedCommands.registerCommand(
-        "PivotRegressed45", new AutoRegressedPivotCommand(pivot, () -> 0.7, () -> 45));
-    NamedCommands.registerCommand(
-        "PivotRegressed45Lower", new AutoRegressedPivotCommand(pivot, () -> 0.3, () -> 40));
-    NamedCommands.registerCommand("Pivot23.6", new PivotCommand(pivot, () -> 23.6));
-    NamedCommands.registerCommand("Pivot24", new PivotCommand(pivot, () -> 24));
-    NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 46));
-    NamedCommands.registerCommand(
-        "PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0.75, () -> 60));
-    NamedCommands.registerCommand(
-        "PivotRegressedLower", new AutoRegressedPivotCommand(pivot, () -> -0.3, () -> 60));
-    NamedCommands.registerCommand(
-        "RetractWithStop",
-        new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
+    NamedCommands.registerCommand("PivotAmp45", new PivotCommand(pivot, () -> 60));
+    NamedCommands.registerCommand("PivotAmp23.6", new PivotCommand(pivot, () -> 23.52));
+    NamedCommands.registerCommand("PivotAmp23", new PivotCommand(pivot, () -> 23));
+    NamedCommands.registerCommand("PivotAmp25.5", new PivotCommand(pivot, () -> 25.5));
+    NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 45));
+    NamedCommands.registerCommand("PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0));
     NamedCommands.registerCommand("Retract", new IntakeRetractCommand(intake, intakeStop::get));
-    NamedCommands.registerCommand(
-        "Tracking", new DriveToNoteCmd(drive, lightStop::get).until(lightStop::get));
-
-    NamedCommands.registerCommand("TrackSpeaker", new RotateToTagCmd(drive, 0));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -288,8 +259,8 @@ public class RobotContainer {
     // driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     driver.x().whileTrue(new LobShotCommand(intakeRollers, flywheel));
 
-    // driver.rightBumper().whileTrue(new TargetNoteCommand());
-    driver.rightBumper().whileTrue(new DriveToNoteCmd(drive, lightStop::get));
+    driver.rightBumper().whileTrue(new TargetNoteCommand());
+
     // Manual Intake
     intakeRollers.setDefaultCommand(
         ManualRollerCmd.manualRoller(
@@ -298,17 +269,7 @@ public class RobotContainer {
             () -> driver.getLeftTriggerAxis(),
             lightStop::get));
 
-    coDriver.leftBumper().whileTrue(new RotateToTagCmd(drive, 0));
-    coDriver
-        .rightStick()
-        .whileTrue(
-            new RotateToTagCmd(drive, -2)
-                .alongWith(
-                    new RegressedPivotCommand(pivot, () -> PivotChangerUpCommand.angler)
-                        .andThen(
-                            new PivotCommand(
-                                pivot,
-                                () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot))));
+    coDriver.leftBumper().whileTrue(new TargetTagCommand());
 
     // ** Normal Intake
     // - Rollers
@@ -316,12 +277,10 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(
             new IntakeRollerCommand(
-                    intakeRollers,
-                    () -> coDriver.getLeftTriggerAxis(),
-                    () -> coDriver.getRightTriggerAxis(),
-                    lightStop::get)
-                .until(lightStop::get)
-                .andThen(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get)));
+                intakeRollers,
+                () -> coDriver.getLeftTriggerAxis(),
+                () -> coDriver.getRightTriggerAxis(),
+                lightStop::get));
     // - Extend
     driver
         .rightBumper()
@@ -350,7 +309,7 @@ public class RobotContainer {
             new IntakeExtendCommand(intake, lightStop::get, intakeStop::get, pivotStop)
                 .alongWith(
                     new PivotCommand(
-                        pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
     // - Retract
     driver.b().whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
 
@@ -366,7 +325,7 @@ public class RobotContainer {
         .y()
         .whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
 
-    // coDriver.rightStick().whileTrue(new DisabledCoast(pivot, elevator, intake));
+    coDriver.rightStick().whileTrue(new DisabledCoast(pivot, elevator, intake));
     // **
     // // I Actually Don't know
     // driver
@@ -405,12 +364,10 @@ public class RobotContainer {
     // Go to 45
     // Adding the manual angle and the amp angle changer
 
-    coDriver.start().onTrue(new SafeToIntakeCmd(intake));
-
     coDriver
         .leftStick()
         .toggleOnTrue(
-            new PivotCommand(pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
+            new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // Go to 60
     coDriver.back().whileTrue(new PivotCommand(pivot, () -> 60));
 
@@ -420,7 +377,7 @@ public class RobotContainer {
             new RegressedPivotCommand(pivot, () -> PivotChangerUpCommand.angler)
                 .andThen(
                     new PivotCommand(
-                        pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
 
     // **
     // Shot
@@ -478,8 +435,6 @@ public class RobotContainer {
                     .60,
                     true)
                 .until(elevatorBottom::get));
-
-    coDriver.start().whileTrue(new ElevatorSOSCommand(elevator));
   }
 
   /**

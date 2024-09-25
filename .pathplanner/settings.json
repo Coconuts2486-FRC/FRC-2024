@@ -1,19 +1,21 @@
 {
-  "robotWidth": 0.81,
+  "robotWidth": 0.813,
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
     "ZMaking sure paths works",
-    "Tracking Amp Side",
-    "Tracking Amp Side Red",
+    "Teaching",
     "Better 5 Note",
-    "4.5 Note"
+    "Amp Side Straight",
+    "Amp Side",
+    "5 Note"
   ],
   "autoFolders": [
     "Actual Autos",
-    "Making sure autos work"
+    "Making sure autos work",
+    "Teaching"
   ],
-  "defaultMaxVel": 5.3,
+  "defaultMaxVel": 5.5,
   "defaultMaxAccel": 3.9,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
