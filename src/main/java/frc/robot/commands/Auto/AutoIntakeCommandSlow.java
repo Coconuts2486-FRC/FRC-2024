@@ -7,6 +7,7 @@ import frc.robot.subsystems.pivot.Pivot;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+// This is just makes the intake rollers spin slower so the lightstop actually stops the note
 
 public class AutoIntakeCommandSlow extends Command {
   // private final IntakeRollers intakeRollers;
@@ -62,8 +63,8 @@ public class AutoIntakeCommandSlow extends Command {
         AutoRotos = 0;
       }
     } else {
-      intake.setExtendPosition(48.8);
-      smaIntakeRollers.autoShot(0.2);
+      intake.setExtendPosition(47.8);
+      smaIntakeRollers.autoShot(0.175);
       pivot.holdPosition(angle.getAsDouble());
       AutoRotos = 1;
     }
