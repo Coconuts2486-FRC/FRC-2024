@@ -1,0 +1,258 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.1,
+      "y": 7.32
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 0Tracking Amp Start Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed23.6"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed23.6"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootFull"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 0Tracking Amp Outer Noter 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Tracking"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractWithStop"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 0Tracking Amp Return 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot23.6"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed23"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootFull"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 0Tracking Amp Outer Noter 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Tracking"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractWithStop"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 0Tracking Amp Return 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot24"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed24"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootFull"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 0Tracking Amp Outer Noter 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Actual Autos",
+  "choreoAuto": false
+}
