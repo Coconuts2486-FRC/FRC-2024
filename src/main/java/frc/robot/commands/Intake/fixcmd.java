@@ -24,7 +24,7 @@ public class fixcmd extends Command {
     if (intakeStop.getAsBoolean()) {
       intake.stop();
     } else {
-      intake.setExtendPosition(46.8);
+      intake.retract();
     }
   }
 

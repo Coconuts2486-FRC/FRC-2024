@@ -6,12 +6,13 @@ import frc.robot.subsystems.intake.IntakeRollers;
 import frc.robot.subsystems.sma.SmaIntakeRollers;
 
 public class AutoShotCommand extends Command {
+  private final IntakeRollers intakeRollers;
   private final Flywheel flywheel;
   private final SmaIntakeRollers smaIntakeRollers;
-  // Shot Command exepct using smaIntakeRollers so it works for auto
 
   public AutoShotCommand(
       IntakeRollers intakeRollers, Flywheel flywheel, SmaIntakeRollers smaIntakeRollers) {
+    this.intakeRollers = intakeRollers;
     this.flywheel = flywheel;
     this.smaIntakeRollers = smaIntakeRollers;
     addRequirements(intakeRollers);
@@ -24,9 +25,7 @@ public class AutoShotCommand extends Command {
   public void execute() {
     flywheel.setDutyCycle(1);
 
-    if (flywheel.getVelocity() > 68.36) {
-      smaIntakeRollers.autoShot(1.2);
-    }
+    if (flywheel.getVelocity() > 68.36) smaIntakeRollers.autoShot(1.2);
   }
 
   @Override
