@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.25,
+        "y": 6.45
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 8.762374881231244,
+        "y": 6.477469802161827
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.448673670495489,
+        "y": 4.156431386936848
+      },
+      "prevControl": {
+        "x": 7.179109551651772,
+        "y": 4.156431386936848
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.3,
+    "maxAcceleration": 3.9,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "Tracking Amp Side",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

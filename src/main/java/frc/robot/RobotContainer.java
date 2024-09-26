@@ -13,7 +13,8 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.NamedCommands;
+// import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -22,12 +23,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.FieldConstants.AprilTagLayoutType;
-import frc.robot.commands.Auto.AutoIntakeCommand;
-import frc.robot.commands.Auto.AutoIntakeCommandSlow;
-import frc.robot.commands.Auto.AutoRegressedPivotCommand;
-import frc.robot.commands.Auto.AutoShotCommand;
-import frc.robot.commands.Auto.AutoShotTargetCommand;
-import frc.robot.commands.Auto.AutoSpinUpCommand;
 import frc.robot.commands.Drive.DriveCommands;
 import frc.robot.commands.Drive.DriveToNoteCmd;
 import frc.robot.commands.Drive.RotateToTagCmd;
@@ -200,66 +195,66 @@ public class RobotContainer {
     }
 
     // Set up auto routines
-    NamedCommands.registerCommand(
-        "autoShoot",
-        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.4));
-    NamedCommands.registerCommand(
-        "autoShootFull",
-        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.8));
-    NamedCommands.registerCommand(
-        "autoShootHalf",
-        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.6));
-    NamedCommands.registerCommand("autoSpinUp", new AutoSpinUpCommand(flywheel));
-    NamedCommands.registerCommand(
-        "autoShootTarget", new AutoShotTargetCommand(intakeRollers, flywheel, smaIntakeRollers));
-    NamedCommands.registerCommand(
-        "autoIntake",
-        new AutoIntakeCommand(
-                intakeRollers,
-                smaIntakeRollers,
-                intake,
-                lightStop::get,
-                intakeStop::get,
-                pivot,
-                () -> 45)
-            .until(lightStop::get));
-    NamedCommands.registerCommand(
-        "autoIntakeSlow",
-        new AutoIntakeCommandSlow(
-                intakeRollers,
-                smaIntakeRollers,
-                intake,
-                lightStop::get,
-                intakeStop::get,
-                pivot,
-                () -> 45)
-            .until(lightStop::get));
-    NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
-    NamedCommands.registerCommand(
-        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.6));
-    NamedCommands.registerCommand(
-        "PivotRegressed23", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23));
-    NamedCommands.registerCommand(
-        "PivotRegressed24", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 24));
-    NamedCommands.registerCommand(
-        "PivotRegressed45", new AutoRegressedPivotCommand(pivot, () -> 0.7, () -> 45));
-    NamedCommands.registerCommand(
-        "PivotRegressed45Lower", new AutoRegressedPivotCommand(pivot, () -> 0.3, () -> 40));
-    NamedCommands.registerCommand("Pivot23.6", new PivotCommand(pivot, () -> 23.6));
-    NamedCommands.registerCommand("Pivot24", new PivotCommand(pivot, () -> 24));
-    NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 46));
-    NamedCommands.registerCommand(
-        "PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0.75, () -> 60));
-    NamedCommands.registerCommand(
-        "PivotRegressedLower", new AutoRegressedPivotCommand(pivot, () -> -0.3, () -> 60));
-    NamedCommands.registerCommand(
-        "RetractWithStop",
-        new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
-    NamedCommands.registerCommand("Retract", new IntakeRetractCommand(intake, intakeStop::get));
-    NamedCommands.registerCommand(
-        "Tracking", new DriveToNoteCmd(drive, lightStop::get).until(lightStop::get));
+    // NamedCommands.registerCommand(
+    //     "autoShoot",
+    //     new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.4));
+    // NamedCommands.registerCommand(
+    //     "autoShootFull",
+    //     new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.8));
+    // NamedCommands.registerCommand(
+    //     "autoShootHalf",
+    //     new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.6));
+    // NamedCommands.registerCommand("autoSpinUp", new AutoSpinUpCommand(flywheel));
+    // NamedCommands.registerCommand(
+    //     "autoShootTarget", new AutoShotTargetCommand(intakeRollers, flywheel, smaIntakeRollers));
+    // NamedCommands.registerCommand(
+    //     "autoIntake",
+    //     new AutoIntakeCommand(
+    //             intakeRollers,
+    //             smaIntakeRollers,
+    //             intake,
+    //             lightStop::get,
+    //             intakeStop::get,
+    //             pivot,
+    //             () -> 45)
+    //         .until(lightStop::get));
+    // NamedCommands.registerCommand(
+    //     "autoIntakeSlow",
+    //     new AutoIntakeCommandSlow(
+    //             intakeRollers,
+    //             smaIntakeRollers,
+    //             intake,
+    //             lightStop::get,
+    //             intakeStop::get,
+    //             pivot,
+    //             () -> 45)
+    //         .until(lightStop::get));
+    // NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
+    // NamedCommands.registerCommand(
+    //     "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.6));
+    // NamedCommands.registerCommand(
+    //     "PivotRegressed23", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23));
+    // NamedCommands.registerCommand(
+    //     "PivotRegressed24", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 24));
+    // NamedCommands.registerCommand(
+    //     "PivotRegressed45", new AutoRegressedPivotCommand(pivot, () -> 0.7, () -> 45));
+    // NamedCommands.registerCommand(
+    //     "PivotRegressed45Lower", new AutoRegressedPivotCommand(pivot, () -> 0.3, () -> 40));
+    // NamedCommands.registerCommand("Pivot23.6", new PivotCommand(pivot, () -> 23.6));
+    // NamedCommands.registerCommand("Pivot24", new PivotCommand(pivot, () -> 24));
+    // NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 46));
+    // NamedCommands.registerCommand(
+    //     "PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0.75, () -> 60));
+    // NamedCommands.registerCommand(
+    //     "PivotRegressedLower", new AutoRegressedPivotCommand(pivot, () -> -0.3, () -> 60));
+    // NamedCommands.registerCommand(
+    //     "RetractWithStop",
+    //     new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
+    // NamedCommands.registerCommand("Retract", new IntakeRetractCommand(intake, intakeStop::get));
+    // NamedCommands.registerCommand(
+    //     "Tracking", new DriveToNoteCmd(drive, lightStop::get).until(lightStop::get));
 
-    NamedCommands.registerCommand("TrackSpeaker", new RotateToTagCmd(drive, 0));
+    // NamedCommands.registerCommand("TrackSpeaker", new RotateToTagCmd(drive, 0));
 
     // autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
