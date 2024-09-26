@@ -111,7 +111,7 @@ public class DriveCommands {
                     isFlipped
                         ? drive.getRotation().plus(new Rotation2d(Math.PI))
                         : drive.getRotation()));
-          } else if (DriveToNoteCmd.targetNote) {
+          } else if (TargetNoteCommand.targetNote) {
 
             if (lightStop.getAsBoolean()) {
               drive.runVelocity(
@@ -130,7 +130,7 @@ public class DriveCommands {
                         Drive.getGamePieceYaw()
                             .minus(new Rotation2d(Units.degreesToRadians(DriveCommands.gyroYaw)))
                             .getDegrees())
-                    > 7.0) {
+                    > 5.0) {
                   drive.runVelocity(
                       ChassisSpeeds.fromFieldRelativeSpeeds(
                           0,

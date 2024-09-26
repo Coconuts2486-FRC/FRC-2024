@@ -9,7 +9,6 @@ public class IntakeExtendCommand extends Command {
   private final BooleanSupplier lightStop;
   private final BooleanSupplier intakeStop;
   private final BooleanSupplier pivotStop;
-  public static boolean safeToIntake = false;
 
   public IntakeExtendCommand(
       Intake intake,
@@ -27,13 +26,9 @@ public class IntakeExtendCommand extends Command {
 
   @Override
   public void execute() {
-
-    if (intakeStop.getAsBoolean()) {
-      safeToIntake = true;
-    }
     // This is if the pivot is too steep and will hit the swerve module, or the lightstop is
     // triggered, retract
-    if (pivotStop.getAsBoolean() || lightStop.getAsBoolean() || safeToIntake == false) {
+    if (pivotStop.getAsBoolean() || lightStop.getAsBoolean()) {
       if (intakeStop.getAsBoolean()) {
         intake.stop();
       } else {
@@ -41,7 +36,7 @@ public class IntakeExtendCommand extends Command {
       }
     } else {
       // intake.setExtendPosition(5);
-      intake.setExtendPosition(47.8);
+      intake.setExtendPosition(48.8);
     }
   }
 

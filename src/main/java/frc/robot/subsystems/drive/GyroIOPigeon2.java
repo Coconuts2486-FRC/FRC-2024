@@ -23,7 +23,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.commands.Drive.DriveToNoteCmd;
+import frc.robot.commands.Drive.TargetNoteCommand;
 
 /** IO implementation for Pigeon2 */
 public class GyroIOPigeon2 implements GyroIO {
@@ -42,7 +42,7 @@ public class GyroIOPigeon2 implements GyroIO {
   @Override
   public void updateInputs(GyroIOInputs inputs) {
     inputs.connected = BaseStatusSignal.refreshAll(yaw, yawVelocity).equals(StatusCode.OK);
-    if (DriveToNoteCmd.targetNote) {
+    if (TargetNoteCommand.targetNote) {
       inputs.yawPosition =
           Rotation2d.fromDegrees((DriverStation.getAlliance().get() == Alliance.Blue) ? 0 : 180);
     } else {
