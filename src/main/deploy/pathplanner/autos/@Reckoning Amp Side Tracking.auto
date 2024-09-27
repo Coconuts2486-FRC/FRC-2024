@@ -118,7 +118,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Pivot23.6"
+                  "name": "Pivot24"
                 }
               }
             ]
@@ -131,7 +131,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23"
+                  "name": "PivotRegressed23.6B"
                 }
               },
               {
@@ -163,13 +163,13 @@
           }
         },
         {
-          "type": "race",
+          "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Pivot45"
+                  "name": "autoIntake"
                 }
               },
               {
@@ -181,16 +181,29 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoIntake"
+                  "name": "Pivot45"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "RetractWithStop"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "RetractWithStop"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              }
+            ]
           }
         },
         {
@@ -219,7 +232,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed24"
+                  "name": "PivotRegressed23.6"
                 }
               },
               {

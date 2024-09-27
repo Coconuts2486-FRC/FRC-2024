@@ -37,13 +37,14 @@ public class AutoRegressedPivotCommand extends Command {
     double intercept = 80.2242;
     double angle;
     if (freezeRegress < -100) {
-      angle = 0 + ogAngle.getAsDouble();
+      angle = 0 + ogAngle.getAsDouble() + angler.getAsDouble();
     } else {
       angle =
           (a * (freezeRegress * freezeRegress * freezeRegress))
               + (b * freezeRegress * freezeRegress)
               + c * freezeRegress
-              + intercept;
+              + intercept
+              + angler.getAsDouble();
     }
     // System.out.println(freezeRegress);
 
