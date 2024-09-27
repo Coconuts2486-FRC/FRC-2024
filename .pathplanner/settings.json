@@ -5,11 +5,12 @@
   "pathFolders": [
     "ZMaking sure paths works",
     "Amp Side",
-    "5 Note"
+    "4.5 Note"
   ],
   "autoFolders": [
-    "Actual Autos",
-    "Making sure autos work"
+    "Amp Side Autos",
+    "Making sure autos work",
+    "Center Autos"
   ],
   "defaultMaxVel": 5.4,
   "defaultMaxAccel": 3.9,

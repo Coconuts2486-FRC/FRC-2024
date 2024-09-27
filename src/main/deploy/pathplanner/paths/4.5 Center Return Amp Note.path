@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.55,
-        "y": 6.65
+        "x": 2.7,
+        "y": 7.05
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.796837811268215,
-        "y": 7.25861191074234
+        "x": 2.2009051133330226,
+        "y": 6.183452659052676
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.768306851428518,
-        "y": 7.341750039981561
+        "x": 1.88,
+        "y": 5.49
       },
       "prevControl": {
-        "x": 5.9258172701530585,
-        "y": 7.311941904439365
+        "x": 2.111502695227613,
+        "y": 5.935921880732651
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,17 +35,35 @@
       "minWaypointRelativePos": 0.75,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 2.0,
-        "maxAcceleration": 3.0,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 2.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
     }
   ],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Spinning Up",
+      "waypointRelativePos": 0.75,
+      "command": {
+        "type": "race",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "autoSpinUp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.4,
-    "maxAcceleration": 3.8,
+    "maxAcceleration": 3.9,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -55,7 +73,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp Side",
+  "folder": "4.5 Note",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }
