@@ -237,7 +237,11 @@ public class RobotContainer {
             .until(lightStop::get));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
     NamedCommands.registerCommand(
-        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.6));
+        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 2, () -> 23.6));
+    NamedCommands.registerCommand(
+        "PivotRegressed23.6B", new AutoRegressedPivotCommand(pivot, () -> 4, () -> 23.6));
+    NamedCommands.registerCommand(
+        "PivotRegressed23.6C", new AutoRegressedPivotCommand(pivot, () -> 3, () -> 23.6));
     NamedCommands.registerCommand(
         "PivotRegressed23", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23));
     NamedCommands.registerCommand(
@@ -248,6 +252,7 @@ public class RobotContainer {
         "PivotRegressed45Lower", new AutoRegressedPivotCommand(pivot, () -> 0.3, () -> 40));
     NamedCommands.registerCommand("Pivot23.6", new PivotCommand(pivot, () -> 23.6));
     NamedCommands.registerCommand("Pivot24", new PivotCommand(pivot, () -> 24));
+    NamedCommands.registerCommand("Pivot25", new PivotCommand(pivot, () -> 25));
     NamedCommands.registerCommand("Pivot45", new PivotCommand(pivot, () -> 46));
     NamedCommands.registerCommand(
         "PivotRegressed", new AutoRegressedPivotCommand(pivot, () -> 0.75, () -> 60));
