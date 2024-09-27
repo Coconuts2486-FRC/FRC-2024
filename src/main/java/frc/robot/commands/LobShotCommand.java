@@ -20,7 +20,7 @@ public class LobShotCommand extends Command {
   public void execute() {
     flywheel.setDutyCycle(1);
 
-    if (flywheel.getVelocity() > 40.36) {
+    if (flywheel.getVelocity() > 35.36) {
       intakeRollers.setRollers(1, 1);
     }
   }

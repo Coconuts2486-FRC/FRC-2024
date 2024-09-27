@@ -5,8 +5,18 @@
 // import frc.robot.util.GeomUtil;
 // import frc.robot.util.VirtualSubsystem;
 // import lombok.experimental.ExtensionMethod;
+
 // @ExtensionMethod({GeomUtil.class})
-// public class LED extends VirtualSubsystem{
+// public class LED extends VirtualSubsystem {
+
+//   private static LED instance;
+
+//   public static LED getInstance() {
+//     if (instance == null) {
+//       instance = new Leds();
+//     }
+//     return instance;
+//   }
 
 //   public static double flashDelay = .2;
 //   public static int flashIndex = 0;
@@ -20,9 +30,17 @@
 //   static boolean positive = false;
 //   static int pixelHue = 0;
 
-//   public void periodic(){
-//     //led
-//        for (int i = 0; i < ledBuffer.getLength(); i++) {
+//   private LED() {
+//     leds = new AddressableLED(0);
+//     buffer = new AddressableLEDBuffer(length);
+//     leds.setLength(length);
+//     leds.setData(buffer);
+//     leds.start();
+//   }
+
+//   public void periodic() {
+//     // led
+//     for (int i = 0; i < ledBuffer.getLength(); i++) {
 //       ledBuffer.setRGB(i, 255, 0, 0);
 //       if (i >= bottomA && i <= topA) {
 
