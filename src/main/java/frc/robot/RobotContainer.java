@@ -327,9 +327,13 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(
             new IntakeExtendCommand(intake, lightStop::get, intakeStop::get, pivotStop)
-                .alongWith(
-                    new PivotCommand(
-                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+                .until(lightStop::get)
+                .andThen(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get)));
+
+    driver
+        .rightBumper()
+        .whileTrue(
+            new PivotCommand(pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // - Retract
     driver
         .rightBumper()
@@ -348,9 +352,13 @@ public class RobotContainer {
         .b()
         .whileTrue(
             new IntakeExtendCommand(intake, lightStop::get, intakeStop::get, pivotStop)
-                .alongWith(
-                    new PivotCommand(
-                        pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+                .until(lightStop::get)
+                .andThen(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get)));
+
+    driver
+        .b()
+        .whileTrue(
+            new PivotCommand(pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // - Retract
     driver.b().whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
 

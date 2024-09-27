@@ -328,9 +328,9 @@ public class Drive extends SubsystemBase {
     // No tag information, return default value
     if (AprilTagVision.speakerPose == null) {
       if (DriverStation.getAlliance().get() == Alliance.Red) { // :(
-        return new Rotation2d(999);
+        return new Rotation2d(99999);
       } else {
-        return new Rotation2d(999);
+        return new Rotation2d(99999);
       }
     }
 

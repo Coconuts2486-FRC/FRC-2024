@@ -15,7 +15,7 @@ public class DriveToNoteCmd extends Command {
   private final Drive drive;
   public static boolean targetNote = false;
   private final BooleanSupplier lightStop;
-  private static final PIDController rotatePid = new PIDController(.2, 0, 0.0005);
+  // private static final PIDController rotatePid = new PIDController(.2, 0, 0.0005);
   private static final PIDController noteTargetPid = new PIDController(3, 0, 0.0005);
 
   public DriveToNoteCmd(Drive drive, BooleanSupplier lightStop) {
@@ -33,7 +33,7 @@ public class DriveToNoteCmd extends Command {
     boolean isFlipped =
         DriverStation.getAlliance().isPresent()
             && DriverStation.getAlliance().get() == Alliance.Red;
-    int isRed = (DriverStation.getAlliance().get() == Alliance.Red) ? 1 : 0;
+    // int isRed = (DriverStation.getAlliance().get() == Alliance.Red) ? 1 : 0;
 
     if (lightStop.getAsBoolean()) {
       drive.runVelocity(

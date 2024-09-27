@@ -35,8 +35,8 @@ public class IntakeRollerCommand extends Command {
           mOuttake.getAsDouble() - mIntake.getAsDouble());
     } else {
       intakeRollers.setRollers(
-          .25 + mOuttake.getAsDouble() - mIntake.getAsDouble(),
-          .25 + mOuttake.getAsDouble() - mIntake.getAsDouble());
+          .3 + mOuttake.getAsDouble() - mIntake.getAsDouble(),
+          .3 + mOuttake.getAsDouble() - mIntake.getAsDouble());
     }
   }
 
