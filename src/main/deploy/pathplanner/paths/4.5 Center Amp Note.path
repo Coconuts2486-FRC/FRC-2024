@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.429486048786913,
-        "y": 7.31
+        "x": 1.88,
+        "y": 5.49
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.432045782481186,
-        "y": 7.31
+        "x": 1.88,
+        "y": 6.49
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.429486048786913,
-        "y": 7.31
+        "x": 2.7,
+        "y": 7.05
       },
       "prevControl": {
-        "x": 5.427634104822323,
-        "y": 7.31
+        "x": 1.9000000000000001,
+        "y": 7.05
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,21 +29,33 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Slow Down",
+      "minWaypointRelativePos": 0.8,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.5,
+    "maxVelocity": 5.4,
     "maxAcceleration": 3.9,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "ZMaking sure paths works",
+  "folder": "4.5 Note",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

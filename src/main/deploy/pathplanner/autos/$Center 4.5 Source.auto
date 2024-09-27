@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.28,
+      "x": 1.299896400718728,
       "y": 5.55
     },
     "rotation": 0
@@ -18,14 +18,14 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "autoShootFull"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "PivotRegressed"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoShootFull"
-                }
               }
             ]
           }
@@ -37,178 +37,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Copy of Note 1 Center"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntakeSlow"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Copy of Return 1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Retract"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractWithStop"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoShootFull"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed45"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Copy of Note 2 Center"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntakeSlow"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "RetractWithStop"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed45"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoShootFull"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Copy of Return 2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntakeSlow"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractWithStop"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoShootFull"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PivotRegressed45"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Note 4 Center With Track"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Tracking"
+                  "pathName": "4.5 Center Start Source Note"
                 }
               },
               {
@@ -221,19 +50,32 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "parallel",
                 "data": {
-                  "pathName": "Copy of Return 3"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "4.5 Center Return Source Note"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "RetractWithStop"
+                      }
+                    }
+                  ]
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "RetractWithStop"
+                  "name": "Pivot45"
                 }
               }
             ]
@@ -246,7 +88,77 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "PivotRegressed45"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootHalf"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4.5 Center Center Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "4.5 Center Return Center Note"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "RetractWithStop"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed45"
                 }
               },
               {
@@ -257,10 +169,93 @@
               }
             ]
           }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4.5 Center Amp Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "4.5 Center Return Amp Note"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "RetractWithStop"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed45"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootHalf"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4.5 Center Outer"
+                }
+              }
+            ]
+          }
         }
       ]
     }
   },
-  "folder": "Actual Autos",
+  "folder": "Center Autos",
   "choreoAuto": false
 }

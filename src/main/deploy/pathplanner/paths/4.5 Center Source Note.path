@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 1.88,
-        "y": 5.45
+        "y": 5.49
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.379999999999999,
-        "y": 5.45
+        "x": 1.88,
+        "y": 4.49
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7,
-        "y": 5.45
+        "x": 2.5,
+        "y": 4.15
       },
       "prevControl": {
-        "x": 2.2,
-        "y": 5.45
+        "x": 1.7,
+        "y": 4.15
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,12 +31,12 @@
   "rotationTargets": [],
   "constraintZones": [
     {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.0,
+      "name": "Slow Down",
+      "minWaypointRelativePos": 0.8,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
+        "maxAcceleration": 2.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
@@ -44,18 +44,18 @@
   ],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.5,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 5.4,
+    "maxAcceleration": 3.9,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "5 Note",
+  "folder": "4.5 Note",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }
