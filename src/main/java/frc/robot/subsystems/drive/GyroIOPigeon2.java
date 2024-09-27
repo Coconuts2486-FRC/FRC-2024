@@ -43,8 +43,7 @@ public class GyroIOPigeon2 implements GyroIO {
   public void updateInputs(GyroIOInputs inputs) {
     inputs.connected = BaseStatusSignal.refreshAll(yaw, yawVelocity).equals(StatusCode.OK);
     if (DriveToNoteCmd.targetNote) {
-      inputs.yawPosition =
-          Rotation2d.fromDegrees((DriverStation.getAlliance().get() == Alliance.Blue) ? 0 : 180);
+      inputs.yawPosition = Rotation2d.fromDegrees(0);
     } else {
       inputs.yawPosition =
           Rotation2d.fromDegrees(MathUtil.inputModulus(yaw.getValueAsDouble(), 0, 360));

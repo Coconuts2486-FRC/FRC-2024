@@ -62,7 +62,7 @@ public class DriveToNoteCmd extends Command {
         } else {
           drive.runVelocity(
               ChassisSpeeds.fromFieldRelativeSpeeds(
-                  2 * Math.pow(-1, isRed),
+                  2,
                   0,
                   -noteTargetPid.calculate(Drive.getGamePiecePose().getY()),
                   isFlipped

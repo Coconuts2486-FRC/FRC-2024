@@ -4,19 +4,16 @@
   "holonomicMode": true,
   "pathFolders": [
     "ZMaking sure paths works",
-    "Teaching",
-    "Amp Side Straight",
     "Amp Side",
     "5 Note"
   ],
   "autoFolders": [
     "Actual Autos",
-    "Making sure autos work",
-    "Teaching"
+    "Making sure autos work"
   ],
-  "defaultMaxVel": 5.5,
+  "defaultMaxVel": 5.4,
   "defaultMaxAccel": 3.9,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
-  "maxModuleSpeed": 5.5
+  "maxModuleSpeed": 5.4
 }
