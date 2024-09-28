@@ -40,18 +40,35 @@ public class RotateToTagCmd extends Command {
   @Override
   public void execute() {
     System.out.println(Drive.getSpeakerYaw().getRotations());
+
+
     if (Math.abs(sight) > 999) {
       boolean isFlipped =
           DriverStation.getAlliance().isPresent()
               && DriverStation.getAlliance().get() == Alliance.Red;
 
-      drive.runVelocity(
+              if(DriverStation.getAlliance().get() == Alliance.Red){
+ drive.runVelocity(
           ChassisSpeeds.fromFieldRelativeSpeeds(
               0,
               0,
-              0,
+              rotatePid.calculate(180),
               isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI)) : drive.getRotation()));
-    } else {
+    
+    
+              } else {
+ drive.runVelocity(
+          ChassisSpeeds.fromFieldRelativeSpeeds(
+              0,
+              0,
+              rotatePid.calculate(0),
+              isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI)) : drive.getRotation()));
+    
+    
+              }
+
+     
+            } else {
       boolean isFlipped =
           DriverStation.getAlliance().isPresent()
               && DriverStation.getAlliance().get() == Alliance.Red;
