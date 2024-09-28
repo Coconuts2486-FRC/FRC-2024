@@ -205,6 +205,9 @@ public class RobotContainer {
         "autoShoot",
         new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.4));
     NamedCommands.registerCommand(
+        "autoShootStart",
+        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.9));
+    NamedCommands.registerCommand(
         "autoShootFull",
         new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.8));
     NamedCommands.registerCommand(
@@ -237,7 +240,7 @@ public class RobotContainer {
             .until(lightStop::get));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
     NamedCommands.registerCommand(
-        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 2, () -> 23.6));
+        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 1.8, () -> 22.6));
     NamedCommands.registerCommand(
         "PivotRegressed23.6B", new AutoRegressedPivotCommand(pivot, () -> 4, () -> 23.6));
     NamedCommands.registerCommand(

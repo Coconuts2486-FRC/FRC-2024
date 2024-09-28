@@ -6,6 +6,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.intake.Intake;
@@ -29,6 +30,7 @@ public class DriveToNoteCmd extends Command {
 
   @Override
   public void execute() {
+    SmartDashboard.putBoolean("Light Stop", lightStop.getAsBoolean());
     targetNote = true;
     boolean isFlipped =
         DriverStation.getAlliance().isPresent()
