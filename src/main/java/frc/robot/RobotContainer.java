@@ -240,11 +240,11 @@ public class RobotContainer {
             .until(lightStop::get));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
     NamedCommands.registerCommand(
-        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 1.8, () -> 22.6));
+        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.6));
     NamedCommands.registerCommand(
-        "PivotRegressed23.6B", new AutoRegressedPivotCommand(pivot, () -> 4, () -> 23.6));
+        "PivotRegressed23.6B", new AutoRegressedPivotCommand(pivot, () -> 0.5, () -> 23.6));
     NamedCommands.registerCommand(
-        "PivotRegressed23.6C", new AutoRegressedPivotCommand(pivot, () -> 3, () -> 23.6));
+        "PivotRegressed23.6C", new AutoRegressedPivotCommand(pivot, () -> 1, () -> 23.6));
     NamedCommands.registerCommand(
         "PivotRegressed23", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23));
     NamedCommands.registerCommand(
@@ -366,7 +366,8 @@ public class RobotContainer {
     driver
         .b()
         .whileTrue(
-            new PivotCommand(pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
+            new PivotCommand(
+                pivot, () -> 45.5 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // - Retract
     driver.b().whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
 

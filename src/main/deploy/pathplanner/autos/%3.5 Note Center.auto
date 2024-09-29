@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.46,
-      "y": 7.35
+      "x": 1.299896400718728,
+      "y": 5.55
     },
     "rotation": 0
   },
@@ -16,15 +16,66 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "0Tracking Amp Start Shoot"
+                  "name": "autoShootFull"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "PivotRegressed"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4.5 Center Start Source Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "4.5 Center Return Source Note"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "RetractWithStop"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
                 }
               }
             ]
@@ -37,7 +88,77 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "PivotRegressed45"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootHalf"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4.5 Center Center Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "4.5 Center Return Center Note"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "RetractWithStop"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed45"
                 }
               },
               {
@@ -54,21 +175,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "0Tracking Outer Noter 1"
+                  "name": "PivotRegressed45"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Pivot45"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntake"
+                  "name": "autoShootHalf"
                 }
               }
             ]
@@ -79,30 +194,37 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Pivot45"
+                  "pathName": "4.5 Center Outer"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "autoIntake"
+                  "name": "Pivot45"
                 }
-              },
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
               {
                 "type": "named",
                 "data": {
                   "name": "Tracking"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractWithStop"
           }
         },
         {
@@ -112,7 +234,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "0Tracking Return Outer Noter"
+                  "pathName": "4.5 Center Return Outer"
                 }
               },
               {
@@ -131,101 +253,6 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6B"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoShootFull"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "0Tracking Outer Noter 2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pivot45"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Tracking"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pivot45"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "RetractWithStop"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "0Tracking Return Outer Noter 2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pivot24"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
                   "name": "PivotRegressed23.6"
                 }
               },
@@ -233,25 +260,6 @@
                 "type": "named",
                 "data": {
                   "name": "autoShootFull"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "0Tracking Outer Z3"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pivot45"
                 }
               }
             ]
@@ -260,6 +268,6 @@
       ]
     }
   },
-  "folder": "Amp Side Autos",
+  "folder": "Center Autos",
   "choreoAuto": false
 }

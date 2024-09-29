@@ -31,7 +31,7 @@ public class RegressedPivotCommand extends Command {
     double intercept = 81.2242;
     double angle;
     if (freezeRegress < -100) {
-      angle = 25;
+      angle = 24.7;
     } else {
       angle =
           (a * (freezeRegress * freezeRegress * freezeRegress))
