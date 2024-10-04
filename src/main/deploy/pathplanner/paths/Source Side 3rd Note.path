@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.5174278450408756,
+        "y": 2.7170134479157846
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.82765830347132,
+        "y": 1.5009401546655505
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.882443626004928,
+        "y": 1.79328944769747
+      },
+      "prevControl": {
+        "x": 6.221376729797062,
+        "y": 1.44500007056316
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 3.9,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 19.119355188914234,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Champs Auto",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

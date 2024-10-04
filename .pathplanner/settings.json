@@ -3,14 +3,16 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
-    "ZMaking sure paths works",
+    "4.5 Note",
     "Amp Side",
-    "4.5 Note"
+    "Champs Auto",
+    "ZMaking sure paths works"
   ],
   "autoFolders": [
     "Amp Side Autos",
+    "Center Autos",
     "Making sure autos work",
-    "Center Autos"
+    "Champs Auto"
   ],
   "defaultMaxVel": 5.4,
   "defaultMaxAccel": 3.9,

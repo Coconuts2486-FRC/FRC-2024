@@ -213,6 +213,9 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "autoShootHalf",
         new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.6));
+    NamedCommands.registerCommand(
+        "autoShotty",
+        new AutoShotCommand(intakeRollers, flywheel, smaIntakeRollers).withTimeout(0.2));
     NamedCommands.registerCommand("autoSpinUp", new AutoSpinUpCommand(flywheel));
     NamedCommands.registerCommand(
         "autoShootTarget", new AutoShotTargetCommand(intakeRollers, flywheel, smaIntakeRollers));
