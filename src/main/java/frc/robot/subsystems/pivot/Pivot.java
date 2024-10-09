@@ -58,7 +58,7 @@ public class Pivot extends SubsystemBase {
     Logger.processInputs("Flywheel", inputs);
     Logger.recordOutput("Pivot/DistanceToSpeaker", getSpeakerDistance());
     SmartDashboard.putNumber("Speaker Distance", getSpeakerDistance());
-     SmartDashboard.putBoolean("Sees Tag", getSpeakerDistance() > -900);
+    SmartDashboard.putBoolean("Sees Tag", getSpeakerDistance() > -900);
   }
 
   /** Run open loop at the specified voltage. */
