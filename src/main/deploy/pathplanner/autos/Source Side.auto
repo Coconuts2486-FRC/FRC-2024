@@ -83,6 +83,57 @@
                 "data": {
                   "name": "autoIntake"
                 }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LightCheck"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Source Side 1st Miss"
+                      }
+                    },
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Tracking"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "autoIntake"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -140,9 +191,41 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "RetractWithStop"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PivotRegressed23.6"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShootFull"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Source Side 2nd Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot45"
+                }
+              }
+            ]
           }
         },
         {
@@ -152,13 +235,19 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoShootFull"
+                  "name": "Tracking"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PivotRegressed23.6"
+                  "name": "autoIntake"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
                 }
               }
             ]

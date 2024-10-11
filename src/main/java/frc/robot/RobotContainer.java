@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.FieldConstants.AprilTagLayoutType;
 import frc.robot.commands.Auto.AutoIntakeCommand;
-import frc.robot.commands.Auto.AutoIntakeCommandSlow;
+import frc.robot.commands.Auto.AutoLightCheck;
 import frc.robot.commands.Auto.AutoRegressedPivotCommand;
 import frc.robot.commands.Auto.AutoShotCommand;
 import frc.robot.commands.Auto.AutoShotTargetCommand;
@@ -228,19 +228,10 @@ public class RobotContainer {
                 lightStop::get,
                 intakeStop::get,
                 pivot,
-                () -> 45)
+                () -> 45.5)
             .until(lightStop::get));
     NamedCommands.registerCommand(
-        "autoIntakeSlow",
-        new AutoIntakeCommandSlow(
-                intakeRollers,
-                smaIntakeRollers,
-                intake,
-                lightStop::get,
-                intakeStop::get,
-                pivot,
-                () -> 45)
-            .until(lightStop::get));
+        "LightCheck", new AutoLightCheck(lightStop::get).until(lightStop::get));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
     NamedCommands.registerCommand(
         "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.6));
@@ -380,7 +371,7 @@ public class RobotContainer {
             new fixcmd(intake, lightStop::get, intakeStop::get)
                 .alongWith(
                     new PivotCommand(
-                        pivot, () -> 45 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+                        pivot, () -> 45.5 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
     // - Retract
     coDriver
         .y()
