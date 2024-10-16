@@ -29,6 +29,7 @@ public class PivotIOReal implements PivotIO {
     pivotTalonConfig.CurrentLimits.SupplyCurrentLimit = 30.0;
     pivotTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = false;
     pivotTalonConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
     pivot.getConfigurator().apply(pivotTalonConfig);
 
     BaseStatusSignal.setUpdateFrequencyForAll(50.0, pivotPosition, pivotAppliedVolts, pivotCurrent);

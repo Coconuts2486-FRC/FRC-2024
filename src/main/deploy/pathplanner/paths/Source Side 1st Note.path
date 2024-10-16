@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.121670359081459,
-        "y": 1.2039588801399825
+        "x": 6.1401982850262,
+        "y": 1.3319915991683835
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 1.0433835219522292
       },
       "prevControl": {
-        "x": 6.4068704785557715,
-        "y": 1.1052620438574217
+        "x": 6.391156666572592,
+        "y": 1.2296129314480861
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,21 +29,33 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.9,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 3.5,
+    "maxVelocity": 5.4,
+    "maxAcceleration": 3.9,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -18.302844118555665,
+    "velocity": 0.5,
+    "rotation": -12.67884000697699,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Champs Auto",
   "previewStartingState": null,
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.843876706271931,
-        "y": 0.9176667936669205
+        "x": 7.894294043217716,
+        "y": 2.308686464595152
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.144144112362298,
-        "y": 1.69566153021195
+        "x": 5.461731766056125,
+        "y": 1.7111014684992332
       },
       "isLocked": false,
       "linkedName": null
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 4.6,
-        "y": 2.1
+        "y": 2.0961497756328846
       },
       "prevControl": {
-        "x": 4.99253073876518,
-        "y": 1.819290045061572
+        "x": 5.196219155401273,
+        "y": 1.5425092192776977
       },
       "nextControl": null,
       "isLocked": false,
@@ -51,11 +51,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -39.19,
-    "rotateFast": false
+    "rotation": -39.27999999999997,
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "Champs Auto",
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": 0.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

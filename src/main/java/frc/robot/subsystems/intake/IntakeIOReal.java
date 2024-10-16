@@ -1,5 +1,6 @@
 package frc.robot.subsystems.intake;
 
+import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -20,6 +21,10 @@ public class IntakeIOReal implements IntakeIO {
     var brake = new MotorOutputConfigs();
     brake.NeutralMode = NeutralModeValue.Brake;
     extend.getConfigurator().apply(brake);
+
+    var ramp = new ClosedLoopRampsConfigs();
+    ramp.withTorqueClosedLoopRampPeriod(2);
+    extend.getConfigurator().apply(ramp);
   }
 
   @Override
