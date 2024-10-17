@@ -65,7 +65,7 @@ public class AutoIntakeCommand extends Command {
         AutoRoto = 0;
       }
     } else {
-      intake.setExtendPosition(47.8); // position of pivot
+      intake.setExtendPosition(48.8); // position of pivot
       smaIntakeRollers.autoShot(0.25); // speed of intake rollers
       pivot.holdPosition(angle.getAsDouble());
       AutoRoto = 1;

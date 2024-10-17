@@ -41,7 +41,7 @@ public class IntakeExtendCommand extends Command {
       }
     } else {
       // intake.setExtendPosition(5);
-      intake.setExtendPosition(47.8);
+      intake.setExtendPosition(48.8);
     }
   }
 

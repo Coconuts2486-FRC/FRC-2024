@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.894294043217716,
-        "y": 2.308686464595152
+        "x": 8.350247297716818,
+        "y": 2.398475644173511
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.461731766056125,
-        "y": 1.7111014684992332
+        "x": 5.449082893536158,
+        "y": 1.516083171055232
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 2.0961497756328846
       },
       "prevControl": {
-        "x": 5.196219155401273,
-        "y": 1.5425092192776977
+        "x": 5.112314085739283,
+        "y": 1.6748769979021443
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,20 +29,26 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
+  "constraintZones": [],
+  "eventMarkers": [
     {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.9,
-      "maxWaypointRelativePos": 1.0,
-      "constraints": {
-        "maxVelocity": 2.0,
-        "maxAcceleration": 2.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.9,
+      "command": {
+        "type": "race",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "autoSpinUp"
+              }
+            }
+          ]
+        }
       }
     }
   ],
-  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.4,
     "maxAcceleration": 3.9,
@@ -52,12 +58,12 @@
   "goalEndState": {
     "velocity": 0,
     "rotation": -39.27999999999997,
-    "rotateFast": true
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Champs Auto",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 22.535730236834592,
     "velocity": 0
   },
   "useDefaultConstraints": true

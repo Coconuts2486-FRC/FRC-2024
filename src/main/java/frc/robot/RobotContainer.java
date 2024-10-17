@@ -228,7 +228,7 @@ public class RobotContainer {
                 lightStop::get,
                 intakeStop::get,
                 pivot,
-                () -> 44)
+                () -> 46)
             .until(lightStop::get));
     NamedCommands.registerCommand(
         "LightCheck", new AutoLightCheck(lightStop::get).until(lightStop::get));
@@ -246,7 +246,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "PivotRegressed45", new AutoRegressedPivotCommand(pivot, () -> 0.7, () -> 45));
     NamedCommands.registerCommand(
-        "PivotRegressed45Lower", new AutoRegressedPivotCommand(pivot, () -> 0.3, () -> 44));
+        "PivotRegressed45Lower", new AutoRegressedPivotCommand(pivot, () -> 0.3, () -> 46));
     NamedCommands.registerCommand("Pivot23.6", new PivotCommand(pivot, () -> 23.6));
     NamedCommands.registerCommand("Pivot24", new PivotCommand(pivot, () -> 24));
     NamedCommands.registerCommand("Pivot25", new PivotCommand(pivot, () -> 25));
@@ -310,7 +310,7 @@ public class RobotContainer {
                         .andThen(
                             new PivotCommand(
                                 pivot,
-                                () -> 44 + PivotChangerUpCommand.angler + AmpCommand.ampPivot))));
+                                () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot))));
 
     // ** Normal Intake
     // - Rollers
@@ -335,7 +335,7 @@ public class RobotContainer {
     driver
         .rightBumper()
         .whileTrue(
-            new PivotCommand(pivot, () -> 44 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
+            new PivotCommand(pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // - Retract
     driver
         .rightBumper()
@@ -360,7 +360,7 @@ public class RobotContainer {
     driver
         .b()
         .whileTrue(
-            new PivotCommand(pivot, () -> 44 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
+            new PivotCommand(pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot));
     // - Retract
     driver.b().whileFalse(new IntakeRetractCommand(intake, intakeStop::get).until(intakeStop::get));
 
@@ -370,7 +370,7 @@ public class RobotContainer {
             new fixcmd(intake, lightStop::get, intakeStop::get)
                 .alongWith(
                     new PivotCommand(
-                        pivot, () -> 44 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
+                        pivot, () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot)));
     // - Retract
     coDriver
         .y()
