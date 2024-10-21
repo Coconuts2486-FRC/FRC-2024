@@ -234,9 +234,9 @@ public class RobotContainer {
         "LightCheck", new AutoLightCheck(lightStop::get).until(lightStop::get));
     NamedCommands.registerCommand("Zero", Commands.runOnce(() -> drive.zero()));
     NamedCommands.registerCommand(
-        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 23.6));
+        "PivotRegressed23.6", new AutoRegressedPivotCommand(pivot, () -> -0.3, () -> 23.6));
     NamedCommands.registerCommand(
-        "PivotRegressed23.6B", new AutoRegressedPivotCommand(pivot, () -> 0.5, () -> 23.6));
+        "PivotRegressed23.6B", new AutoRegressedPivotCommand(pivot, () -> 0, () -> 24.5));
     NamedCommands.registerCommand(
         "PivotRegressed23.6C", new AutoRegressedPivotCommand(pivot, () -> 1, () -> 23.6));
     NamedCommands.registerCommand(
@@ -311,7 +311,9 @@ public class RobotContainer {
                             new PivotCommand(
                                 pivot,
                                 () -> 46 + PivotChangerUpCommand.angler + AmpCommand.ampPivot))));
-
+    // Dead reckoning Shot
+    coDriver.x().whileTrue(new RotateToTagCmd(drive, 0));
+    coDriver.x().whileTrue(new PivotCommand(pivot, () -> 24.7));
     // ** Normal Intake
     // - Rollers
     driver

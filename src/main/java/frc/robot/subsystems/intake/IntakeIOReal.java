@@ -24,7 +24,7 @@ public class IntakeIOReal implements IntakeIO {
 
     var ramp = new ClosedLoopRampsConfigs();
     ramp.withTorqueClosedLoopRampPeriod(2);
-    extend.getConfigurator().apply(ramp);
+    // extend.getConfigurator().apply(ramp);
   }
 
   @Override

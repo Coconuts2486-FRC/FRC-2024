@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.026246131195967,
-        "y": 7.4111109935182835
+        "x": 7.733599916273907,
+        "y": 3.7000624417915504
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.658386367698663,
-        "y": 6.9085410022671905
+        "x": 6.437535865812473,
+        "y": 1.210016086698841
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.25,
-        "y": 6.45
+        "x": 4.243758172701531,
+        "y": 1.8137770581096722
       },
       "prevControl": {
-        "x": 5.259475803885245,
-        "y": 6.45
+        "x": 5.445519830854477,
+        "y": 1.405450074789038
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 0.85,
       "command": {
         "type": "race",
         "data": {
@@ -57,14 +57,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 15.0,
+    "rotation": -52.44999999999999,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp Side",
-  "previewStartingState": {
-    "rotation": 15.0,
-    "velocity": 0
-  },
+  "folder": "Champs Auto",
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }

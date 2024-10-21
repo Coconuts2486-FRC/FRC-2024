@@ -38,7 +38,7 @@ public class RegressedPivotCommand extends Command {
               + (b * freezeRegress * freezeRegress)
               + c * freezeRegress
               + intercept
-              - .4;
+              + .4;
     }
     // System.out.println(freezeRegress);
 
