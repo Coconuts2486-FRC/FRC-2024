@@ -64,27 +64,27 @@ public class ModuleIOTalonFX implements ModuleIO {
   public ModuleIOTalonFX(int index) {
     switch (index) {
       case 0:
-        driveTalon = new TalonFX(2, "drive");
-        turnTalon = new TalonFX(6, "drive");
-        cancoder = new CANcoder(10, "drive");
+        driveTalon = new TalonFX(1, "DriveTrain");
+        turnTalon = new TalonFX(2, "DriveTrain");
+        cancoder = new CANcoder(3, "DriveTrain");
         absoluteEncoderOffset = new Rotation2d(Math.toRadians(106.79)); // FL
         break;
       case 1:
-        driveTalon = new TalonFX(3, "drive");
-        turnTalon = new TalonFX(7, "drive");
-        cancoder = new CANcoder(11, "drive");
+        driveTalon = new TalonFX(4, "DriveTrain");
+        turnTalon = new TalonFX(5, "DriveTrain");
+        cancoder = new CANcoder(6, "DriveTrain");
         absoluteEncoderOffset = new Rotation2d(Math.toRadians(223.59)); // FR
         break;
       case 2:
-        driveTalon = new TalonFX(4, "drive");
-        turnTalon = new TalonFX(8, "drive");
-        cancoder = new CANcoder(12, "drive");
+        driveTalon = new TalonFX(7, "DriveTrain");
+        turnTalon = new TalonFX(8, "DriveTrain");
+        cancoder = new CANcoder(9, "DriveTrain");
         absoluteEncoderOffset = new Rotation2d(Math.toRadians(186.68)); // BL
         break;
       case 3:
-        driveTalon = new TalonFX(5, "drive");
-        turnTalon = new TalonFX(9, "drive");
-        cancoder = new CANcoder(13, "drive");
+        driveTalon = new TalonFX(10, "DriveTrain");
+        turnTalon = new TalonFX(11, "DriveTrain");
+        cancoder = new CANcoder(12, "DriveTrain");
         absoluteEncoderOffset = new Rotation2d(Math.toRadians(71.01)); // BR
         break;
       default:
